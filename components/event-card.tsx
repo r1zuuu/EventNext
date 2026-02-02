@@ -1,5 +1,6 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import { CalendarDays, MapPin, Users, Clock, Globe } from "lucide-react"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
@@ -14,8 +15,14 @@ interface EventCardProps {
 }
 
 export function EventCard({ event }: EventCardProps) {
+  const [mounted, setMounted] = useState(false)
   const { getBookedCount } = useStore()
-  const bookedCount = getBookedCount(event.id)
+  
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  const bookedCount = mounted ? getBookedCount(event.id) : 0
   const remainingCapacity = event.capacity - bookedCount
   const isFull = remainingCapacity <= 0
 

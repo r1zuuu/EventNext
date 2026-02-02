@@ -64,7 +64,7 @@ export default function EventsPage() {
   }, [events, search, filters])
 
   return (
-    <div className="flex flex-col min-h-screen" style={{ background: 'linear-gradient(135deg, #F5F6F8 0%, #EEF2FF 50%, #F5F6F8 100%)' }}>
+    <div className="flex flex-col min-h-screen bg-[#F5F6F8]">
       <AppHeader searchValue={search} onSearchChange={setSearch} />
 
       <main className="flex-1 p-6">
