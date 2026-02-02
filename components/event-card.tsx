@@ -27,16 +27,16 @@ export function EventCard({ event }: EventCardProps) {
   const getBookingTypeBadge = () => {
     switch (event.bookingType) {
       case "free":
-        return <Badge variant="secondary">Free</Badge>
+        return <Badge className="bg-[#10B981] text-white border-transparent">Free</Badge>
       case "ticketed":
-        return <Badge variant="default">{event.price} PLN</Badge>
+        return <Badge className="bg-[#2563EB] text-white border-transparent">{event.price} PLN</Badge>
       case "approval":
         return <Badge variant="outline">Approval Required</Badge>
     }
   }
 
   return (
-    <Card className="flex flex-col h-full hover:shadow-md transition-shadow">
+    <Card className="flex flex-col h-full hover:shadow-xl transition-all duration-300 backdrop-blur-xl bg-white/80 border border-white/50 shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-1 hover:bg-white/90">
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between gap-2">
           <div className="space-y-1 flex-1">
@@ -82,12 +82,12 @@ export function EventCard({ event }: EventCardProps) {
         {event.tags.length > 0 && (
           <div className="flex flex-wrap gap-1">
             {event.tags.slice(0, 3).map((tag) => (
-              <Badge key={tag} variant="secondary" className="text-xs">
+              <Badge key={tag} className="text-xs bg-[#111827] text-white border-transparent">
                 {tag}
               </Badge>
             ))}
             {event.tags.length > 3 && (
-              <Badge variant="secondary" className="text-xs">
+              <Badge className="text-xs bg-[#111827] text-white border-transparent">
                 +{event.tags.length - 3}
               </Badge>
             )}
@@ -96,7 +96,7 @@ export function EventCard({ event }: EventCardProps) {
       </CardContent>
 
       <CardFooter className="pt-0">
-        <Button asChild className="w-full" variant={isFull || event.status === "cancelled" ? "secondary" : "default"}>
+        <Button asChild className={`w-full ${isFull || event.status === "cancelled" ? "" : "bg-[#111827] hover:bg-[#111827]/90"}`} variant={isFull || event.status === "cancelled" ? "secondary" : "default"}>
           <Link href={`/events/${event.id}`}>
             {event.status === "cancelled" ? "View Event" : isFull ? "Join Waitlist" : "View & Book"}
           </Link>
