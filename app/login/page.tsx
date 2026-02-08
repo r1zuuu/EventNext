@@ -9,20 +9,31 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { useStore } from "@/lib/store"
 
 export default function LoginPage() {
   const router = useRouter()
   const { signIn } = useStore()
-  const [email, setEmail] = useState("")
-  const [role, setRole] = useState<"user" | "admin">("user")
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+  const [error, setError] = useState("")
+  const [loading, setLoading] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!email) return
-    signIn(email, role)
-    router.push("/events")
+    if (!username || !password) return
+
+    setLoading(true)
+    setError("")
+
+    const success = await signIn(username, password)
+    setLoading(false)
+
+    if (success) {
+      router.push("/events")
+    } else {
+      setError("Invalid username or password")
+    }
   }
 
   return (
@@ -39,51 +50,47 @@ export default function LoginPage() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
+            {error && (
+              <div className="rounded-lg bg-destructive/10 text-destructive text-sm p-3">
+                {error}
+              </div>
+            )}
+            
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="username">Username</Label>
               <Input
-                id="email"
-                type="email"
-                placeholder="you@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                id="username"
+                type="text"
+                placeholder="admin or user"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 required
               />
             </div>
 
-            <div className="space-y-3">
-              <Label>Sign in as</Label>
-              <RadioGroup value={role} onValueChange={(v) => setRole(v as "user" | "admin")} className="grid grid-cols-2 gap-4">
-                <div>
-                  <RadioGroupItem value="user" id="user" className="peer sr-only" />
-                  <Label
-                    htmlFor="user"
-                    className="flex flex-col items-center justify-center rounded-lg border-2 border-muted bg-transparent p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary cursor-pointer transition-colors"
-                  >
-                    <span className="font-medium">User</span>
-                    <span className="text-xs text-muted-foreground">Browse & book events</span>
-                  </Label>
-                </div>
-                <div>
-                  <RadioGroupItem value="admin" id="admin" className="peer sr-only" />
-                  <Label
-                    htmlFor="admin"
-                    className="flex flex-col items-center justify-center rounded-lg border-2 border-muted bg-transparent p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary cursor-pointer transition-colors"
-                  >
-                    <span className="font-medium">Admin</span>
-                    <span className="text-xs text-muted-foreground">Manage events</span>
-                  </Label>
-                </div>
-              </RadioGroup>
+            <div className="space-y-2">
+              <Label htmlFor="password">Password</Label>
+              <Input
+                id="password"
+                type="password"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
             </div>
 
-            <Button type="submit" className="w-full">
-              Continue
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading ? "Signing in..." : "Sign In"}
             </Button>
 
-            <p className="text-xs text-center text-muted-foreground">
-              This is a demo app. No real authentication is performed.
-            </p>
+            <div className="mt-6 space-y-2 text-sm text-muted-foreground">
+              <p className="font-semibold">Demo credentials:</p>
+              <div className="bg-muted p-3 rounded-lg space-y-1 text-xs">
+                <p><span className="font-mono">admin</span> / <span className="font-mono">admin</span></p>
+                <p><span className="font-mono">user</span> / <span className="font-mono">user</span></p>
+              </div>
+            </div>
           </form>
         </CardContent>
       </Card>

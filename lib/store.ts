@@ -11,8 +11,9 @@ interface AppState {
   role: Role
   isAuthenticated: boolean
   userEmail: string
+  username: string
   setRole: (role: Role) => void
-  signIn: (email: string, role: Role) => void
+  signIn: (username: string, password: string) => Promise<boolean>
   signOut: () => void
 
   // Events
@@ -47,9 +48,34 @@ export const useStore = create<AppState>()(
       role: 'user',
       isAuthenticated: false,
       userEmail: '',
+      username: '',
       setRole: (role) => set({ role }),
-      signIn: (email, role) => set({ isAuthenticated: true, userEmail: email, role }),
-      signOut: () => set({ isAuthenticated: false, userEmail: '', role: 'user' }),
+      signIn: async (username, password) => {
+        try {
+          const response = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password }),
+          })
+          
+          if (!response.ok) {
+            return false
+          }
+          
+          const user = await response.json()
+          set({
+            isAuthenticated: true,
+            userEmail: user.email,
+            username: username,
+            role: user.role,
+          })
+          return true
+        } catch (error) {
+          console.error('Login failed:', error)
+          return false
+        }
+      },
+      signOut: () => set({ isAuthenticated: false, userEmail: '', username: '', role: 'user' }),
 
       // Events
       events: [],

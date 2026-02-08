@@ -2,7 +2,7 @@
 
 import { prisma } from '@/lib/prisma'
 import { NextRequest, NextResponse } from 'next/server'
-
+// generowanie kodu rezerwacji format EVT-XXXXX
 function generateBookingCode(): string {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
   let code = 'EVT-'

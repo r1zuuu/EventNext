@@ -1,5 +1,5 @@
 'use server'
-
+// Konfiguracja api dla pojedycznej rezerwacji pobieranie aktualizaja i usuwanie
 import { prisma } from '@/lib/prisma'
 import { NextRequest, NextResponse } from 'next/server'
 

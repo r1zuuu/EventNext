@@ -23,7 +23,7 @@ interface AppHeaderProps {
 }
 
 export function AppHeader({ searchValue = "", onSearchChange, showSearch = true }: AppHeaderProps) {
-  const { role, userEmail, isAuthenticated, signOut } = useStore()
+  const { role, userEmail, username, isAuthenticated, signOut } = useStore()
 
   return (
     <header className="sticky top-0 z-40 flex h-14 items-center gap-4 border-b bg-background px-4">
@@ -58,8 +58,8 @@ export function AppHeader({ searchValue = "", onSearchChange, showSearch = true 
               <>
                 <DropdownMenuLabel>
                   <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-medium">Account</p>
-                    <p className="text-xs text-muted-foreground truncate">{userEmail}</p>
+                    <p className="text-sm font-medium">{username}</p>
+                    <p className="text-xs text-muted-foreground">{userEmail}</p>
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
@@ -67,7 +67,9 @@ export function AppHeader({ searchValue = "", onSearchChange, showSearch = true 
                   <Link href="/bookings">My Bookings</Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={signOut}>Sign Out</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => signOut()}>
+                  Sign Out
+                </DropdownMenuItem>
               </>
             ) : (
               <>
