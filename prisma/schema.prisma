@@ -1,0 +1,63 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Event {
+  id               String   @id @default(cuid())
+  title            String
+  shortDescription String
+  longDescription  String?
+  location         String
+  onlineUrl        String?
+  coverImageUrl    String?
+  startDateTime    DateTime
+  endDateTime      DateTime
+  timezone         String   @default("Europe/Warsaw")
+  capacity         Int
+  bookingType      String   // "ticketed" | "free" | "approval"
+  price            Float?
+  tags             String[] // JSON array
+  status           String   @default("draft") // "draft" | "published" | "cancelled"
+  organizerName    String
+  organizerEmail   String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  bookings Booking[]
+
+  @@index([status])
+  @@index([organizerEmail])
+  @@index([startDateTime])
+}
+
+model Booking {
+  id           String   @id @default(cuid())
+  eventId      String
+  event        Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  attendeeName String
+  attendeeEmail String
+  quantity     Int
+  status       String   @default("confirmed") // "confirmed" | "waitlist" | "cancelled" | "checked_in" | "pending"
+  bookingCode  String   @unique
+  notes        String?
+  createdAt    DateTime @default(now())
+
+  @@index([eventId])
+  @@index([attendeeEmail])
+  @@index([status])
+}
+model User {
+  id    String @id @default(cuid())
+  role String @default("user") // "user" | "admin"
+  email String @unique
+  password String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
