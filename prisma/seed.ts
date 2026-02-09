@@ -13,6 +13,13 @@ const prisma = new PrismaClient({ adapter });
 async function main() {
   console.log("🌱 Starting seed from mock-data...");
 
+  // ==================== CLEAN EXISTING DATA ====================
+  // In dev, we want a clean slate that exactly matches our mocks.
+  console.log("🧹 Clearing existing data (Booking, Event, User)...");
+  await prisma.booking.deleteMany();
+  await prisma.event.deleteMany();
+  await prisma.user.deleteMany();
+
   // ==================== USERS ====================
   const users = [
     {

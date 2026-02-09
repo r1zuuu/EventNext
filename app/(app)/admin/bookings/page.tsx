@@ -99,7 +99,7 @@ export default function AdminBookingsPage() {
       case "cancelled":
         return <Badge variant="destructive">Cancelled</Badge>
       case "checked_in":
-        return <Badge className="bg-green-600 hover:bg-green-700 text-white">Checked In</Badge>
+        return <Badge className="bg-blue-600 hover:bg-blue-700 text-white">Checked In</Badge>
       default:
         return <Badge variant="secondary">{status}</Badge>
     }

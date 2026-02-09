@@ -121,33 +121,20 @@ export function AppSidebar() {
 
       <SidebarFooter>
         <SidebarSeparator className="mx-0" />
-        <div className="p-2 space-y-4">
-          <div className="flex items-center justify-between">
-            <Label htmlFor="admin-mode" className="text-xs text-muted-foreground">
-              View as Admin
-            </Label>
-            <Switch
-              id="admin-mode"
-              checked={isAdmin}
-              onCheckedChange={(checked) => setRole(checked ? "admin" : "user")}
-            />
+        {isAuthenticated && (
+          <div className="space-y-2">
+            <p className="text-xs text-muted-foreground truncate">{userEmail}</p>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="w-full justify-start"
+              onClick={signOut}
+            >
+              <LogOut className="size-4 mr-2" />
+              Sign Out
+            </Button>
           </div>
-
-          {isAuthenticated && (
-            <div className="space-y-2">
-              <p className="text-xs text-muted-foreground truncate">{userEmail}</p>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="w-full justify-start"
-                onClick={signOut}
-              >
-                <LogOut className="size-4 mr-2" />
-                Sign Out
-              </Button>
-            </div>
-          )}
-        </div>
+        )}
       </SidebarFooter>
     </Sidebar>
   )

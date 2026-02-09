@@ -16,14 +16,14 @@
   --secondary-foreground: #111827;
   --muted: #F5F6F8;
   --muted-foreground: #6B7280;
-  --accent: #10B981;
+  --accent: #3B82F6;
   --accent-foreground: #FFFFFF;
-  --destructive: #EF4444;
+  --destructive: #6366F1;
   --destructive-foreground: #FFFFFF;
   --border: #E5E7EB;
   --input: #E5E7EB;
-  --ring: #2563EB;
-  --link: #2563EB;
+  --ring: #3B82F6;
+  --link: #3B82F6;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);

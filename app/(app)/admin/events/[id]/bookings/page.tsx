@@ -126,7 +126,7 @@ export default function EventBookingsPage({
       case "cancelled":
         return <Badge variant="destructive">Cancelled</Badge>
       case "checked_in":
-        return <Badge className="bg-green-600 hover:bg-green-700 text-white">Checked In</Badge>
+        return <Badge className="bg-blue-600 hover:bg-blue-700 text-white">Checked In</Badge>
       default:
         return <Badge variant="secondary">{status}</Badge>
     }
@@ -223,12 +223,12 @@ export default function EventBookingsPage({
           </div>
 
           {isCheckInMode && (
-            <Card className="border-green-200 bg-green-50">
+            <Card className="border-blue-200 bg-blue-50">
               <CardContent className="p-4 flex items-center gap-3">
-                <Users className="size-5 text-green-700" />
+                <Users className="size-5 text-blue-700" />
                 <div>
-                  <p className="font-medium text-green-800">Check-in Mode Active</p>
-                  <p className="text-sm text-green-700">
+                  <p className="font-medium text-blue-800">Check-in Mode Active</p>
+                  <p className="text-sm text-blue-700">
                     Click the check-in button next to each attendee as they arrive.
                   </p>
                 </div>
@@ -260,7 +260,7 @@ export default function EventBookingsPage({
                   eventBookings.map((booking) => (
                     <TableRow
                       key={booking.id}
-                      className={booking.status === "checked_in" ? "bg-green-50" : ""}
+                      className={booking.status === "checked_in" ? "bg-blue-50" : ""}
                     >
                       <TableCell className="font-mono text-sm">{booking.bookingCode}</TableCell>
                       <TableCell>
@@ -302,7 +302,7 @@ export default function EventBookingsPage({
                         {booking.status === "confirmed" && isCheckInMode && (
                           <Button
                             size="sm"
-                            className="bg-green-600 hover:bg-green-700 text-white"
+                            className="bg-blue-600 hover:bg-blue-700 text-white"
                             onClick={() => handleCheckIn(booking.id)}
                           >
                             <Check className="size-3 mr-1" />
