@@ -84,10 +84,17 @@ export const useStore = create<AppState>()(
         set({ loadingEvents: true })
         try {
           const response = await fetch('/api/events')
+          if (!response.ok) {
+            const error = await response.json().catch(() => ({}))
+            console.error('Failed to fetch events:', error)
+            set({ events: [] })
+            return
+          }
           const events = await response.json()
-          set({ events })
+          set({ events: Array.isArray(events) ? events : [] })
         } catch (error) {
           console.error('Failed to fetch events:', error)
+          set({ events: [] })
         } finally {
           set({ loadingEvents: false })
         }
@@ -172,10 +179,17 @@ export const useStore = create<AppState>()(
           if (email) params.append('attendeeEmail', email)
 
           const response = await fetch(`/api/bookings?${params}`)
+          if (!response.ok) {
+            const error = await response.json().catch(() => ({}))
+            console.error('Failed to fetch bookings:', error)
+            set({ bookings: [] })
+            return
+          }
           const bookings = await response.json()
-          set({ bookings })
+          set({ bookings: Array.isArray(bookings) ? bookings : [] })
         } catch (error) {
           console.error('Failed to fetch bookings:', error)
+          set({ bookings: [] })
         } finally {
           set({ loadingBookings: false })
         }

@@ -228,18 +228,6 @@ return {
                 </Button>
               </CardContent>
             </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Analytics</CardTitle>
-                <CardDescription>Track performance metrics</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="h-20 flex items-center justify-center bg-muted rounded-lg text-sm text-muted-foreground">
-                  Chart placeholder
-                </div>
-              </CardContent>
-            </Card>
           </div>
         </div>
       </main>

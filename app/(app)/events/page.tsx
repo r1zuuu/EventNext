@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { AppHeader } from "@/components/app-header"
 import { EventCard } from "@/components/event-card"
 import { EventFiltersPanel, type EventFilters } from "@/components/event-filters"
@@ -8,7 +8,8 @@ import { useStore } from "@/lib/store"
 import { isWithinInterval, parseISO } from "date-fns"
 
 export default function EventsPage() {
-  const { events } = useStore()
+  const { events, fetchEvents, loadingEvents } = useStore()
+  const eventsList = Array.isArray(events) ? events : []
   const [search, setSearch] = useState("")
   const [filters, setFilters] = useState<EventFilters>({
     bookingType: "all",
@@ -16,14 +17,20 @@ export default function EventsPage() {
     dateRange: undefined,
   })
 
+  useEffect(() => {
+    if (eventsList.length === 0 && !loadingEvents) {
+      fetchEvents()
+    }
+  }, [eventsList.length, fetchEvents, loadingEvents])
+
   const availableTags = useMemo(() => {
     const tags = new Set<string>()
-    events.forEach((event) => (event.tags ?? []).forEach((tag) => tags.add(tag)))
+    eventsList.forEach((event) => (event.tags ?? []).forEach((tag) => tags.add(tag))) //event.tags is string[] | null but forEach is only on string[]
     return Array.from(tags).sort()
-  }, [events])
+  }, [eventsList])
 
   const filteredEvents = useMemo(() => {
-    return events.filter((event) => {
+    return eventsList.filter((event) => {
       // Only show published events
       if (event.status !== "published") return false
 
@@ -61,7 +68,7 @@ export default function EventsPage() {
 
       return true
     })
-  }, [events, search, filters])
+  }, [eventsList, search, filters])
 
   return (
     <div className="flex flex-col min-h-screen bg-[#F5F6F8]">
@@ -82,7 +89,11 @@ export default function EventsPage() {
             availableTags={availableTags}
           />
 
-          {filteredEvents.length === 0 ? (
+          {loadingEvents ? (
+            <div className="flex items-center justify-center py-16 text-muted-foreground">
+              Loading events...
+            </div>
+          ) : filteredEvents.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16 text-center">
               <div className="rounded-full bg-muted p-4 mb-4">
                 <svg

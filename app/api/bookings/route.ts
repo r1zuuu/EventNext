@@ -1,6 +1,7 @@
 'use server'
 
 import { prisma } from '@/lib/prisma'
+import { initialBookings, initialEvents } from '@/lib/mock-data'
 import { NextRequest, NextResponse } from 'next/server'
 // generowanie kodu rezerwacji format EVT-XXXXX
 function generateBookingCode(): string {
@@ -13,10 +14,12 @@ function generateBookingCode(): string {
 }
 
 export async function GET(request: NextRequest) {
+  let eventId: string | null = null
+  let attendeeEmail: string | null = null
   try {
     const searchParams = request.nextUrl.searchParams
-    const eventId = searchParams.get('eventId')
-    const attendeeEmail = searchParams.get('attendeeEmail')
+    eventId = searchParams.get('eventId')
+    attendeeEmail = searchParams.get('attendeeEmail')
 
     const where: any = {}
     if (eventId) where.eventId = eventId
@@ -31,6 +34,18 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(bookings)
   } catch (error) {
+    if (process.env.NODE_ENV !== 'production') {
+      let bookings = initialBookings
+      if (eventId) bookings = bookings.filter((booking) => booking.eventId === eventId)
+      if (attendeeEmail) {
+        bookings = bookings.filter((booking) => booking.attendeeEmail === attendeeEmail)
+      }
+      const bookingsWithEvent = bookings.map((booking) => ({
+        ...booking,
+        event: initialEvents.find((event) => event.id === booking.eventId) || null,
+      }))
+      return NextResponse.json(bookingsWithEvent)
+    }
     return NextResponse.json({ error: 'Failed to fetch bookings' }, { status: 500 })
   }
 }

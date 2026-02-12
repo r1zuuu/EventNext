@@ -1,6 +1,7 @@
 'use server'
 
 import { prisma } from '@/lib/prisma'
+import { initialBookings, initialEvents } from '@/lib/mock-data'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET() {
@@ -15,6 +16,18 @@ export async function GET() {
     })
     return NextResponse.json(events)
   } catch (error) {
+    if (process.env.NODE_ENV !== 'production') {
+      const events = initialEvents
+        .map((event) => ({
+          ...event,
+          bookings: initialBookings.filter((booking) => booking.eventId === event.id),
+        }))
+        .sort(
+          (a, b) =>
+            new Date(a.startDateTime).getTime() - new Date(b.startDateTime).getTime()
+        )
+      return NextResponse.json(events)
+    }
     return NextResponse.json({ error: 'Failed to fetch events' }, { status: 500 })
   }
 }
