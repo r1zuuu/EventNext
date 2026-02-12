@@ -5,11 +5,12 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const event = await prisma.event.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         bookings: true,
       },
@@ -27,13 +28,34 @@ export async function GET(
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const data = await request.json()
 
+    const start = data.startDateTime ? new Date(data.startDateTime) : null
+    const end = data.endDateTime ? new Date(data.endDateTime) : null
+    const capacity = data.capacity !== undefined ? Number(data.capacity) : undefined
+
+    if (start && Number.isNaN(start.getTime())) {
+      return NextResponse.json({ error: 'Invalid start date' }, { status: 400 })
+    }
+
+    if (end && Number.isNaN(end.getTime())) {
+      return NextResponse.json({ error: 'Invalid end date' }, { status: 400 })
+    }
+
+    if (start && end && end <= start) {
+      return NextResponse.json({ error: 'End date must be after start date' }, { status: 400 })
+    }
+
+    if (capacity !== undefined && (!Number.isFinite(capacity) || capacity < 1)) {
+      return NextResponse.json({ error: 'Invalid capacity' }, { status: 400 })
+    }
+
     const event = await prisma.event.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         ...(data.title && { title: data.title }),
         ...(data.shortDescription && { shortDescription: data.shortDescription }),
@@ -41,10 +63,10 @@ export async function PATCH(
         ...(data.location && { location: data.location }),
         ...(data.onlineUrl !== undefined && { onlineUrl: data.onlineUrl }),
         ...(data.coverImageUrl !== undefined && { coverImageUrl: data.coverImageUrl }),
-        ...(data.startDateTime && { startDateTime: new Date(data.startDateTime) }),
-        ...(data.endDateTime && { endDateTime: new Date(data.endDateTime) }),
+        ...(start && { startDateTime: start }),
+        ...(end && { endDateTime: end }),
         ...(data.timezone && { timezone: data.timezone }),
-        ...(data.capacity && { capacity: data.capacity }),
+        ...(capacity !== undefined && { capacity }),
         ...(data.bookingType && { bookingType: data.bookingType }),
         ...(data.price !== undefined && { price: data.price }),
         ...(data.tags && { tags: data.tags }),
@@ -63,11 +85,12 @@ export async function PATCH(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     await prisma.event.delete({
-      where: { id: params.id },
+      where: { id },
     })
 
     return NextResponse.json({ success: true })

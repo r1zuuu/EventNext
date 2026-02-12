@@ -159,10 +159,10 @@ export default function AdminEventsPage() {
                     </TableCell>
                   </TableRow>
                 ) : (
-                  filteredEvents.map((event) => {
+                  filteredEvents.map((event, index) => {
                     const booked = getBookedCount(event.id)
                     return (
-                      <TableRow key={event.id}>
+                      <TableRow key={event.id ?? `${event.title}-${index}`}>
                         <TableCell>
                           <div>
                             <p className="font-medium">{event.title}</p>
@@ -171,10 +171,19 @@ export default function AdminEventsPage() {
                         </TableCell>
                         <TableCell>
                           <div className="text-sm">
-                            <p>{format(new Date(event.startDateTime), "MMM d, yyyy")}</p>
-                            <p className="text-muted-foreground">
-                              {format(new Date(event.startDateTime), "h:mm a")}
-                            </p>
+                            {Number.isNaN(new Date(event.startDateTime).getTime()) ? (
+                              <>
+                                <p>TBD</p>
+                                <p className="text-muted-foreground">TBD</p>
+                              </>
+                            ) : (
+                              <>
+                                <p>{format(new Date(event.startDateTime), "MMM d, yyyy")}</p>
+                                <p className="text-muted-foreground">
+                                  {format(new Date(event.startDateTime), "h:mm a")}
+                                </p>
+                              </>
+                            )}
                           </div>
                         </TableCell>
                         <TableCell>{getBookingTypeBadge(event.bookingType, event.price)}</TableCell>

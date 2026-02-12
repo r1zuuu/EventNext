@@ -1,12 +1,20 @@
 "use client"
 
-import React from "react"
+import React, { useEffect } from "react"
 
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
 import { Toaster } from "@/components/ui/sonner"
+import { useStore } from "@/lib/store"
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
+  const { fetchEvents, fetchBookings } = useStore()
+
+  useEffect(() => {
+    fetchEvents()
+    fetchBookings()
+  }, [fetchEvents, fetchBookings])
+
   return (
     <SidebarProvider>
       <AppSidebar />

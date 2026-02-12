@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button"
 import { useStore } from "@/lib/store"
 import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
+import { useMounted } from "@/hooks/use-mounted"
 
 interface AppHeaderProps {
   searchValue?: string
@@ -24,6 +25,7 @@ interface AppHeaderProps {
 
 export function AppHeader({ searchValue = "", onSearchChange, showSearch = true }: AppHeaderProps) {
   const { role, userEmail, username, isAuthenticated, signOut } = useStore()
+  const mounted = useMounted()
 
   return (
     <header className="sticky top-0 z-40 flex h-14 items-center gap-4 border-b bg-background px-4">
@@ -46,42 +48,48 @@ export function AppHeader({ searchValue = "", onSearchChange, showSearch = true 
           {role === "admin" ? "Admin" : "User"}
         </Badge>
 
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="rounded-full">
-              <User className="size-4" />
-              <span className="sr-only">User menu</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56">
-            {isAuthenticated ? (
-              <>
-                <DropdownMenuLabel>
-                  <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-medium">{username}</p>
-                    <p className="text-xs text-muted-foreground">{userEmail}</p>
-                  </div>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                  <Link href="/bookings">My Bookings</Link>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => signOut()}>
-                  Sign Out
-                </DropdownMenuItem>
-              </>
-            ) : (
-              <>
-                <DropdownMenuLabel>Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                  <Link href="/login">Sign In</Link>
-                </DropdownMenuItem>
-              </>
-            )}
-          </DropdownMenuContent>
-        </DropdownMenu>
+        {mounted ? (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon" className="rounded-full">
+                <User className="size-4" />
+                <span className="sr-only">User menu</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56">
+              {isAuthenticated ? (
+                <>
+                  <DropdownMenuLabel>
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium">{username}</p>
+                      <p className="text-xs text-muted-foreground">{userEmail}</p>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link href="/bookings">My Bookings</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => signOut()}>
+                    Sign Out
+                  </DropdownMenuItem>
+                </>
+              ) : (
+                <>
+                  <DropdownMenuLabel>Account</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link href="/login">Sign In</Link>
+                  </DropdownMenuItem>
+                </>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ) : (
+          <Button variant="ghost" size="icon" className="rounded-full" aria-hidden>
+            <User className="size-4" />
+          </Button>
+        )}
       </div>
     </header>
   )

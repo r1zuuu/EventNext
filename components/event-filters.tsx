@@ -21,6 +21,7 @@ import { format } from "date-fns"
 import { CalendarIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 import type { DateRange } from "react-day-picker"
+import { useMounted } from "@/hooks/use-mounted"
 
 export interface EventFilters {
   bookingType: string
@@ -35,7 +36,16 @@ interface EventFiltersProps {
 }
 
 export function EventFiltersPanel({ filters, onFiltersChange, availableTags }: EventFiltersProps) {
-  const hasActiveFilters = filters.bookingType !== "all" || filters.tag !== "all" || filters.dateRange
+  const mounted = useMounted()
+  const isPresent = <T,>(value: T | null | undefined): value is T => value !== null && value !== undefined
+
+  const activeFilters = [
+    filters.bookingType !== "all" ? "bookingType" : null,
+    filters.tag !== "all" ? "tag" : null,
+    filters.dateRange ? "dateRange" : null,
+  ].filter(isPresent)
+
+  const hasActiveFilters = activeFilters.length > 0
 
   const clearFilters = () => {
     onFiltersChange({
@@ -43,6 +53,10 @@ export function EventFiltersPanel({ filters, onFiltersChange, availableTags }: E
       tag: "all",
       dateRange: undefined,
     })
+  }
+
+  if (!mounted) {
+    return <div className="flex flex-wrap items-end gap-4 py-4" />
   }
 
   return (

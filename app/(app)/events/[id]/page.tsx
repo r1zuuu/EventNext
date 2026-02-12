@@ -32,11 +32,17 @@ export default function EventDetailPage({
 
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr)
+    if (Number.isNaN(date.getTime())) {
+      return "TBD"
+    }
     return format(date, "EEEE, MMMM d, yyyy")
   }
 
   const formatTime = (dateStr: string) => {
     const date = new Date(dateStr)
+    if (Number.isNaN(date.getTime())) {
+      return "TBD"
+    }
     return format(date, "h:mm a")
   }
 
@@ -84,7 +90,7 @@ export default function EventDetailPage({
                   {getBookingTypeBadge()}
                   {isFull && <Badge variant="destructive">Full</Badge>}
                   {event.status === "cancelled" && <Badge variant="destructive">Cancelled</Badge>}
-                  {event.tags.map((tag) => (
+                  {(event.tags ?? []).map((tag) => (
                     <Badge key={tag} variant="secondary">
                       {tag}
                     </Badge>

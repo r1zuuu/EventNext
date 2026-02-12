@@ -52,8 +52,8 @@ export function BookingDialog({ event, remainingCapacity }: BookingDialogProps) 
     },
   })
 
-  const onSubmit = (data: BookingFormData) => {
-    const newBooking = addBooking(event.id, data)
+  const onSubmit = async (data: BookingFormData) => {
+    const newBooking = await addBooking(event.id, data)
     setBooking(newBooking)
 
     if (newBooking.status === "waitlist") {
@@ -171,7 +171,9 @@ END:VCALENDAR`
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Status</span>
-                  <span className="font-medium capitalize">{booking.status.replace("_", " ")}</span>
+                  <span className="font-medium capitalize">
+                    {booking.status?.replace("_", " ") ?? "unknown"}
+                  </span>
                 </div>
               </div>
 

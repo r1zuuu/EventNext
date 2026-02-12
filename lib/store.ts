@@ -99,6 +99,10 @@ export const useStore = create<AppState>()(
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(eventData),
           })
+          if (!response.ok) {
+            const error = await response.json().catch(() => ({}))
+            throw new Error(error?.error || 'Failed to create event')
+          }
           const newEvent = await response.json()
           set((state) => ({ events: [...state.events, newEvent] }))
           return newEvent
@@ -114,6 +118,10 @@ export const useStore = create<AppState>()(
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(eventData),
           })
+          if (!response.ok) {
+            const error = await response.json().catch(() => ({}))
+            throw new Error(error?.error || 'Failed to update event')
+          }
           const updatedEvent = await response.json()
           set((state) => ({
             events: state.events.map((e) => (e.id === id ? updatedEvent : e)),

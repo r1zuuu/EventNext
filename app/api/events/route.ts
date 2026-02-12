@@ -22,6 +22,26 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const data = await request.json()
+
+    const start = data.startDateTime ? new Date(data.startDateTime) : null
+    const end = data.endDateTime ? new Date(data.endDateTime) : null
+    const capacity = Number(data.capacity)
+
+    if (!start || Number.isNaN(start.getTime())) {
+      return NextResponse.json({ error: 'Invalid start date' }, { status: 400 })
+    }
+
+    if (!end || Number.isNaN(end.getTime())) {
+      return NextResponse.json({ error: 'Invalid end date' }, { status: 400 })
+    }
+
+    if (end <= start) {
+      return NextResponse.json({ error: 'End date must be after start date' }, { status: 400 })
+    }
+
+    if (!Number.isFinite(capacity) || capacity < 1) {
+      return NextResponse.json({ error: 'Invalid capacity' }, { status: 400 })
+    }
     
     const event = await prisma.event.create({
       data: {
@@ -31,10 +51,10 @@ export async function POST(request: NextRequest) {
         location: data.location,
         onlineUrl: data.onlineUrl || null,
         coverImageUrl: data.coverImageUrl || null,
-        startDateTime: new Date(data.startDateTime),
-        endDateTime: new Date(data.endDateTime),
+        startDateTime: start,
+        endDateTime: end,
         timezone: data.timezone || 'Europe/Warsaw',
-        capacity: data.capacity,
+        capacity,
         bookingType: data.bookingType,
         price: data.price || null,
         tags: data.tags || [],

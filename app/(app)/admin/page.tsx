@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { useStore } from "@/lib/store"
 import { isToday, parseISO, isAfter } from "date-fns"
+import { ChartAreaDefault } from "@/components/ui/chartshadcn"
 
 export default function AdminDashboardPage() {
   const { events, bookings, role } = useStore()
@@ -16,32 +17,73 @@ export default function AdminDashboardPage() {
     const now = new Date()
 
     const upcomingEvents = events.filter(
-      (e) => e.status === "published" && isAfter(parseISO(e.startDateTime), now)
+      (e) =>
+        e.status === "published" &&
+        Boolean(e.startDateTime) &&
+        isAfter(parseISO(e.startDateTime), now)
     ).length
 
-    const todayBookings = bookings.filter((b) => isToday(parseISO(b.createdAt))).length
+    const todayBookings = bookings.filter(
+      (b) => Boolean(b.createdAt) && isToday(parseISO(b.createdAt))
+    ).length
 
     const totalCapacity = events
       .filter((e) => e.status === "published")
       .reduce((sum, e) => sum + e.capacity, 0)
 
-    const totalBooked = bookings
-      .filter((b) => b.status === "confirmed" || b.status === "checked_in")
-      .reduce((sum, b) => sum + b.quantity, 0)
+const totalBooked = bookings
+  .filter((b) => b.status === "confirmed" || b.status === "checked_in")
+  .reduce((sum, b) => sum + b.quantity, 0)
 
-    const occupancyRate = totalCapacity > 0 ? Math.round((totalBooked / totalCapacity) * 100) : 0
+function clamp(n: number, min = 0, max = 100) {
+  return Math.max(min, Math.min(max, n))
+}
 
-    const cancellations = bookings.filter((b) => b.status === "cancelled").length
+function monthLabel(date: Date) {
+  return date.toLocaleString("en-US", { month: "short" }) // "Jan", "Feb"...
+}
 
-    const pendingApprovals = bookings.filter((b) => b.status === "pending").length
+function buildMockOccupancySeries(currentRate: number, months = 6) {
+  const now = new Date()
 
-    return {
-      upcomingEvents,
-      todayBookings,
-      occupancyRate,
-      cancellations,
-      pendingApprovals,
-    }
+  // Zrobimy wcześniejsze miesiące trochę niżej, a do teraz dojdziemy do currentRate
+  const start = clamp(currentRate - 18) // deterministyczny start
+
+  const data = Array.from({ length: months }, (_, i) => {
+    const d = new Date(now.getFullYear(), now.getMonth() - (months - 1 - i), 1)
+    const t = months === 1 ? 1 : i / (months - 1) // 0..1
+    const base = start + (currentRate - start) * t
+
+    const wobble = (i % 2 === 0 ? 2 : -2)
+    const value = clamp(Math.round(base + wobble))
+
+    return { month: monthLabel(d), occupancyRate: value }
+  })
+
+  // ostatni punkt MUSI być realny:
+  data[data.length - 1] = { month: monthLabel(now), occupancyRate: clamp(currentRate) }
+
+  return data
+}
+
+// --- użycie ---
+const occupancyRate =
+  totalCapacity > 0 ? Math.round((totalBooked / totalCapacity) * 100) : 0
+
+const chartData = buildMockOccupancySeries(occupancyRate, 6)
+
+const cancellations = bookings.filter((b) => b.status === "cancelled").length
+
+const pendingApprovals = bookings.filter((b) => b.status === "pending").length
+
+return {
+  upcomingEvents,
+  todayBookings,
+  occupancyRate,
+  cancellations,
+  pendingApprovals,
+  chartData,
+}
   }, [events, bookings])
 
   if (role !== "admin") {
@@ -129,6 +171,12 @@ export default function AdminDashboardPage() {
               </CardContent>
             </Card>
           </div>
+
+          <ChartAreaDefault
+            data={stats.chartData}
+            title="Occupancy rate"
+            description="Last 6 months"
+          />
 
           {/* Pending Approvals Alert */}
           {stats.pendingApprovals > 0 && (

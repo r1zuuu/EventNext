@@ -26,9 +26,14 @@ export function EventCard({ event }: EventCardProps) {
   const remainingCapacity = event.capacity - bookedCount
   const isFull = remainingCapacity <= 0
 
-  const formatDateTime = (dateStr: string) => {
-    const date = new Date(dateStr)
-    return format(date, "MMM d, yyyy 'at' h:mm a")
+  function formatDateTime(date: string): string
+  function formatDateTime(date: Date): string
+  function formatDateTime(date: string | Date) {
+    const parsedDate = typeof date === "string" ? new Date(date) : date
+    if (Number.isNaN(parsedDate.getTime())) {
+      return "TBD"
+    }
+    return format(parsedDate, "MMM d, yyyy 'at' h:mm a")
   }
 
   const getBookingTypeBadge = () => {
@@ -86,16 +91,16 @@ export function EventCard({ event }: EventCardProps) {
           </div>
         </div>
 
-        {event.tags.length > 0 && (
+        {(event.tags ?? []).length > 0 && (
           <div className="flex flex-wrap gap-1">
-            {event.tags.slice(0, 3).map((tag) => (
+            {(event.tags ?? []).slice(0, 3).map((tag) => (
               <Badge key={tag} className="text-xs bg-[#111827] text-white border-transparent">
                 {tag}
               </Badge>
             ))}
-            {event.tags.length > 3 && (
+            {(event.tags ?? []).length > 3 && (
               <Badge className="text-xs bg-[#111827] text-white border-transparent">
-                +{event.tags.length - 3}
+                +{(event.tags ?? []).length - 3}
               </Badge>
             )}
           </div>

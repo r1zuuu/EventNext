@@ -74,7 +74,9 @@ export default function AdminBookingsPage() {
       b.event?.title || "Unknown",
       b.quantity,
       b.status,
-      format(new Date(b.createdAt), "yyyy-MM-dd"),
+      Number.isNaN(new Date(b.createdAt).getTime())
+        ? "TBD"
+        : format(new Date(b.createdAt), "yyyy-MM-dd"),
     ])
 
     const csv = [headers.join(","), ...rows.map((r) => r.join(","))].join("\n")
@@ -190,8 +192,8 @@ export default function AdminBookingsPage() {
                     </TableCell>
                   </TableRow>
                 ) : (
-                  bookingsWithEvents.map((booking) => (
-                    <TableRow key={booking.id}>
+                  bookingsWithEvents.map((booking, index) => (
+                    <TableRow key={booking.id ?? `${booking.bookingCode}-${index}`}>
                       <TableCell className="font-mono text-sm">{booking.bookingCode}</TableCell>
                       <TableCell>
                         <div>
@@ -210,7 +212,9 @@ export default function AdminBookingsPage() {
                       <TableCell>{booking.quantity}</TableCell>
                       <TableCell>{getStatusBadge(booking.status)}</TableCell>
                       <TableCell className="text-sm text-muted-foreground">
-                        {format(new Date(booking.createdAt), "MMM d, yyyy")}
+                        {Number.isNaN(new Date(booking.createdAt).getTime())
+                          ? "TBD"
+                          : format(new Date(booking.createdAt), "MMM d, yyyy")}
                       </TableCell>
                       <TableCell>
                         {booking.status === "pending" && (

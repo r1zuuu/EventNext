@@ -18,7 +18,7 @@ export default function EventsPage() {
 
   const availableTags = useMemo(() => {
     const tags = new Set<string>()
-    events.forEach((event) => event.tags.forEach((tag) => tags.add(tag)))
+    events.forEach((event) => (event.tags ?? []).forEach((tag) => tags.add(tag)))
     return Array.from(tags).sort()
   }, [events])
 
@@ -34,7 +34,7 @@ export default function EventsPage() {
           event.title.toLowerCase().includes(searchLower) ||
           event.shortDescription.toLowerCase().includes(searchLower) ||
           event.location.toLowerCase().includes(searchLower) ||
-          event.tags.some((tag) => tag.toLowerCase().includes(searchLower))
+          (event.tags ?? []).some((tag) => tag.toLowerCase().includes(searchLower))
         if (!matchesSearch) return false
       }
 
@@ -44,7 +44,7 @@ export default function EventsPage() {
       }
 
       // Tag filter
-      if (filters.tag !== "all" && !event.tags.includes(filters.tag)) {
+      if (filters.tag !== "all" && !(event.tags ?? []).includes(filters.tag)) {
         return false
       }
 
@@ -67,8 +67,8 @@ export default function EventsPage() {
     <div className="flex flex-col min-h-screen bg-[#F5F6F8]">
       <AppHeader searchValue={search} onSearchChange={setSearch} />
 
-      <main className="flex-1 p-6">
-        <div className="max-w-7xl mx-auto">
+      <main className="flex-1 p-4 sm:p-6">
+        <div className="container mx-auto">
           <div className="mb-6">
             <h1 className="text-2xl font-semibold tracking-tight">Upcoming Events</h1>
             <p className="text-muted-foreground">
