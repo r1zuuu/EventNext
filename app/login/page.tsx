@@ -61,7 +61,6 @@ export default function LoginPage() {
               <Input
                 id="username"
                 type="text"
-                placeholder="admin or user"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
@@ -73,7 +72,6 @@ export default function LoginPage() {
               <Input
                 id="password"
                 type="password"
-                placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -83,14 +81,6 @@ export default function LoginPage() {
             <Button type="submit" className="w-full" disabled={loading}>
               {loading ? "Signing in..." : "Sign In"}
             </Button>
-
-            <div className="mt-6 space-y-2 text-sm text-muted-foreground">
-              <p className="font-semibold">Demo credentials:</p>
-              <div className="bg-muted p-3 rounded-lg space-y-1 text-xs">
-                <p><span className="font-mono">admin</span> / <span className="font-mono">admin</span></p>
-                <p><span className="font-mono">user</span> / <span className="font-mono">user</span></p>
-              </div>
-            </div>
           </form>
         </CardContent>
       </Card>

@@ -228,6 +228,18 @@ return {
                 </Button>
               </CardContent>
             </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">User Management</CardTitle>
+                <CardDescription>Create and manage system users</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button asChild variant="outline" className="w-full bg-transparent">
+                  <Link href="/admin/users">Manage Users</Link>
+                </Button>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </main>

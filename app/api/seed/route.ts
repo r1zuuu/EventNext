@@ -2,12 +2,35 @@
 
 import { prisma } from '@/lib/prisma'
 import { NextResponse } from 'next/server'
+import bcrypt from 'bcrypt'
 
 export async function POST() {
   try {
     // Clear existing data
     await prisma.booking.deleteMany({})
     await prisma.event.deleteMany({})
+    await prisma.user.deleteMany({})
+
+    // Create test users
+    const adminPassword = await bcrypt.hash('admin', 10)
+    const userPassword = await bcrypt.hash('user', 10)
+
+    await prisma.user.createMany({
+      data: [
+        {
+          username: 'admin',
+          email: 'admin@eventnext.com',
+          password: adminPassword,
+          role: 'admin',
+        },
+        {
+          username: 'user',
+          email: 'user@eventnext.com',
+          password: userPassword,
+          role: 'user',
+        },
+      ],
+    })
 
     const now = new Date()
     const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000)
