@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect } from "react"
+import React, { useEffect, useCallback } from "react"
 
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
@@ -13,7 +13,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     fetchEvents()
     fetchBookings()
-  }, [fetchEvents, fetchBookings])
+  }, [])
 
   return (
     <SidebarProvider>

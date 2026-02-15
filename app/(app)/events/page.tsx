@@ -21,7 +21,7 @@ export default function EventsPage() {
     if (eventsList.length === 0 && !loadingEvents) {
       fetchEvents()
     }
-  }, [eventsList.length, fetchEvents, loadingEvents])
+  }, [])
 
   const availableTags = useMemo(() => {
     const tags = new Set<string>()

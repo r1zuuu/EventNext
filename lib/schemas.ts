@@ -6,21 +6,32 @@ export const bookingStatusSchema = z.enum(["confirmed", "waitlist", "cancelled",
 
 export const eventSchema = z.object({
   id: z.string(),
-  title: z.string().min(1, "Title is required"),
-  shortDescription: z.string().min(1, "Short description is required").max(200, "Max 200 characters"),
+  title: z.string()
+    .min(1, "Title is required")
+    .min(3, "Title must be at least 3 characters")
+    .max(200, "Title must be less than 200 characters")
+    .regex(/^[a-zA-Z0-9\s\-&().,]/i, "Title contains invalid characters"),
+  shortDescription: z.string()
+    .min(1, "Short description is required")
+    .max(200, "Max 200 characters")
+    .regex(/^[a-zA-Z0-9\s\-&().,!?]/i, "Description contains invalid characters"),
   longDescription: z.string().optional(),
-  location: z.string().min(1, "Location is required"),
+  location: z.string()
+    .min(1, "Location is required")
+    .regex(/^[a-zA-Z0-9\s\-,&()./]/i, "Location contains invalid characters"),
   onlineUrl: z.string().url("Must be a valid URL").optional().or(z.literal("")),
   coverImageUrl: z.string().optional(),
   startDateTime: z.string().min(1, "Start date is required"),
   endDateTime: z.string().min(1, "End date is required"),
   timezone: z.string().default("Europe/Warsaw"),
-  capacity: z.number().min(1, "Capacity must be at least 1"),
+  capacity: z.number().min(1, "Capacity must be at least 1").max(100000, "Capacity must be less than 100000"),
   bookingType: bookingTypeSchema,
-  price: z.number().min(0).optional(),
-  tags: z.array(z.string()),
+  price: z.number().min(0).max(999999, "Price is too high").optional(),
+  tags: z.array(z.string().regex(/^[a-z0-9\-]+$/i, "Tags must contain only letters, numbers and hyphens")),
   status: eventStatusSchema,
-  organizerName: z.string().min(1, "Organizer name is required"),
+  organizerName: z.string()
+    .min(1, "Organizer name is required")
+    .regex(/^[a-zA-Z\s\-']/i, "Organizer name contains invalid characters"),
   organizerEmail: z.string().email("Must be a valid email"),
   createdAt: z.string(),
   updatedAt: z.string(),
@@ -55,11 +66,24 @@ export const bookingSchema = z.object({
 })
 
 export const bookingFormSchema = z.object({
-  attendeeName: z.string().min(1, "Name is required"),
+  attendeeName: z.string()
+    .min(1, "Name is required")
+    .min(2, "Name must be at least 2 characters")
+    .max(100, "Name must be less than 100 characters")
+    .regex(/^[a-zA-Z\s\-']/i, "Name contains invalid characters"),
   attendeeEmail: z.string().email("Must be a valid email"),
-  quantity: z.number().min(1, "At least 1 ticket required"),
+  quantity: z.number()
+    .min(1, "At least 1 ticket required")
+    .max(100, "Maximum 100 tickets per booking"),
   notes: z.string().optional(),
-})
+}).refine(
+  (data) => {
+    // Email regex validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return emailRegex.test(data.attendeeEmail)
+  },
+  { message: "Invalid email format", path: ["attendeeEmail"] }
+)
 
 export const sessionSlotSchema = z.object({
   id: z.string(),

@@ -92,8 +92,9 @@ export function EventForm({ event }: EventFormProps) {
   const router = useRouter()
   const { addEvent, updateEvent } = useStore()
   const [tags, setTags] = useState<string[]>(event?.tags || [])
-  const [tagInput, setTagInput] = useState("")
-  const [showOnline, setShowOnline] = useState(!!event?.onlineUrl)
+  const [tagInput, setTagInput] = useState<string>("")
+  const [showOnline, setShowOnline] = useState<boolean>(!!event?.onlineUrl)
+  const [activeTab, setActiveTab] = useState<string>("basics")
 
   const isEditing = !!event
 
@@ -121,11 +122,21 @@ export function EventForm({ event }: EventFormProps) {
       }
     }
     return {
+      title: "",
+      shortDescription: "",
+      longDescription: "",
+      location: "",
+      onlineUrl: "",
       timezone: "Europe/Warsaw",
       capacity: 50,
-      bookingType: "free",
-      status: "draft",
+      bookingType: "free" as const,
+      price: 0,
+      status: "draft" as const,
+      organizerName: "",
+      organizerEmail: "",
+      startDate: new Date(),
       startTime: "09:00",
+      endDate: new Date(),
       endTime: "17:00",
     }
   }
@@ -149,7 +160,40 @@ export function EventForm({ event }: EventFormProps) {
     setTags(tags.filter((t) => t !== tag))
   }
 
-  const onSubmit = (data: EventFormValues) => {
+  const onSubmit = async (data: EventFormValues) => {
+    // Mapa pól do tabów
+    const fieldToTab: Record<string, string> = {
+      title: "basics",
+      shortDescription: "basics",
+      longDescription: "basics",
+      location: "datetime",
+      startDate: "datetime",
+      startTime: "datetime",
+      endDate: "datetime",
+      endTime: "datetime",
+      capacity: "capacity",
+      bookingType: "capacity",
+      price: "capacity",
+      status: "publishing",
+      organizerName: "publishing",
+      organizerEmail: "publishing",
+    }
+
+    // Sprawdzenie czy są błędy
+    const errors = form.formState.errors
+    const errorFields = Object.keys(errors)
+    
+    if (errorFields.length > 0) {
+      const firstErrorField = errorFields[0] as keyof typeof fieldToTab
+      const errorTab = fieldToTab[firstErrorField]
+      
+      if (errorTab) {
+        setActiveTab(errorTab)
+        toast.error(`Please fix the errors in the ${errorTab} tab`)
+        return
+      }
+    }
+
     const startDateTime = new Date(data.startDate)
     startDateTime.setHours(...data.startTime.split(":").map(Number) as [number, number])
 
@@ -186,15 +230,60 @@ export function EventForm({ event }: EventFormProps) {
     router.push("/admin/events")
   }
 
+  // Helper: sprawdzenie czy tab ma błędy
+  const hasTabErrors = (tab: string): boolean => {
+    const fieldToTab: Record<string, string> = {
+      title: "basics",
+      shortDescription: "basics",
+      longDescription: "basics",
+      location: "datetime",
+      startDate: "datetime",
+      startTime: "datetime",
+      endDate: "datetime",
+      endTime: "datetime",
+      capacity: "capacity",
+      bookingType: "capacity",
+      price: "capacity",
+      status: "publishing",
+      organizerName: "publishing",
+      organizerEmail: "publishing",
+    }
+    
+    const errors = form.formState.errors
+    return Object.keys(errors).some(
+      (field) => fieldToTab[field as keyof typeof fieldToTab] === tab
+    )
+  }
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <Tabs defaultValue="basics" className="space-y-6">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="basics">Basics</TabsTrigger>
-            <TabsTrigger value="datetime">Date & Location</TabsTrigger>
-            <TabsTrigger value="capacity">Capacity & Booking</TabsTrigger>
-            <TabsTrigger value="publishing">Publishing</TabsTrigger>
+            <TabsTrigger value="basics" className="relative">
+              Basics
+              {hasTabErrors("basics") && (
+                <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full" />
+              )}
+            </TabsTrigger>
+            <TabsTrigger value="datetime" className="relative">
+              Date & Location
+              {hasTabErrors("datetime") && (
+                <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full" />
+              )}
+            </TabsTrigger>
+            <TabsTrigger value="capacity" className="relative">
+              Capacity & Booking
+              {hasTabErrors("capacity") && (
+                <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full" />
+              )}
+            </TabsTrigger>
+            <TabsTrigger value="publishing" className="relative">
+              Publishing
+              {hasTabErrors("publishing") && (
+                <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full" />
+              )}
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="basics">
