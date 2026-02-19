@@ -39,67 +39,88 @@ export function EventCard({ event }: EventCardProps) {
   const getBookingTypeBadge = () => {
     switch (event.bookingType) {
       case "free":
-        return <Badge className="bg-[#10B981] text-white border-transparent">Free</Badge>
+        return <Badge className="bg-purple-600/20 text-purple-300 border-purple-500/30">Free</Badge>
       case "ticketed":
-        return <Badge className="bg-[#2563EB] text-white border-transparent">{event.price} PLN</Badge>
+        return <Badge className="bg-purple-600/20 text-purple-300 border-purple-500/30">{event.price} PLN</Badge>
       case "approval":
-        return <Badge variant="outline">Approval Required</Badge>
+        return <Badge className="bg-purple-600/20 text-purple-300 border-purple-500/30">Approval</Badge>
     }
   }
 
   return (
-    <Card className="flex flex-col h-full hover:shadow-xl transition-all duration-300 backdrop-blur-xl bg-white/80 border border-white/50 shadow-[0_8px_32px_rgba(0,0,0,0.08)] hover:-translate-y-1 hover:bg-white/90">
-      <CardHeader className="pb-3">
+    <Card className="group flex flex-col h-full overflow-hidden transition-all duration-300 ease-out hover:shadow-xl hover:shadow-purple-500/10 bg-slate-900/80 border border-purple-500/20 hover:border-purple-500/40 hover:-translate-y-1 backdrop-blur-sm">
+      {/* Image placeholder with subtle purple gradient */}
+      <div className="relative h-40 bg-gradient-to-br from-purple-900/40 to-slate-900 overflow-hidden">
+        <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-all duration-300" />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <CalendarDays className="h-12 w-12 text-purple-400/40 group-hover:scale-110 transition-transform duration-300" />
+        </div>
+      </div>
+
+      <CardHeader className="pb-3 pt-4">
         <div className="flex items-start justify-between gap-2">
-          <div className="space-y-1 flex-1">
+          <div className="space-y-2 flex-1">
             <div className="flex items-center gap-2 flex-wrap">
               {getBookingTypeBadge()}
-              {isFull && <Badge variant="destructive">Full</Badge>}
-              {event.status === "cancelled" && <Badge variant="destructive">Cancelled</Badge>}
+              {isFull && <Badge className="bg-purple-600/20 text-purple-300 border-purple-500/30">Full</Badge>}
+              {event.status === "cancelled" && <Badge className="bg-purple-600/20 text-purple-300 border-purple-500/30">Cancelled</Badge>}
             </div>
-            <h3 className="font-semibold text-lg leading-tight line-clamp-2">{event.title}</h3>
+            <h3 className="font-semibold text-lg leading-tight line-clamp-2 text-white group-hover:text-purple-300 transition-colors">
+              {event.title}
+            </h3>
           </div>
         </div>
       </CardHeader>
 
-      <CardContent className="flex-1 space-y-3 pb-3">
-        <p className="text-sm text-muted-foreground line-clamp-2">{event.shortDescription}</p>
+      <CardContent className="flex-1 space-y-3 pb-4">
+        <p className="text-sm text-slate-400 line-clamp-2">{event.shortDescription}</p>
 
         <div className="space-y-2 text-sm">
-          <div className="flex items-center gap-2 text-muted-foreground">
-            <CalendarDays className="size-4 shrink-0" />
+          <div className="flex items-center gap-2 text-slate-400 hover:text-purple-300 transition-colors">
+            <CalendarDays className="h-4 w-4 shrink-0 text-purple-400/60" />
             <span className="truncate">{formatDateTime(event.startDateTime)}</span>
           </div>
 
-          <div className="flex items-center gap-2 text-muted-foreground">
-            <MapPin className="size-4 shrink-0" />
+          <div className="flex items-center gap-2 text-slate-400 hover:text-purple-300 transition-colors">
+            <MapPin className="h-4 w-4 shrink-0 text-purple-400/60" />
             <span className="truncate">{event.location}</span>
           </div>
 
           {event.onlineUrl && (
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <Globe className="size-4 shrink-0" />
+            <div className="flex items-center gap-2 text-slate-400 hover:text-purple-300 transition-colors">
+              <Globe className="h-4 w-4 shrink-0 text-purple-400/60" />
               <span className="truncate">Online option available</span>
             </div>
           )}
 
-          <div className="flex items-center gap-2 text-muted-foreground">
-            <Users className="size-4 shrink-0" />
-            <span>
-              {isFull ? "No spots left" : `${remainingCapacity} of ${event.capacity} spots left`}
-            </span>
+          <div className="flex items-center gap-2 text-slate-400">
+            <Users className="h-4 w-4 shrink-0 text-purple-400/60" />
+            <div className="flex-1">
+              <div className="text-xs text-slate-500 mb-1">
+                {isFull ? "No spots left" : `${remainingCapacity} of ${event.capacity} spots`}
+              </div>
+              <div className="w-full bg-slate-700/30 rounded-full h-1.5 overflow-hidden">
+                <div 
+                  className="h-full bg-purple-500/60 transition-all duration-300"
+                  style={{ width: `${Math.min((bookedCount / event.capacity) * 100, 100)}%` }}
+                />
+              </div>
+            </div>
           </div>
         </div>
 
         {(event.tags ?? []).length > 0 && (
-          <div className="flex flex-wrap gap-1">
+          <div className="flex flex-wrap gap-1.5 pt-2">
             {(event.tags ?? []).slice(0, 3).map((tag) => (
-              <Badge key={tag} className="text-xs bg-[#111827] text-white border-transparent">
-                {tag}
+              <Badge 
+                key={tag} 
+                className="text-xs bg-purple-600/20 text-purple-300 border-purple-500/30 hover:bg-purple-600/30 transition-colors cursor-default"
+              >
+                #{tag}
               </Badge>
             ))}
             {(event.tags ?? []).length > 3 && (
-              <Badge className="text-xs bg-[#111827] text-white border-transparent">
+              <Badge className="text-xs bg-purple-600/20 text-purple-300 border-purple-500/30">
                 +{(event.tags ?? []).length - 3}
               </Badge>
             )}
@@ -107,8 +128,15 @@ export function EventCard({ event }: EventCardProps) {
         )}
       </CardContent>
 
-      <CardFooter className="pt-0">
-        <Button asChild className={`w-full ${isFull || event.status === "cancelled" ? "" : "bg-[#111827] hover:bg-[#111827]/90"}`} variant={isFull || event.status === "cancelled" ? "secondary" : "default"}>
+      <CardFooter className="pt-0 mt-auto">
+        <Button 
+          asChild 
+          className={`w-full font-medium transition-all duration-300 ${
+            isFull || event.status === "cancelled" 
+              ? "bg-slate-700 text-slate-300 hover:bg-slate-600" 
+              : "bg-purple-600/80 text-white hover:bg-purple-600 hover:shadow-lg hover:shadow-purple-500/30 hover:text-white group-hover:scale-105 active:scale-95"
+          }`}
+        >
           <Link href={`/events/${event.id}`}>
             {event.status === "cancelled" ? "View Event" : isFull ? "Join Waitlist" : "View & Book"}
           </Link>

@@ -259,26 +259,26 @@ export function EventForm({ event }: EventFormProps) {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="basics" className="relative">
+          <TabsList className="grid w-full grid-cols-4 bg-slate-900/80 border-purple-500/20">
+            <TabsTrigger value="basics" className="relative text-slate-300 data-[state=active]:text-white data-[state=active]:bg-purple-600/20">
               Basics
               {hasTabErrors("basics") && (
                 <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full" />
               )}
             </TabsTrigger>
-            <TabsTrigger value="datetime" className="relative">
+            <TabsTrigger value="datetime" className="relative text-slate-300 data-[state=active]:text-white data-[state=active]:bg-purple-600/20">
               Date & Location
               {hasTabErrors("datetime") && (
                 <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full" />
               )}
             </TabsTrigger>
-            <TabsTrigger value="capacity" className="relative">
+            <TabsTrigger value="capacity" className="relative text-slate-300 data-[state=active]:text-white data-[state=active]:bg-purple-600/20">
               Capacity & Booking
               {hasTabErrors("capacity") && (
                 <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full" />
               )}
             </TabsTrigger>
-            <TabsTrigger value="publishing" className="relative">
+            <TabsTrigger value="publishing" className="relative text-slate-300 data-[state=active]:text-white data-[state=active]:bg-purple-600/20">
               Publishing
               {hasTabErrors("publishing") && (
                 <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full" />
@@ -287,10 +287,10 @@ export function EventForm({ event }: EventFormProps) {
           </TabsList>
 
           <TabsContent value="basics">
-            <Card>
+            <Card className="bg-slate-900/80 border-purple-500/20">
               <CardHeader>
-                <CardTitle>Basic Information</CardTitle>
-                <CardDescription>Core details about your event</CardDescription>
+                <CardTitle className="text-white">Basic Information</CardTitle>
+                <CardDescription className="text-slate-400">Core details about your event</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <FormField
@@ -298,9 +298,9 @@ export function EventForm({ event }: EventFormProps) {
                   name="title"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Event Title</FormLabel>
+                      <FormLabel className="text-slate-200">Event Title</FormLabel>
                       <FormControl>
-                        <Input placeholder="Enter event title" {...field} />
+                        <Input placeholder="Enter event title" className="bg-slate-900 border-slate-600 text-slate-100 placeholder:text-slate-500 focus:border-slate-500" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -312,15 +312,16 @@ export function EventForm({ event }: EventFormProps) {
                   name="shortDescription"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Short Description</FormLabel>
+                      <FormLabel className="text-slate-200">Short Description</FormLabel>
                       <FormControl>
                         <Textarea
                           placeholder="Brief summary (max 200 chars)"
+                          className="bg-slate-900 border-slate-600 text-slate-100 placeholder:text-slate-500 focus:border-slate-500"
                           {...field}
                           maxLength={200}
                         />
                       </FormControl>
-                      <FormDescription>
+                      <FormDescription className="text-slate-400">
                         {field.value?.length || 0}/200 characters
                       </FormDescription>
                       <FormMessage />
@@ -333,11 +334,11 @@ export function EventForm({ event }: EventFormProps) {
                   name="longDescription"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Full Description (Optional)</FormLabel>
+                      <FormLabel className="text-slate-200">Full Description (Optional)</FormLabel>
                       <FormControl>
                         <Textarea
                           placeholder="Detailed description of your event"
-                          className="min-h-[150px]"
+                          className="bg-slate-900 border-slate-600 text-slate-100 placeholder:text-slate-500 focus:border-slate-500 min-h-[150px]"
                           {...field}
                         />
                       </FormControl>
@@ -347,10 +348,11 @@ export function EventForm({ event }: EventFormProps) {
                 />
 
                 <div className="space-y-2">
-                  <Label>Tags</Label>
+                  <Label className="text-slate-200">Tags</Label>
                   <div className="flex gap-2">
                     <Input
                       placeholder="Add a tag"
+                      className="bg-slate-900 border-slate-600 text-slate-100 placeholder:text-slate-500 focus:border-slate-500"
                       value={tagInput}
                       onChange={(e) => setTagInput(e.target.value)}
                       onKeyDown={(e) => {
@@ -360,14 +362,14 @@ export function EventForm({ event }: EventFormProps) {
                         }
                       }}
                     />
-                    <Button type="button" variant="outline" onClick={addTag}>
+                    <Button type="button" variant="outline" className="bg-slate-700 border-slate-600 text-slate-100 hover:bg-slate-600" onClick={addTag}>
                       <Plus className="size-4" />
                     </Button>
                   </div>
                   {tags.length > 0 && (
                     <div className="flex flex-wrap gap-2 mt-2">
                       {tags.map((tag) => (
-                        <Badge key={tag} variant="secondary" className="gap-1">
+                        <Badge key={tag} className="bg-slate-700 text-slate-100 border-slate-600 gap-1">
                           {tag}
                           <button type="button" onClick={() => removeTag(tag)}>
                             <X className="size-3" />
@@ -382,10 +384,10 @@ export function EventForm({ event }: EventFormProps) {
           </TabsContent>
 
           <TabsContent value="datetime">
-            <Card>
+            <Card className="bg-slate-900/80 border-purple-500/20">
               <CardHeader>
-                <CardTitle>Date, Time & Location</CardTitle>
-                <CardDescription>When and where your event takes place</CardDescription>
+                <CardTitle className="text-white">Date, Time & Location</CardTitle>
+                <CardDescription className="text-slate-400">When and where your event takes place</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid gap-4 md:grid-cols-2">
@@ -394,15 +396,15 @@ export function EventForm({ event }: EventFormProps) {
                     name="startDate"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Start Date</FormLabel>
+                        <FormLabel className="text-slate-200">Start Date</FormLabel>
                         <Popover>
                           <PopoverTrigger asChild>
                             <FormControl>
                               <Button
                                 variant="outline"
                                 className={cn(
-                                  "w-full justify-start text-left font-normal",
-                                  !field.value && "text-muted-foreground"
+                                  "w-full justify-start text-left font-normal bg-slate-900 border-slate-600 text-slate-100 hover:bg-slate-800",
+                                  !field.value && "text-slate-400"
                                 )}
                               >
                                 <CalendarIcon className="mr-2 size-4" />
@@ -410,7 +412,7 @@ export function EventForm({ event }: EventFormProps) {
                               </Button>
                             </FormControl>
                           </PopoverTrigger>
-                          <PopoverContent className="w-auto p-0" align="start">
+                          <PopoverContent className="w-auto p-0 bg-slate-900/80 border-purple-500/20" align="start">
                             <Calendar
                               mode="single"
                               selected={field.value}
@@ -429,9 +431,9 @@ export function EventForm({ event }: EventFormProps) {
                     name="startTime"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Start Time</FormLabel>
+                        <FormLabel className="text-slate-200">Start Time</FormLabel>
                         <FormControl>
-                          <Input type="time" {...field} />
+                          <Input type="time" className="bg-slate-900 border-slate-600 text-slate-100 focus:border-slate-500" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -443,15 +445,15 @@ export function EventForm({ event }: EventFormProps) {
                     name="endDate"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>End Date</FormLabel>
+                        <FormLabel className="text-slate-200">End Date</FormLabel>
                         <Popover>
                           <PopoverTrigger asChild>
                             <FormControl>
                               <Button
                                 variant="outline"
                                 className={cn(
-                                  "w-full justify-start text-left font-normal",
-                                  !field.value && "text-muted-foreground"
+                                  "w-full justify-start text-left font-normal bg-slate-900 border-slate-600 text-slate-100 hover:bg-slate-800",
+                                  !field.value && "text-slate-400"
                                 )}
                               >
                                 <CalendarIcon className="mr-2 size-4" />
@@ -459,7 +461,7 @@ export function EventForm({ event }: EventFormProps) {
                               </Button>
                             </FormControl>
                           </PopoverTrigger>
-                          <PopoverContent className="w-auto p-0" align="start">
+                          <PopoverContent className="w-auto p-0 bg-slate-900/80 border-purple-500/20" align="start">
                             <Calendar
                               mode="single"
                               selected={field.value}
@@ -478,9 +480,9 @@ export function EventForm({ event }: EventFormProps) {
                     name="endTime"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>End Time</FormLabel>
+                        <FormLabel className="text-slate-200">End Time</FormLabel>
                         <FormControl>
-                          <Input type="time" {...field} />
+                          <Input type="time" className="bg-slate-900 border-slate-600 text-slate-100 focus:border-slate-500" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -493,14 +495,14 @@ export function EventForm({ event }: EventFormProps) {
                   name="timezone"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Timezone</FormLabel>
+                      <FormLabel className="text-slate-200">Timezone</FormLabel>
                       <Select onValueChange={field.onChange} value={field.value}>
                         <FormControl>
-                          <SelectTrigger>
+                          <SelectTrigger className="bg-slate-900 border-slate-600 text-slate-100">
                             <SelectValue />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent>
+                        <SelectContent className="bg-slate-900/80 border-purple-500/20">
                           <SelectItem value="Europe/Warsaw">Europe/Warsaw</SelectItem>
                           <SelectItem value="Europe/London">Europe/London</SelectItem>
                           <SelectItem value="America/New_York">America/New York</SelectItem>
@@ -513,16 +515,16 @@ export function EventForm({ event }: EventFormProps) {
                   )}
                 />
 
-                <Separator />
+                <Separator className="bg-slate-700/50" />
 
                 <FormField
                   control={form.control}
                   name="location"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Location</FormLabel>
+                      <FormLabel className="text-slate-200">Location</FormLabel>
                       <FormControl>
-                        <Input placeholder="Venue name and address" {...field} />
+                        <Input placeholder="Venue name and address" className="bg-slate-900 border-slate-600 text-slate-100 placeholder:text-slate-500 focus:border-slate-500" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -535,7 +537,7 @@ export function EventForm({ event }: EventFormProps) {
                     checked={showOnline}
                     onCheckedChange={setShowOnline}
                   />
-                  <Label htmlFor="online-toggle">This event has an online option</Label>
+                  <Label htmlFor="online-toggle" className="text-slate-200">This event has an online option</Label>
                 </div>
 
                 {showOnline && (
@@ -544,11 +546,11 @@ export function EventForm({ event }: EventFormProps) {
                     name="onlineUrl"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Online Meeting URL</FormLabel>
+                        <FormLabel className="text-slate-200">Online Meeting URL</FormLabel>
                         <FormControl>
-                          <Input placeholder="https://..." {...field} />
+                          <Input placeholder="https://..." className="bg-slate-900 border-slate-600 text-slate-100 placeholder:text-slate-500 focus:border-slate-500" {...field} />
                         </FormControl>
-                        <FormDescription>
+                        <FormDescription className="text-slate-400">
                           Link will be shared with confirmed attendees
                         </FormDescription>
                         <FormMessage />
@@ -561,10 +563,10 @@ export function EventForm({ event }: EventFormProps) {
           </TabsContent>
 
           <TabsContent value="capacity">
-            <Card>
+            <Card className="bg-slate-900/80 border-purple-500/20">
               <CardHeader>
-                <CardTitle>Capacity & Booking Settings</CardTitle>
-                <CardDescription>Configure how attendees can book</CardDescription>
+                <CardTitle className="text-white">Capacity & Booking Settings</CardTitle>
+                <CardDescription className="text-slate-400">Configure how attendees can book</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <FormField
@@ -572,16 +574,17 @@ export function EventForm({ event }: EventFormProps) {
                   name="capacity"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Maximum Capacity</FormLabel>
+                      <FormLabel className="text-slate-200">Maximum Capacity</FormLabel>
                       <FormControl>
                         <Input
                           type="number"
                           min={1}
+                          className="bg-slate-900 border-slate-600 text-slate-100 focus:border-slate-500"
                           {...field}
                           onChange={(e) => field.onChange(Number(e.target.value))}
                         />
                       </FormControl>
-                      <FormDescription>
+                      <FormDescription className="text-slate-400">
                         Maximum number of attendees
                       </FormDescription>
                       <FormMessage />
@@ -594,14 +597,14 @@ export function EventForm({ event }: EventFormProps) {
                   name="bookingType"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Booking Type</FormLabel>
+                      <FormLabel className="text-slate-200">Booking Type</FormLabel>
                       <Select onValueChange={field.onChange} value={field.value}>
                         <FormControl>
-                          <SelectTrigger>
+                          <SelectTrigger className="bg-slate-900 border-slate-600 text-slate-100">
                             <SelectValue />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent>
+                        <SelectContent className="bg-slate-900/80 border-purple-500/20">
                           <SelectItem value="free">Free - No payment required</SelectItem>
                           <SelectItem value="ticketed">Ticketed - Paid entry</SelectItem>
                           <SelectItem value="approval">Approval - Manual approval required</SelectItem>
@@ -618,12 +621,13 @@ export function EventForm({ event }: EventFormProps) {
                     name="price"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Ticket Price (PLN)</FormLabel>
+                        <FormLabel className="text-slate-200">Ticket Price (PLN)</FormLabel>
                         <FormControl>
                           <Input
                             type="number"
                             min={1}
                             placeholder="0"
+                            className="bg-slate-900 border-slate-600 text-slate-100 placeholder:text-slate-500 focus:border-slate-500"
                             {...field}
                             onChange={(e) => field.onChange(Number(e.target.value))}
                           />
@@ -634,7 +638,7 @@ export function EventForm({ event }: EventFormProps) {
                   />
                 )}
 
-                <Separator />
+                <Separator className="bg-slate-700/50" />
 
                 <div className="grid gap-4 md:grid-cols-2">
                   <FormField
@@ -642,9 +646,9 @@ export function EventForm({ event }: EventFormProps) {
                     name="organizerName"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Organizer Name</FormLabel>
+                        <FormLabel className="text-slate-200">Organizer Name</FormLabel>
                         <FormControl>
-                          <Input placeholder="Your name or organization" {...field} />
+                          <Input placeholder="Your name or organization" className="bg-slate-900 border-slate-600 text-slate-100 placeholder:text-slate-500 focus:border-slate-500" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -656,9 +660,9 @@ export function EventForm({ event }: EventFormProps) {
                     name="organizerEmail"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Organizer Email</FormLabel>
+                        <FormLabel className="text-slate-200">Organizer Email</FormLabel>
                         <FormControl>
-                          <Input type="email" placeholder="contact@example.com" {...field} />
+                          <Input type="email" placeholder="contact@example.com" className="bg-slate-900 border-slate-600 text-slate-100 placeholder:text-slate-500 focus:border-slate-500" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -670,10 +674,10 @@ export function EventForm({ event }: EventFormProps) {
           </TabsContent>
 
           <TabsContent value="publishing">
-            <Card>
+            <Card className="bg-slate-900/80 border-purple-500/20">
               <CardHeader>
-                <CardTitle>Publishing Settings</CardTitle>
-                <CardDescription>Control event visibility</CardDescription>
+                <CardTitle className="text-white">Publishing Settings</CardTitle>
+                <CardDescription className="text-slate-400">Control event visibility</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <FormField
@@ -681,20 +685,20 @@ export function EventForm({ event }: EventFormProps) {
                   name="status"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Event Status</FormLabel>
+                      <FormLabel className="text-slate-200">Event Status</FormLabel>
                       <Select onValueChange={field.onChange} value={field.value}>
                         <FormControl>
-                          <SelectTrigger>
+                          <SelectTrigger className="bg-slate-900 border-slate-600 text-slate-100">
                             <SelectValue />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent>
+                        <SelectContent className="bg-slate-900/80 border-purple-500/20">
                           <SelectItem value="draft">Draft - Not visible to public</SelectItem>
                           <SelectItem value="published">Published - Visible and bookable</SelectItem>
                           <SelectItem value="cancelled">Cancelled - Event cancelled</SelectItem>
                         </SelectContent>
                       </Select>
-                      <FormDescription>
+                      <FormDescription className="text-slate-400">
                         {field.value === "draft" && "Only admins can see this event"}
                         {field.value === "published" && "Event is visible to everyone"}
                         {field.value === "cancelled" && "Event will show as cancelled"}
@@ -709,10 +713,10 @@ export function EventForm({ event }: EventFormProps) {
         </Tabs>
 
         <div className="flex justify-end gap-4">
-          <Button type="button" variant="outline" onClick={() => router.back()}>
+          <Button type="button" variant="outline" className="bg-purple-600/20 border-purple-500/30 text-purple-300 hover:bg-purple-600/30" onClick={() => router.back()}>
             Cancel
           </Button>
-          <Button type="submit">
+          <Button type="submit" className="bg-purple-600/80 text-white hover:bg-purple-600 hover:shadow-lg hover:shadow-purple-500/30">
             {isEditing ? "Update Event" : "Create Event"}
           </Button>
         </div>

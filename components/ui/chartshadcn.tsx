@@ -32,11 +32,10 @@ const chartConfig = {
     color: "var(--chart-1)",
   },
 } satisfies ChartConfig
-
     
 export function ChartAreaDefault({ data, title, description }: Props) {
   return (
-    <Card>
+    <Card className="bg-slate-900/80 border-purple-500/20">
       <CardHeader>
         <CardTitle>{title ?? "Area Chart"}</CardTitle>
         <CardDescription>
@@ -44,7 +43,7 @@ export function ChartAreaDefault({ data, title, description }: Props) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig} className="h-[220px] w-full">
+        <ChartContainer config={chartConfig} className="h-55 w-full">
           <AreaChart
             accessibilityLayer
             data={data}
@@ -59,7 +58,7 @@ export function ChartAreaDefault({ data, title, description }: Props) {
               tickLine={false}
               axisLine={false}
               tickMargin={8}
-              tickFormatter={(value) => value.slice(0, 3)}
+              tickFormatter={(value) => value.slice(0, 2)}
             />
             <ChartTooltip
               cursor={true}

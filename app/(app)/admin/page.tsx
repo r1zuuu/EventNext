@@ -88,18 +88,18 @@ return {
 
   if (role !== "admin") {
     return (
-      <div className="flex flex-col min-h-screen">
+      <div className="flex flex-col min-h-screen bg-slate-950">
         <AppHeader showSearch={false} />
         <main className="flex-1 flex items-center justify-center p-6">
-          <Card className="max-w-md w-full text-center">
+          <Card className="max-w-md w-full text-center bg-slate-900/80 border-purple-500/20">
             <CardHeader>
-              <CardTitle>Admin Access Required</CardTitle>
-              <CardDescription>
+              <CardTitle className="text-white">Admin Access Required</CardTitle>
+              <CardDescription className="text-slate-400">
                 Switch to admin mode to access this page
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted-foreground mb-4">
+              <p className="text-sm text-slate-400 mb-4">
                 Use the toggle in the sidebar to switch roles
               </p>
             </CardContent>
@@ -110,64 +110,64 @@ return {
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-slate-950">
       <AppHeader showSearch={false} />
 
       <main className="flex-1 p-6">
         <div className="max-w-7xl mx-auto space-y-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-semibold tracking-tight">Dashboard</h1>
-              <p className="text-muted-foreground">Overview of your events and bookings</p>
+              <h1 className="text-2xl font-semibold tracking-tight text-white">Dashboard</h1>
+              <p className="text-slate-400">Overview of your events and bookings</p>
             </div>
-            <Button asChild>
+            <Button asChild className="bg-purple-600/80 text-white hover:bg-purple-600 hover:shadow-lg hover:shadow-purple-500/30">
               <Link href="/admin/events/new">Create Event</Link>
             </Button>
           </div>
 
           {/* KPI Cards */}
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            <Card>
+            <Card className="bg-slate-900/80 border-purple-500/20">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium">Upcoming Events</CardTitle>
-                <Calendar className="size-4 text-muted-foreground" />
+                <CardTitle className="text-sm font-medium text-slate-100">Upcoming Events</CardTitle>
+                <Calendar className="size-4 text-purple-400/60" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{stats.upcomingEvents}</div>
-                <p className="text-xs text-muted-foreground">Published events</p>
+                <div className="text-2xl font-bold text-white">{stats.upcomingEvents}</div>
+                <p className="text-xs text-slate-400">Published events</p>
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="bg-slate-900/80 border-purple-500/20">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium">Bookings Today</CardTitle>
-                <CalendarCheck className="size-4 text-muted-foreground" />
+                <CardTitle className="text-sm font-medium text-slate-100">Bookings Today</CardTitle>
+                <CalendarCheck className="size-4 text-purple-400/60" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{stats.todayBookings}</div>
-                <p className="text-xs text-muted-foreground">New bookings</p>
+                <div className="text-2xl font-bold text-white">{stats.todayBookings}</div>
+                <p className="text-xs text-slate-400">New bookings</p>
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="bg-slate-900/80 border-purple-500/20">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium">Occupancy Rate</CardTitle>
-                <TrendingUp className="size-4 text-muted-foreground" />
+                <CardTitle className="text-sm font-medium text-slate-100">Occupancy Rate</CardTitle>
+                <TrendingUp className="size-4 text-purple-400/60" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{stats.occupancyRate}%</div>
-                <p className="text-xs text-muted-foreground">Across all events</p>
+                <div className="text-2xl font-bold text-white">{stats.occupancyRate}%</div>
+                <p className="text-xs text-slate-400">Across all events</p>
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="bg-slate-900/80 border-purple-500/20">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium">Cancellations</CardTitle>
-                <XCircle className="size-4 text-muted-foreground" />
+                <CardTitle className="text-sm font-medium text-slate-100">Cancellations</CardTitle>
+                <XCircle className="size-4 text-purple-400/60" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{stats.cancellations}</div>
-                <p className="text-xs text-muted-foreground">Total cancelled</p>
+                <div className="text-2xl font-bold text-white">{stats.cancellations}</div>
+                <p className="text-xs text-slate-400">Total cancelled</p>
               </CardContent>
             </Card>
           </div>
@@ -180,18 +180,18 @@ return {
 
           {/* Pending Approvals Alert */}
           {stats.pendingApprovals > 0 && (
-            <Card className="border-amber-200 bg-amber-50">
+            <Card className="border-purple-500/30 bg-slate-900/80">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium flex items-center gap-2 text-amber-800">
+                <CardTitle className="text-sm font-medium flex items-center gap-2 text-slate-200">
                   <Users className="size-4" />
                   Pending Approvals
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-amber-700">
+                <p className="text-sm text-slate-300">
                   You have {stats.pendingApprovals} booking{stats.pendingApprovals > 1 ? "s" : ""} waiting for approval.
                 </p>
-                <Button variant="outline" size="sm" asChild className="mt-2 bg-transparent">
+                <Button variant="outline" size="sm" asChild className="mt-2 bg-purple-600/20 border-purple-500/30 text-purple-300 hover:bg-purple-600/30">
                   <Link href="/admin/bookings">Review Bookings</Link>
                 </Button>
               </CardContent>
@@ -200,42 +200,42 @@ return {
 
           {/* Quick Actions */}
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            <Card>
+            <Card className="bg-slate-900/80 border-purple-500/20">
               <CardHeader>
-                <CardTitle className="text-lg">Event Management</CardTitle>
-                <CardDescription>Create, edit, and manage your events</CardDescription>
+                <CardTitle className="text-lg text-white">Event Management</CardTitle>
+                <CardDescription className="text-slate-400">Create, edit, and manage your events</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="flex gap-2">
-                  <Button asChild variant="outline" className="flex-1 bg-transparent">
+                  <Button asChild variant="outline" className="flex-1 bg-purple-600/20 border-purple-500/30 text-purple-300 hover:bg-purple-600/30">
                     <Link href="/admin/events">View All</Link>
                   </Button>
-                  <Button asChild className="flex-1">
+                  <Button asChild className="flex-1 bg-purple-600/80 text-white hover:bg-purple-600 hover:shadow-lg hover:shadow-purple-500/30">
                     <Link href="/admin/events/new">Create New</Link>
                   </Button>
                 </div>
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="bg-slate-900/80 border-purple-500/20">
               <CardHeader>
-                <CardTitle className="text-lg">Booking Management</CardTitle>
-                <CardDescription>View and manage all bookings</CardDescription>
+                <CardTitle className="text-lg text-white">Booking Management</CardTitle>
+                <CardDescription className="text-slate-400">View and manage all bookings</CardDescription>
               </CardHeader>
               <CardContent>
-                <Button asChild variant="outline" className="w-full bg-transparent">
+                <Button asChild variant="outline" className="w-full bg-purple-600/20 border-purple-500/30 text-purple-300 hover:bg-purple-600/30">
                   <Link href="/admin/bookings">View Bookings</Link>
                 </Button>
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="bg-slate-900/80 border-purple-500/20">
               <CardHeader>
-                <CardTitle className="text-lg">User Management</CardTitle>
-                <CardDescription>Create and manage system users</CardDescription>
+                <CardTitle className="text-lg text-white">User Management</CardTitle>
+                <CardDescription className="text-slate-400">Create and manage system users</CardDescription>
               </CardHeader>
               <CardContent>
-                <Button asChild variant="outline" className="w-full bg-transparent">
+                <Button asChild variant="outline" className="w-full bg-purple-600/20 border-purple-500/30 text-purple-300 hover:bg-purple-600/30">
                   <Link href="/admin/users">Manage Users</Link>
                 </Button>
               </CardContent>

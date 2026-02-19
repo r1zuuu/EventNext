@@ -61,21 +61,21 @@ export default function EventDetailPage({
   const getBookingTypeBadge = () => {
     switch (event.bookingType) {
       case "free":
-        return <Badge variant="secondary" className="text-sm">Free Event</Badge>
+        return <Badge className="text-sm bg-purple-600/20 text-purple-300 border-purple-500/30">Free Event</Badge>
       case "ticketed":
-        return <Badge variant="default" className="text-sm">{event.price} PLN</Badge>
+        return <Badge className="text-sm bg-purple-600/20 text-purple-300 border-purple-500/30">{event.price} PLN</Badge>
       case "approval":
-        return <Badge variant="outline" className="text-sm">Approval Required</Badge>
+        return <Badge className="text-sm bg-purple-600/20 text-purple-300 border-purple-500/30">Approval</Badge>
     }
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-slate-950">
       <AppHeader showSearch={false} />
 
       <main className="flex-1 p-6">
         <div className="max-w-4xl mx-auto">
-          <Button variant="ghost" asChild className="mb-6 -ml-2">
+          <Button variant="ghost" asChild className="mb-6 -ml-2 text-slate-300 hover:text-slate-100 hover:bg-slate-800">
             <Link href="/events">
               <ArrowLeft className="size-4 mr-2" />
               Back to Events
@@ -88,55 +88,55 @@ export default function EventDetailPage({
               <div className="space-y-4">
                 <div className="flex flex-wrap items-center gap-2">
                   {getBookingTypeBadge()}
-                  {isFull && <Badge variant="destructive">Full</Badge>}
-                  {event.status === "cancelled" && <Badge variant="destructive">Cancelled</Badge>}
+                  {isFull && <Badge className="bg-purple-600/20 text-purple-300 border-purple-500/30">Full</Badge>}
+                  {event.status === "cancelled" && <Badge className="bg-purple-600/20 text-purple-300 border-purple-500/30">Cancelled</Badge>}
                   {(event.tags ?? []).map((tag) => (
-                    <Badge key={tag} variant="secondary">
-                      {tag}
+                    <Badge key={tag} className="bg-purple-600/20 text-purple-300 border-purple-500/30">
+                      #{tag}
                     </Badge>
                   ))}
                 </div>
 
-                <h1 className="text-3xl font-bold tracking-tight text-balance">{event.title}</h1>
-                <p className="text-lg text-muted-foreground">{event.shortDescription}</p>
+                <h1 className="text-3xl font-bold tracking-tight text-balance text-white">{event.title}</h1>
+                <p className="text-lg text-slate-400">{event.shortDescription}</p>
               </div>
 
-              <Separator />
+              <Separator className="bg-slate-700/50" />
 
               {/* Details */}
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
-                  <CalendarDays className="size-5 text-muted-foreground mt-0.5" />
+                  <CalendarDays className="size-5 text-purple-400/60 mt-0.5" />
                   <div>
-                    <p className="font-medium">{formatDate(event.startDateTime)}</p>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="font-medium text-white">{formatDate(event.startDateTime)}</p>
+                    <p className="text-sm text-slate-400">
                       {formatTime(event.startDateTime)} - {formatTime(event.endDateTime)} ({event.timezone})
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <Clock className="size-5 text-muted-foreground mt-0.5" />
+                  <Clock className="size-5 text-purple-400/60 mt-0.5" />
                   <div>
-                    <p className="font-medium">Duration</p>
-                    <p className="text-sm text-muted-foreground">{getDuration()}</p>
+                    <p className="font-medium text-white">Duration</p>
+                    <p className="text-sm text-slate-400">{getDuration()}</p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <MapPin className="size-5 text-muted-foreground mt-0.5" />
+                  <MapPin className="size-5 text-purple-400/60 mt-0.5" />
                   <div>
-                    <p className="font-medium">{event.location}</p>
-                    <p className="text-sm text-muted-foreground">In-person event</p>
+                    <p className="font-medium text-white">{event.location}</p>
+                    <p className="text-sm text-slate-400">In-person event</p>
                   </div>
                 </div>
 
                 {event.onlineUrl && (
                   <div className="flex items-start gap-3">
-                    <Globe className="size-5 text-muted-foreground mt-0.5" />
+                    <Globe className="size-5 text-purple-400/60 mt-0.5" />
                     <div>
-                      <p className="font-medium">Online Access</p>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="font-medium text-white">Online Access</p>
+                      <p className="text-sm text-slate-400">
                         Link will be provided after booking
                       </p>
                     </div>
@@ -144,20 +144,20 @@ export default function EventDetailPage({
                 )}
 
                 <div className="flex items-start gap-3">
-                  <User className="size-5 text-muted-foreground mt-0.5" />
+                  <User className="size-5 text-purple-400/60 mt-0.5" />
                   <div>
-                    <p className="font-medium">Organized by</p>
-                    <p className="text-sm text-muted-foreground">{event.organizerName}</p>
+                    <p className="font-medium text-white">Organized by</p>
+                    <p className="text-sm text-slate-400">{event.organizerName}</p>
                   </div>
                 </div>
               </div>
 
               {event.longDescription && (
                 <>
-                  <Separator />
+                  <Separator className="bg-slate-700/50" />
                   <div className="space-y-3">
-                    <h2 className="text-xl font-semibold">About this event</h2>
-                    <p className="text-muted-foreground whitespace-pre-wrap">{event.longDescription}</p>
+                    <h2 className="text-xl font-semibold text-white">About this event</h2>
+                    <p className="text-slate-400 whitespace-pre-wrap">{event.longDescription}</p>
                   </div>
                 </>
               )}
@@ -165,12 +165,12 @@ export default function EventDetailPage({
 
             {/* Booking Card */}
             <div className="lg:col-span-1">
-              <Card className="sticky top-20">
+              <Card className="sticky top-20 bg-slate-900/80 border-purple-500/20">
                 <CardHeader>
-                  <CardTitle className="text-xl">
+                  <CardTitle className="text-xl text-white">
                     {event.bookingType === "ticketed" ? `${event.price} PLN` : "Free"}
                   </CardTitle>
-                  <CardDescription>
+                  <CardDescription className="text-slate-400">
                     {event.bookingType === "approval"
                       ? "This event requires approval from the organizer"
                       : "per person"}
@@ -178,32 +178,32 @@ export default function EventDetailPage({
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-muted-foreground flex items-center gap-2">
+                    <span className="text-slate-400 flex items-center gap-2">
                       <Users className="size-4" />
                       Capacity
                     </span>
-                    <span className="font-medium">
+                    <span className="font-medium text-white">
                       {bookedCount} / {event.capacity}
                     </span>
                   </div>
 
-                  <div className="h-2 bg-muted rounded-full overflow-hidden">
+                  <div className="h-2 bg-slate-700/30 rounded-full overflow-hidden">
                     <div
                       className={`h-full transition-all ${
-                        isFull ? "bg-destructive" : "bg-primary"
+                        isFull ? "bg-slate-600" : "bg-purple-500/60"
                       }`}
                       style={{ width: `${Math.min((bookedCount / event.capacity) * 100, 100)}%` }}
                     />
                   </div>
 
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-slate-400">
                     {isFull
                       ? "This event is full. You can join the waitlist."
                       : `${remainingCapacity} spot${remainingCapacity !== 1 ? "s" : ""} remaining`}
                   </p>
 
                   {event.status === "cancelled" ? (
-                    <Button disabled className="w-full">
+                    <Button disabled className="w-full bg-slate-700 text-slate-300">
                       Event Cancelled
                     </Button>
                   ) : (
@@ -211,7 +211,7 @@ export default function EventDetailPage({
                   )}
 
                   {event.bookingType === "approval" && (
-                    <p className="text-xs text-muted-foreground text-center">
+                    <p className="text-xs text-slate-400 text-center">
                       Your booking will be pending until approved by the organizer.
                     </p>
                   )}

@@ -37,48 +37,50 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-muted/30 p-4">
-      <Card className="w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center bg-slate-950 p-4">
+      <Card className="w-full max-w-md bg-slate-800 border-slate-700">
         <CardHeader className="text-center">
-          <div className="mx-auto mb-4 flex size-12 items-center justify-center rounded-xl bg-foreground text-background">
+          <div className="mx-auto mb-4 flex size-12 items-center justify-center rounded-xl bg-white/10 text-white">
             <Calendar className="size-6" />
           </div>
-          <CardTitle className="text-2xl">Welcome to EventBook</CardTitle>
-          <CardDescription>
+          <CardTitle className="text-2xl text-white">Welcome to EventBook</CardTitle>
+          <CardDescription className="text-slate-400">
             Sign in to browse events and manage your bookings
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
             {error && (
-              <div className="rounded-lg bg-destructive/10 text-destructive text-sm p-3">
+              <div className="rounded-lg bg-slate-700/50 text-slate-200 text-sm p-3 border border-slate-600">
                 {error}
               </div>
             )}
             
             <div className="space-y-2">
-              <Label htmlFor="username">Username</Label>
+              <Label htmlFor="username" className="text-slate-200">Username</Label>
               <Input
                 id="username"
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
+                className="bg-slate-900 border-slate-600 text-slate-100 placeholder:text-slate-500 focus:border-slate-500"
                 required
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password" className="text-slate-200">Password</Label>
               <Input
                 id="password"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                className="bg-slate-900 border-slate-600 text-slate-100 placeholder:text-slate-500 focus:border-slate-500"
                 required
               />
             </div>
 
-            <Button type="submit" className="w-full" disabled={loading}>
+            <Button type="submit" className="w-full bg-slate-700 text-slate-100 hover:bg-slate-600 transition-colors" disabled={loading}>
               {loading ? "Signing in..." : "Sign In"}
             </Button>
           </form>

@@ -25,13 +25,13 @@ export default function EditEventPage({
 
   if (role !== "admin") {
     return (
-      <div className="flex flex-col min-h-screen">
+      <div className="flex flex-col min-h-screen bg-slate-950">
         <AppHeader showSearch={false} />
         <main className="flex-1 flex items-center justify-center p-6">
-          <Card className="max-w-md w-full text-center">
+          <Card className="max-w-md w-full text-center bg-slate-800 border-slate-700">
             <CardHeader>
-              <CardTitle>Admin Access Required</CardTitle>
-              <CardDescription>Switch to admin mode to access this page</CardDescription>
+              <CardTitle className="text-white">Admin Access Required</CardTitle>
+              <CardDescription className="text-slate-400">Switch to admin mode to access this page</CardDescription>
             </CardHeader>
           </Card>
         </main>
@@ -40,12 +40,12 @@ export default function EditEventPage({
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-slate-950">
       <AppHeader showSearch={false} />
 
       <main className="flex-1 p-6">
         <div className="max-w-4xl mx-auto space-y-6">
-          <Button variant="ghost" asChild className="-ml-2">
+          <Button variant="ghost" asChild className="-ml-2 text-slate-300 hover:text-slate-100 hover:bg-slate-800">
             <Link href="/admin/events">
               <ArrowLeft className="size-4 mr-2" />
               Back to Events
@@ -53,8 +53,8 @@ export default function EditEventPage({
           </Button>
 
           <div>
-            <h1 className="text-2xl font-semibold tracking-tight">Edit Event</h1>
-            <p className="text-muted-foreground">Update the details for "{event.title}"</p>
+            <h1 className="text-2xl font-semibold tracking-tight text-white">Edit Event</h1>
+            <p className="text-slate-400">Update the details for "{event.title}"</p>
           </div>
 
           <EventForm event={event} />

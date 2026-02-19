@@ -29,7 +29,7 @@ export default function EventsPage() {
     return Array.from(tags).sort()
   }, [eventsList])
 
-  const filteredEvents = useMemo(() => {
+  const filteredEvents = useMemo(() => { //use memo pomaga uniknąć ponownego filtrowania przy każdym renderze, filtrujemy tylko gdy eventsList, search lub filters się zmienią
     return eventsList.filter((event) => {
       // Only show published events
       if (event.status !== "published") return false
@@ -71,14 +71,14 @@ export default function EventsPage() {
   }, [eventsList, search, filters])
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#F5F6F8]">
+    <div className="flex flex-col min-h-screen bg-slate-950">
       <AppHeader searchValue={search} onSearchChange={setSearch} />
 
       <main className="flex-1 p-4 sm:p-6">
         <div className="container mx-auto">
           <div className="mb-6">
-            <h1 className="text-2xl font-semibold tracking-tight">Upcoming Events</h1>
-            <p className="text-muted-foreground">
+            <h1 className="text-2xl font-semibold tracking-tight text-white">Upcoming Events</h1>
+            <p className="text-slate-400">
               Discover and book events in your area
             </p>
           </div>
@@ -90,14 +90,14 @@ export default function EventsPage() {
           />
 
           {loadingEvents ? (
-            <div className="flex items-center justify-center py-16 text-muted-foreground">
+            <div className="flex items-center justify-center py-16 text-slate-400">
               Loading events...
             </div>
           ) : filteredEvents.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16 text-center">
-              <div className="rounded-full bg-muted p-4 mb-4">
+              <div className="rounded-full bg-slate-800 p-4 mb-4">
                 <svg
-                  className="size-8 text-muted-foreground"
+                  className="size-8 text-slate-500"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -110,8 +110,8 @@ export default function EventsPage() {
                   />
                 </svg>
               </div>
-              <h3 className="font-medium text-lg">No events found</h3>
-              <p className="text-sm text-muted-foreground max-w-sm mt-1">
+              <h3 className="font-medium text-lg text-white">No events found</h3>
+              <p className="text-sm text-slate-400 max-w-sm mt-1">
                 {search || filters.bookingType !== "all" || filters.tag !== "all" || filters.dateRange
                   ? "Try adjusting your filters or search terms"
                   : "Check back later for upcoming events"}

@@ -130,7 +130,7 @@ export function AppSidebar() {
               className="w-full justify-start"
               onClick={signOut}
             >
-              <LogOut className="size-4 mr-2" />
+              <LogOut className="size-4 mr-2 text-slate-100" />
               Sign Out
             </Button>
           </div>

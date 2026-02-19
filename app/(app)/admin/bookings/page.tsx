@@ -142,28 +142,28 @@ export default function AdminBookingsPage() {
 
           <div className="flex flex-wrap gap-4">
             <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-[160px]">
+              <SelectTrigger className="w-[160px] bg-slate-900/80 border-purple-500/20 text-slate-100 hover:bg-slate-800">
                 <Filter className="size-4 mr-2" />
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Statuses</SelectItem>
-                <SelectItem value="confirmed">Confirmed</SelectItem>
-                <SelectItem value="pending">Pending</SelectItem>
-                <SelectItem value="waitlist">Waitlist</SelectItem>
-                <SelectItem value="checked_in">Checked In</SelectItem>
-                <SelectItem value="cancelled">Cancelled</SelectItem>
+              <SelectContent className="bg-slate-900/80 border-purple-500/20">
+                <SelectItem value="all" className="text-slate-100">All Statuses</SelectItem>
+                <SelectItem value="confirmed" className="text-slate-100">Confirmed</SelectItem>
+                <SelectItem value="pending" className="text-slate-100">Pending</SelectItem>
+                <SelectItem value="waitlist" className="text-slate-100">Waitlist</SelectItem>
+                <SelectItem value="checked_in" className="text-slate-100">Checked In</SelectItem>   
+                <SelectItem value="cancelled" className="text-slate-100">Cancelled</SelectItem>
               </SelectContent>
             </Select>
 
             <Select value={eventFilter} onValueChange={setEventFilter}>
-              <SelectTrigger className="w-[200px]">
+              <SelectTrigger className="w-[200px] bg-slate-900/80 border-purple-500/20 text-slate-100 hover:bg-slate-800">
                 <SelectValue placeholder="All Events" />
               </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Events</SelectItem>
+              <SelectContent className="bg-slate-900/80 border-purple-500/20">
+                <SelectItem value="all" className="text-slate-100">All Events</SelectItem>
                 {events.map((event) => (
-                  <SelectItem key={event.id} value={event.id}>
+                  <SelectItem key={event.id} value={event.id} className="text-slate-100">
                     {event.title}
                   </SelectItem>
                 ))}

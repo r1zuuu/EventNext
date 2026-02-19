@@ -124,22 +124,22 @@ END:VCALENDAR`
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button className="w-full" size="lg">
+        <Button className="w-full bg-purple-600/80 text-white hover:bg-purple-600 transition-colors hover:shadow-lg hover:shadow-purple-500/30" size="lg">
           {isFull ? "Join Waitlist" : "Book Now"}
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md bg-slate-900/80 border-purple-500/20">
         {booking ? (
           <>
             <DialogHeader>
-              <DialogTitle>
+              <DialogTitle className="text-white">
                 {booking.status === "pending"
                   ? "Request Submitted"
                   : booking.status === "waitlist"
                   ? "Added to Waitlist"
                   : "Booking Confirmed"}
               </DialogTitle>
-              <DialogDescription>
+              <DialogDescription className="text-slate-400">
                 {booking.status === "pending"
                   ? "Your request has been sent to the organizer for approval."
                   : booking.status === "waitlist"
@@ -149,36 +149,36 @@ END:VCALENDAR`
             </DialogHeader>
 
             <div className="space-y-4 py-4">
-              <div className="rounded-lg bg-muted p-4 text-center">
-                <p className="text-xs text-muted-foreground mb-1">Booking Code</p>
-                <p className="text-2xl font-mono font-bold tracking-wider">{booking.bookingCode}</p>
+              <div className="rounded-lg bg-purple-600/20 p-4 text-center border border-purple-500/30">
+                <p className="text-xs text-purple-300 mb-1">Booking Code</p>
+                <p className="text-2xl font-mono font-bold tracking-wider text-white">{booking.bookingCode}</p>
               </div>
 
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Event</span>
-                  <span className="font-medium">{event.title}</span>
+                  <span className="text-slate-400">Event</span>
+                  <span className="font-medium text-white">{event.title}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Date</span>
-                  <span className="font-medium">
+                  <span className="text-slate-400">Date</span>
+                  <span className="font-medium text-white">
                     {format(new Date(event.startDateTime), "MMM d, yyyy")}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Quantity</span>
-                  <span className="font-medium">{booking.quantity}</span>
+                  <span className="text-slate-400">Quantity</span>
+                  <span className="font-medium text-white">{booking.quantity}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Status</span>
-                  <span className="font-medium capitalize">
+                  <span className="text-slate-400">Status</span>
+                  <span className="font-medium capitalize text-white">
                     {booking.status?.replace("_", " ") ?? "unknown"}
                   </span>
                 </div>
               </div>
 
               <div className="flex gap-2">
-                <Button variant="outline" className="flex-1 bg-transparent" onClick={copyBookingCode}>
+                <Button variant="outline" className="flex-1 bg-purple-600/20 border-purple-500/30 text-purple-300 hover:bg-purple-600/30" onClick={copyBookingCode}>
                   {copied ? (
                     <Check className="size-4 mr-2" />
                   ) : (
@@ -186,7 +186,7 @@ END:VCALENDAR`
                   )}
                   {copied ? "Copied!" : "Copy Code"}
                 </Button>
-                <Button variant="outline" className="flex-1 bg-transparent" onClick={generateICS}>
+                <Button variant="outline" className="flex-1 bg-purple-600/20 border-purple-500/30 text-purple-300 hover:bg-purple-600/30" onClick={generateICS}>
                   <Download className="size-4 mr-2" />
                   Add to Calendar
                 </Button>
@@ -196,10 +196,10 @@ END:VCALENDAR`
         ) : (
           <>
             <DialogHeader>
-              <DialogTitle>
+              <DialogTitle className="text-white">
                 {isFull ? "Join Waitlist" : "Book Event"}
               </DialogTitle>
-              <DialogDescription>
+              <DialogDescription className="text-slate-400">
                 {isFull
                   ? "This event is full, but you can join the waitlist."
                   : event.bookingType === "approval"
@@ -215,9 +215,9 @@ END:VCALENDAR`
                   name="attendeeName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Full Name</FormLabel>
+                      <FormLabel className="text-slate-200">Full Name</FormLabel>
                       <FormControl>
-                        <Input placeholder="John Doe" {...field} />
+                        <Input placeholder="John Doe" className="bg-slate-900 border-slate-600 text-slate-100 placeholder:text-slate-500 focus:border-slate-500" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -229,15 +229,16 @@ END:VCALENDAR`
                   name="attendeeEmail"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Email</FormLabel>
+                      <FormLabel className="text-slate-200">Email</FormLabel>
                       <FormControl>
                         <Input
                           type="email"
                           placeholder="john@example.com"
+                          className="bg-slate-900 border-slate-600 text-slate-100 placeholder:text-slate-500 focus:border-slate-500"
                           {...field}
                         />
                       </FormControl>
-                      <FormDescription>
+                      <FormDescription className="text-slate-400">
                         Confirmation will be sent to this email.
                       </FormDescription>
                       <FormMessage />
@@ -250,18 +251,19 @@ END:VCALENDAR`
                   name="quantity"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Number of Tickets</FormLabel>
+                      <FormLabel className="text-slate-200">Number of Tickets</FormLabel>
                       <FormControl>
                         <Input
                           type="number"
                           min={1}
                           max={isFull ? 10 : remainingCapacity}
+                          className="bg-slate-900 border-slate-600 text-slate-100 placeholder:text-slate-500 focus:border-slate-500"
                           {...field}
                           onChange={(e) => field.onChange(Number(e.target.value))}
                         />
                       </FormControl>
                       {!isFull && (
-                        <FormDescription>
+                        <FormDescription className="text-slate-400">
                           {remainingCapacity} spot{remainingCapacity !== 1 ? "s" : ""} available
                         </FormDescription>
                       )}
@@ -276,10 +278,11 @@ END:VCALENDAR`
                     name="notes"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Message to Organizer (Optional)</FormLabel>
+                        <FormLabel className="text-slate-200">Message to Organizer (Optional)</FormLabel>
                         <FormControl>
                           <Textarea
                             placeholder="Tell the organizer why you'd like to attend..."
+                            className="bg-slate-900 border-slate-600 text-slate-100 placeholder:text-slate-500 focus:border-slate-500"
                             {...field}
                           />
                         </FormControl>
@@ -290,8 +293,8 @@ END:VCALENDAR`
                 )}
 
                 {event.bookingType === "ticketed" && (
-                  <div className="rounded-lg bg-muted p-3">
-                    <div className="flex justify-between text-sm">
+                  <div className="rounded-lg bg-purple-600/20 p-3 border border-purple-500/30">
+                    <div className="flex justify-between text-sm text-white">
                       <span>
                         {event.price} PLN × {form.watch("quantity")}
                       </span>
@@ -304,7 +307,7 @@ END:VCALENDAR`
 
                 <Button
                   type="submit"
-                  className="w-full"
+                  className="w-full bg-purple-600/80 text-white hover:bg-purple-600 transition-colors hover:shadow-lg hover:shadow-purple-500/30"
                   disabled={form.formState.isSubmitting}
                 >
                   {isFull
