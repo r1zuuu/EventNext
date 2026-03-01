@@ -37,6 +37,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        {/* fallback or explicit favicon link; icons in metadata cover most cases */}
+        <link rel="icon" href="/icon-light-32x32.png" />
+        <link rel="shortcut icon" href="/icon-light-32x32.png" />
+      </head>
       <body className={`font-sans antialiased`}>
         {children}
         <Analytics />
