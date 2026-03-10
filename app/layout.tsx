@@ -12,21 +12,7 @@ export const metadata: Metadata = {
   description: 'Browse, book, and manage events with ease',
   generator: 'v0.app',
   icons: {
-    icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
-    ],
-    apple: '/apple-icon.png',
+    icon: '/favicon.ico',
   },
 }
 
@@ -38,9 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* fallback or explicit favicon link; icons in metadata cover most cases */}
-        <link rel="icon" href="/icon-light-32x32.png" />
-        <link rel="shortcut icon" href="/icon-light-32x32.png" />
+        <link rel="icon" href="/favicon.ico" />
       </head>
       <body className={`font-sans antialiased`}>
         {children}
