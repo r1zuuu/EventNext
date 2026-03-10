@@ -31,17 +31,6 @@ export function AppHeader({ searchValue = "", onSearchChange, showSearch = true 
     <header className="sticky top-0 z-50 w-full border-b border-slate-800/50 bg-slate-950/80 backdrop-blur-lg transition-all duration-200">
       <div className="flex h-16 items-center gap-6 px-4 sm:px-6 lg:px-8">
         <SidebarTrigger className="-ml-2 transition-colors hover:text-slate-200 active:scale-95" />
-
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-2.5 transition-opacity hover:opacity-70">
-          <div className="flex h-8 w-8 items-center justify-center rounded-sm bg-white/10 text-white font-medium text-sm backdrop-blur-sm">
-            E
-          </div>
-          <span className="hidden sm:inline font-medium text-base text-white">
-            EventBook
-          </span>
-        </Link>
-
         {showSearch && onSearchChange && (
           <div className="relative flex-1 max-w-sm">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
