@@ -4,6 +4,16 @@ import { prisma } from '@/lib/prisma'
 import { NextResponse } from 'next/server'
 import bcrypt from 'bcrypt'
 
+export async function GET() {
+  try {
+    const userCount = await prisma.user.count()
+    const eventCount = await prisma.event.count()
+    return NextResponse.json({ seeded: userCount > 0 && eventCount > 0, userCount, eventCount })
+  } catch (error) {
+    return NextResponse.json({ seeded: false, error: 'DB check failed' }, { status: 500 })
+  }
+}
+
 export async function POST() {
   try {
     // Clear existing data
