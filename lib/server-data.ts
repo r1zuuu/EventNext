@@ -1,12 +1,26 @@
 import { prisma } from "./prisma"
 import type { Booking, Event } from "./schemas"
 
+const logPrismaError = (error: unknown, context: string) => {
+  const message = error instanceof Error ? error.message : String(error)
+  if (process.env.NODE_ENV === "development") {
+    console.error(`[server-data] ${context} failed`, error)
+  } else {
+    console.error(`[server-data] ${context} failed: ${message}`)
+  }
+}
+
 export async function getAllEvents(): Promise<Event[]> {
-  return prisma.event.findMany({
-    orderBy: {
-      startDateTime: "asc",
-    },
-  })
+  try {
+    return await prisma.event.findMany({
+      orderBy: {
+        startDateTime: "asc",
+      },
+    })
+  } catch (error) {
+    logPrismaError(error, "getAllEvents")
+    return []
+  }
 }
 
 export async function getEventById(id: string): Promise<Event | null> {
@@ -14,17 +28,27 @@ export async function getEventById(id: string): Promise<Event | null> {
     return null
   }
 
-  return prisma.event.findUnique({
-    where: { id },
-  })
+  try {
+    return await prisma.event.findUnique({
+      where: { id },
+    })
+  } catch (error) {
+    logPrismaError(error, "getEventById")
+    return null
+  }
 }
 
 export async function getAllBookings(): Promise<Booking[]> {
-  return prisma.booking.findMany({
-    orderBy: {
-      createdAt: "desc",
-    },
-  })
+  try {
+    return await prisma.booking.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+    })
+  } catch (error) {
+    logPrismaError(error, "getAllBookings")
+    return []
+  }
 }
 
 export async function getBookingsForEvent(eventId: string): Promise<Booking[]> {
@@ -32,10 +56,15 @@ export async function getBookingsForEvent(eventId: string): Promise<Booking[]> {
     return []
   }
 
-  return prisma.booking.findMany({
-    where: { eventId },
-    orderBy: {
-      createdAt: "desc",
-    },
-  })
+  try {
+    return await prisma.booking.findMany({
+      where: { eventId },
+      orderBy: {
+        createdAt: "desc",
+      },
+    })
+  } catch (error) {
+    logPrismaError(error, "getBookingsForEvent")
+    return []
+  }
 }
