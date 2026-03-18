@@ -1,22 +1,21 @@
-"use client"
+import { ReactNode } from "react"
 
-import React, { useEffect, useCallback } from "react"
-
-import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
+import { StoreInitializer } from "@/components/store-initializer"
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 import { Toaster } from "@/components/ui/sonner"
-import { useStore } from "@/lib/store"
+import { getAllBookings, getAllEvents } from "@/lib/server-data"
 
-export default function AppLayout({ children }: { children: React.ReactNode }) {
-  const { fetchEvents, fetchBookings } = useStore()
+interface AppLayoutProps {
+  children: ReactNode
+}
 
-  useEffect(() => {
-    fetchEvents()
-    fetchBookings()
-  }, [])
+export default async function AppLayout({ children }: AppLayoutProps) {
+  const [events, bookings] = await Promise.all([getAllEvents(), getAllBookings()])
 
   return (
     <SidebarProvider>
+      <StoreInitializer events={events} bookings={bookings} />
       <AppSidebar />
       <SidebarInset>
         {children}

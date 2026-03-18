@@ -1,32 +1,36 @@
-"use client"
-
-import { use } from "react"
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import { ArrowLeft, CalendarDays, Clock, Globe, MapPin, User, Users } from "lucide-react"
-import { AppHeader } from "@/components/app-header"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
-import { useStore } from "@/lib/store"
-import { BookingDialog } from "@/components/booking-dialog"
 import { format } from "date-fns"
 
-export default function EventDetailPage({
+import { AppHeader } from "@/components/app-header"
+import { BookingDialog } from "@/components/booking-dialog"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Separator } from "@/components/ui/separator"
+import { getBookingsForEvent, getEventById } from "@/lib/server-data"
+
+const getBookedCount = (bookings: Awaited<ReturnType<typeof getBookingsForEvent>>) => {
+  return bookings
+    .filter((booking) => booking.status === "confirmed" || booking.status === "checked_in")
+    .reduce((sum, booking) => sum + booking.quantity, 0)
+}
+
+export default async function EventDetailPage({
   params,
 }: {
-  params: Promise<{ id: string }>
+  params: { id: string }
 }) {
-  const { id } = use(params)
-  const { events, getBookedCount } = useStore()
-  const event = events.find((e) => e.id === id)
+  const { id } = params
+  const event = await getEventById(id)
 
   if (!event) {
     notFound()
   }
 
-  const bookedCount = getBookedCount(event.id)
+  const bookings = await getBookingsForEvent(event.id)
+  const bookedCount = getBookedCount(bookings)
   const remainingCapacity = event.capacity - bookedCount
   const isFull = remainingCapacity <= 0
 

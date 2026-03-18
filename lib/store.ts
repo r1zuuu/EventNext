@@ -19,6 +19,7 @@ interface AppState {
   // Events
   events: Event[]
   loadingEvents: boolean
+  hydrateEvents: (events: Event[]) => void
   fetchEvents: () => Promise<void>
   addEvent: (event: Omit<Event, 'id' | 'createdAt' | 'updatedAt'>) => Promise<Event>
   updateEvent: (id: string, event: Partial<Event>) => Promise<void>
@@ -28,6 +29,7 @@ interface AppState {
   // Bookings
   bookings: Booking[]
   loadingBookings: boolean
+  hydrateBookings: (bookings: Booking[]) => void
   fetchBookings: (eventId?: string, email?: string) => Promise<void>
   addBooking: (eventId: string, data: BookingFormData) => Promise<Booking>
   updateBookingStatus: (id: string, status: BookingStatus) => Promise<void>
@@ -80,6 +82,7 @@ export const useStore = create<AppState>()(
       // Events
       events: [],
       loadingEvents: false,
+      hydrateEvents: (events) => set({ events: Array.isArray(events) ? events : [] }),
       fetchEvents: async () => {
         set({ loadingEvents: true })
         try {
@@ -171,6 +174,7 @@ export const useStore = create<AppState>()(
       // Bookings
       bookings: [],
       loadingBookings: false,
+      hydrateBookings: (bookings) => set({ bookings: Array.isArray(bookings) ? bookings : [] }),
       fetchBookings: async (eventId, email) => {
         set({ loadingBookings: true })
         try {
