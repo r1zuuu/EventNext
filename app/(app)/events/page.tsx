@@ -5,7 +5,8 @@ import { AppHeader } from "@/components/app-header"
 import { EventCard } from "@/components/event-card"
 import { EventFiltersPanel, type EventFilters } from "@/components/event-filters"
 import { useStore } from "@/lib/store"
-import { isWithinInterval, parseISO } from "date-fns"
+import { isWithinInterval } from "date-fns"
+import { toValidDate } from "@/lib/utils"
 
 export default function EventsPage() {
   const { events, fetchEvents, loadingEvents } = useStore()
@@ -57,7 +58,8 @@ export default function EventsPage() {
 
       // Date range filter
       if (filters.dateRange?.from) {
-        const eventDate = parseISO(event.startDateTime)
+        const eventDate = toValidDate(event.startDateTime)
+        if (!eventDate) return false
         const from = filters.dateRange.from
         const to = filters.dateRange.to || filters.dateRange.from
 

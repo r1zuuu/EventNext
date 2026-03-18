@@ -7,8 +7,9 @@ import { AppHeader } from "@/components/app-header"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { useStore } from "@/lib/store"
-import { isToday, parseISO, isAfter } from "date-fns"
+import { isToday, isAfter } from "date-fns"
 import { ChartAreaDefault } from "@/components/ui/chartshadcn"
+import { toValidDate } from "@/lib/utils"
 
 export default function AdminDashboardPage() {
   const { events, bookings, role } = useStore()
@@ -17,14 +18,18 @@ export default function AdminDashboardPage() {
     const now = new Date()
 
     const upcomingEvents = events.filter(
-      (e) =>
-        e.status === "published" &&
-        Boolean(e.startDateTime) &&
-        isAfter(parseISO(e.startDateTime), now)
+      (eventItem) => {
+        if (eventItem.status !== "published") return false
+        const startDate = toValidDate(eventItem.startDateTime)
+        return startDate ? isAfter(startDate, now) : false
+      }
     ).length
 
     const todayBookings = bookings.filter(
-      (b) => Boolean(b.createdAt) && isToday(parseISO(b.createdAt))
+      (booking) => {
+        const createdAt = toValidDate(booking.createdAt)
+        return createdAt ? isToday(createdAt) : false
+      }
     ).length
 
     const totalCapacity = events

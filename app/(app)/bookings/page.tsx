@@ -9,8 +9,9 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useStore } from "@/lib/store"
-import { format, isPast, parseISO } from "date-fns"
+import { format, isPast } from "date-fns"
 import { useState } from "react"
+import { toValidDate } from "@/lib/utils"
 
 export default function MyBookingsPage() {
   const { bookings, events, userEmail, isAuthenticated } = useStore()
@@ -32,11 +33,20 @@ export default function MyBookingsPage() {
   }, [bookings, events, userEmail])
 
   const upcomingBookings = userBookings.filter(
-    (b) => b.event && !isPast(parseISO(b.event.startDateTime)) && b.status !== "cancelled"
+    (booking) => {
+      if (!booking.event || booking.status === "cancelled") return false
+      const startDate = toValidDate(booking.event.startDateTime)
+      return startDate ? !isPast(startDate) : false
+    }
   )
 
   const pastBookings = userBookings.filter(
-    (b) => b.event && (isPast(parseISO(b.event.startDateTime)) || b.status === "cancelled")
+    (booking) => {
+      if (!booking.event) return false
+      if (booking.status === "cancelled") return true
+      const startDate = toValidDate(booking.event.startDateTime)
+      return startDate ? isPast(startDate) : false
+    }
   )
 
   const copyBookingCode = (code: string, id: string) => {
@@ -64,6 +74,7 @@ export default function MyBookingsPage() {
 
   const BookingCard = ({ booking }: { booking: (typeof userBookings)[0] }) => {
     if (!booking.event) return null
+    const eventDate = toValidDate(booking.event.startDateTime)
 
     return (
       <Card>
@@ -80,7 +91,9 @@ export default function MyBookingsPage() {
             <div className="flex items-center gap-2 text-muted-foreground">
               <CalendarDays className="size-4" />
               <span>
-                {format(parseISO(booking.event.startDateTime), "EEEE, MMMM d, yyyy 'at' h:mm a")}
+                {eventDate
+                  ? format(eventDate, "EEEE, MMMM d, yyyy 'at' h:mm a")
+                  : "Date unavailable"}
               </span>
             </div>
             <div className="flex items-center gap-2 text-muted-foreground">
