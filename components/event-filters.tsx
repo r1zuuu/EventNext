@@ -62,36 +62,36 @@ export function EventFiltersPanel({ filters, onFiltersChange, availableTags }: E
   return (
     <div className="flex flex-wrap items-end gap-4 py-4">
       <div className="space-y-1.5">
-        <Label className="text-xs text-slate-400">Event Type</Label>
+        <Label className="text-xs text-muted-foreground">Event Type</Label>
         <Select
           value={filters.bookingType}
           onValueChange={(value) => onFiltersChange({ ...filters, bookingType: value })}
         >
-          <SelectTrigger className="w-[140px] bg-slate-900/80 border-purple-500/20 text-slate-100 hover:bg-slate-800">
+          <SelectTrigger className="w-[140px] bg-card/80 border-border/50 text-foreground hover:bg-secondary/50">
             <SelectValue placeholder="All types" />
           </SelectTrigger>
-          <SelectContent className="bg-slate-900/80 border-purple-500/20">
-            <SelectItem value="all" className="text-slate-100">All types</SelectItem>
-            <SelectItem value="free" className="text-slate-100">Free</SelectItem>
-            <SelectItem value="ticketed" className="text-slate-100">Ticketed</SelectItem>
-            <SelectItem value="approval" className="text-slate-100">Approval</SelectItem>
+          <SelectContent className="bg-card/80 border-border/50">
+            <SelectItem value="all" className="text-foreground">All types</SelectItem>
+            <SelectItem value="free" className="text-foreground">Free</SelectItem>
+            <SelectItem value="ticketed" className="text-foreground">Ticketed</SelectItem>
+            <SelectItem value="approval" className="text-foreground">Approval</SelectItem>
           </SelectContent>
         </Select>
       </div>
 
       <div className="space-y-1.5">
-        <Label className="text-xs text-slate-400">Tag</Label>
+        <Label className="text-xs text-muted-foreground">Tag</Label>
         <Select
           value={filters.tag}
           onValueChange={(value) => onFiltersChange({ ...filters, tag: value })}
         >
-          <SelectTrigger className="w-[140px] bg-slate-900/80 border-purple-500/20 text-slate-100 hover:bg-slate-800">
+          <SelectTrigger className="w-[140px] bg-card/80 border-border/50 text-foreground hover:bg-secondary/50">
             <SelectValue placeholder="All tags" />
           </SelectTrigger>
-          <SelectContent className="bg-slate-900/80 border-purple-500/20">
-            <SelectItem value="all" className="text-slate-100">All tags</SelectItem>
+          <SelectContent className="bg-card/80 border-border/50">
+            <SelectItem value="all" className="text-foreground">All tags</SelectItem>
             {availableTags.map((tag) => (
-              <SelectItem key={tag} value={tag} className="text-slate-100">
+              <SelectItem key={tag} value={tag} className="text-foreground">
                 {tag}
               </SelectItem>
             ))}
@@ -100,14 +100,14 @@ export function EventFiltersPanel({ filters, onFiltersChange, availableTags }: E
       </div>
 
       <div className="space-y-1.5">
-        <Label className="text-xs text-slate-100">Date Range</Label>
+        <Label className="text-xs text-foreground">Date Range</Label>
         <Popover>
           <PopoverTrigger asChild>
             <Button
               variant="outline"
               className={cn(
-                "w-[240px] justify-start text-left font-normal bg-slate-900/80 border-purple-500/20 text-slate-100 hover:bg-slate-800",
-                !filters.dateRange && "text-slate-100"
+                "w-[240px] justify-start text-left font-normal bg-card/80 border-border/50 text-foreground hover:bg-secondary/50",
+                !filters.dateRange && "text-foreground"
               )}
             >
               <CalendarIcon className="mr-2 size-4" />
@@ -125,7 +125,7 @@ export function EventFiltersPanel({ filters, onFiltersChange, availableTags }: E
               )}
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-auto p-0 bg-slate-900/80 border-purple-500/20" align="start">
+          <PopoverContent className="w-auto p-0 bg-card/80 border-border/50" align="start">
             <Calendar
               initialFocus
               mode="range"
@@ -139,7 +139,7 @@ export function EventFiltersPanel({ filters, onFiltersChange, availableTags }: E
       </div>
 
       {hasActiveFilters && (
-        <Button variant="ghost" size="sm" onClick={clearFilters} className="gap-1 text-slate-300 hover:text-slate-100 hover:bg-slate-800">
+        <Button variant="ghost" size="sm" onClick={clearFilters} className="gap-1 text-muted-foreground hover:text-foreground hover:bg-secondary/50">
           <X className="size-3" />
           Clear filters
         </Button>

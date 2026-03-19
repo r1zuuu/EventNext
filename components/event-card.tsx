@@ -36,24 +36,24 @@ export function EventCard({ event }: EventCardProps) {
     return format(parsedDate, "MMM d, yyyy 'at' h:mm a")
   }
 
-  const getBookingTypeBadge = () => {
-    switch (event.bookingType) {
-      case "free":
-        return <Badge className="bg-purple-600/20 text-purple-300 border-purple-500/30">Free</Badge>
-      case "ticketed":
-        return <Badge className="bg-purple-600/20 text-purple-300 border-purple-500/30">{event.price} PLN</Badge>
-      case "approval":
-        return <Badge className="bg-purple-600/20 text-purple-300 border-purple-500/30">Approval</Badge>
+    const getBookingTypeBadge = () => {
+      switch (event.bookingType) {
+        case "free":
+          return <Badge className="bg-primary/10 text-primary border-primary/20 hover:bg-primary/20">Free</Badge>
+        case "ticketed":
+          return <Badge className="bg-primary/10 text-primary border-primary/20 hover:bg-primary/20">{event.price} PLN</Badge>
+        case "approval":
+          return <Badge className="bg-primary/10 text-primary border-primary/20 hover:bg-primary/20">Approval</Badge>
+      }
     }
-  }
 
   return (
-    <Card className="group flex flex-col h-full overflow-hidden transition-all duration-300 ease-out hover:shadow-xl hover:shadow-purple-500/10 bg-slate-900/80 border border-purple-500/20 hover:border-purple-500/40 hover:-translate-y-1 backdrop-blur-sm">
-      {/* Image placeholder with subtle purple gradient */}
-      <div className="relative h-40 bg-gradient-to-br from-purple-900/40 to-slate-900 overflow-hidden">
-        <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-all duration-300" />
+    <Card className="group flex flex-col h-full overflow-hidden transition-all duration-300 ease-out hover:shadow-xl hover:shadow-primary/5 bg-card/80 border border-primary/10 hover:border-primary/30 hover:-translate-y-1 backdrop-blur-sm">
+      {/* Image placeholder with subtle primary gradient */}
+      <div className="relative h-40 bg-gradient-to-br from-primary/10 to-card overflow-hidden">
+        <div className="absolute inset-0 bg-background/40 group-hover:bg-background/20 transition-all duration-300" />
         <div className="absolute inset-0 flex items-center justify-center">
-          <CalendarDays className="h-12 w-12 text-purple-400/40 group-hover:scale-110 transition-transform duration-300" />
+          <CalendarDays className="h-12 w-12 text-primary/40 group-hover:scale-110 transition-transform duration-300" />
         </div>
       </div>
 
@@ -62,10 +62,10 @@ export function EventCard({ event }: EventCardProps) {
           <div className="space-y-2 flex-1">
             <div className="flex items-center gap-2 flex-wrap">
               {getBookingTypeBadge()}
-              {isFull && <Badge className="bg-purple-600/20 text-purple-300 border-purple-500/30">Full</Badge>}
-              {event.status === "cancelled" && <Badge className="bg-purple-600/20 text-purple-300 border-purple-500/30">Cancelled</Badge>}
+              {isFull && <Badge className="bg-primary/10 text-primary border-primary/20">Full</Badge>}
+              {event.status === "cancelled" && <Badge className="bg-primary/10 text-primary border-primary/20">Cancelled</Badge>}
             </div>
-            <h3 className="font-semibold text-lg leading-tight line-clamp-2 text-white group-hover:text-purple-300 transition-colors">
+            <h3 className="font-semibold text-lg leading-tight line-clamp-2 text-card-foreground group-hover:text-primary transition-colors">
               {event.title}
             </h3>
           </div>
@@ -73,35 +73,35 @@ export function EventCard({ event }: EventCardProps) {
       </CardHeader>
 
       <CardContent className="flex-1 space-y-3 pb-4">
-        <p className="text-sm text-slate-400 line-clamp-2">{event.shortDescription}</p>
+        <p className="text-sm text-muted-foreground line-clamp-2">{event.shortDescription}</p>
 
         <div className="space-y-2 text-sm">
-          <div className="flex items-center gap-2 text-slate-400 hover:text-purple-300 transition-colors">
-            <CalendarDays className="h-4 w-4 shrink-0 text-purple-400/60" />
+          <div className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
+            <CalendarDays className="h-4 w-4 shrink-0 text-primary/60" />
             <span className="truncate">{formatDateTime(event.startDateTime)}</span>
           </div>
 
-          <div className="flex items-center gap-2 text-slate-400 hover:text-purple-300 transition-colors">
-            <MapPin className="h-4 w-4 shrink-0 text-purple-400/60" />
+          <div className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
+            <MapPin className="h-4 w-4 shrink-0 text-primary/60" />
             <span className="truncate">{event.location}</span>
           </div>
 
           {event.onlineUrl && (
-            <div className="flex items-center gap-2 text-slate-400 hover:text-purple-300 transition-colors">
-              <Globe className="h-4 w-4 shrink-0 text-purple-400/60" />
+            <div className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
+              <Globe className="h-4 w-4 shrink-0 text-primary/60" />
               <span className="truncate">Online option available</span>
             </div>
           )}
 
-          <div className="flex items-center gap-2 text-slate-400">
-            <Users className="h-4 w-4 shrink-0 text-purple-400/60" />
+          <div className="flex items-center gap-2 text-muted-foreground">
+            <Users className="h-4 w-4 shrink-0 text-primary/60" />
             <div className="flex-1">
-              <div className="text-xs text-slate-500 mb-1">
+              <div className="text-xs text-muted-foreground mb-1">
                 {isFull ? "No spots left" : `${remainingCapacity} of ${event.capacity} spots`}
               </div>
-              <div className="w-full bg-slate-700/30 rounded-full h-1.5 overflow-hidden">
+              <div className="w-full bg-secondary rounded-full h-1.5 overflow-hidden">
                 <div 
-                  className="h-full bg-purple-500/60 transition-all duration-300"
+                  className="h-full bg-primary/80 transition-all duration-300"
                   style={{ width: `${Math.min((bookedCount / event.capacity) * 100, 100)}%` }}
                 />
               </div>
@@ -114,13 +114,13 @@ export function EventCard({ event }: EventCardProps) {
             {(event.tags ?? []).slice(0, 3).map((tag) => (
               <Badge 
                 key={tag} 
-                className="text-xs bg-purple-600/20 text-purple-300 border-purple-500/30 hover:bg-purple-600/30 transition-colors cursor-default"
+                className="text-xs bg-primary/10 text-primary border-primary/20 hover:bg-primary/20 transition-colors cursor-default"
               >
                 #{tag}
               </Badge>
             ))}
             {(event.tags ?? []).length > 3 && (
-              <Badge className="text-xs bg-purple-600/20 text-purple-300 border-purple-500/30">
+              <Badge className="text-xs bg-primary/10 text-primary border-primary/20">
                 +{(event.tags ?? []).length - 3}
               </Badge>
             )}
@@ -133,8 +133,8 @@ export function EventCard({ event }: EventCardProps) {
           asChild 
           className={`w-full font-medium transition-all duration-300 ${
             isFull || event.status === "cancelled" 
-              ? "bg-slate-700 text-slate-300 hover:bg-slate-600" 
-              : "bg-purple-600/80 text-white hover:bg-purple-600 hover:shadow-lg hover:shadow-purple-500/30 hover:text-white group-hover:scale-105 active:scale-95"
+              ? "bg-secondary text-secondary-foreground hover:bg-secondary/80" 
+              : "bg-primary/90 text-primary-foreground hover:bg-primary hover:shadow-lg hover:shadow-primary/20 hover:text-primary-foreground group-hover:scale-105 active:scale-95"
           }`}
         >
           <Link href={`/events/${event.id}`}>
