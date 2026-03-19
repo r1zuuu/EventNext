@@ -35,7 +35,7 @@ const chartConfig = {
     
 export function ChartAreaDefault({ data, title, description }: Props) {
   return (
-    <Card className="bg-slate-900/80 border-purple-500/20">
+    <Card className="bg-card/60 backdrop-blur-md border-white/5">
       <CardHeader>
         <CardTitle>{title ?? "Area Chart"}</CardTitle>
         <CardDescription>
@@ -67,9 +67,9 @@ export function ChartAreaDefault({ data, title, description }: Props) {
             <Area
               dataKey="occupancyRate"
               type="natural"
-              fill="var(--color-occupancyRate)"
+              fill="rgb(245, 245, 220)"
               fillOpacity={0.4}
-              stroke="var(--color-occupancyRate)"
+              stroke="rgb(245, 245, 220)"
             />
           </AreaChart>
         </ChartContainer>

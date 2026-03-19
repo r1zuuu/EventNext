@@ -258,8 +258,8 @@ export function EventForm({ event }: EventFormProps) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 bg-card border-border/50">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6 mt-2">
+          <TabsList className="grid w-full h-auto gap-1 bg-card border-border/50 p-1 grid-cols-2 md:grid-cols-4">
             <TabsTrigger value="basics" className="relative text-muted-foreground data-[state=active]:text-foreground data-[state=active]:bg-primary/20">
               Basics
               {hasTabErrors("basics") && (

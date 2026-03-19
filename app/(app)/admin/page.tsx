@@ -133,7 +133,7 @@ return {
           </div>
 
           {/* KPI Cards */}
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-4 grid-cols-2 md:grid-cols-4">
             <Card className="bg-card/60 backdrop-blur-md border-white/5 hover:border-primary/20 transition-colors shadow-lg">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-medium text-foreground">Upcoming Events</CardTitle>
@@ -214,7 +214,7 @@ return {
           )}
 
           {/* Quick Actions */}
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
             <Card className="bg-card/60 backdrop-blur-md border-white/5 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5 hover:border-primary/20 transition-all duration-300">
               <CardHeader>
                 <CardTitle className="text-lg text-foreground tracking-tight">Event Management</CardTitle>

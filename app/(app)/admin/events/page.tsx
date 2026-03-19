@@ -61,8 +61,8 @@ export default function AdminEventsPage() {
     toast.success("Event cancelled")
   }
 
-  const handleDuplicate = (id: string) => {
-    const newEvent = duplicateEvent(id)
+  const handleDuplicate = async (id: string) => {
+    const newEvent = await duplicateEvent(id)
     if (newEvent) {
       toast.success("Event duplicated", {
         description: `"${newEvent.title}" has been created as a draft.`,
