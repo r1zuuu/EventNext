@@ -114,8 +114,8 @@ export default function AdminBookingsPage() {
         <main className="flex-1 flex items-center justify-center p-6">
           <Card className="max-w-md w-full text-center">
             <CardHeader>
-              <CardTitle>Admin Access Required</CardTitle>
-              <CardDescription>Switch to admin mode to access this page</CardDescription>
+              <CardTitle className="tracking-tight text-foreground">Admin Access Required</CardTitle>
+              <CardDescription className="text-muted-foreground">Switch to admin mode to access this page</CardDescription>
             </CardHeader>
           </Card>
         </main>
@@ -124,14 +124,15 @@ export default function AdminBookingsPage() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-background relative overflow-hidden">
+      <div className="absolute top-0 left-0 right-0 h-[500px] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/5 via-background to-background pointer-events-none" />
       <AppHeader searchValue={search} onSearchChange={setSearch} />
 
-      <main className="flex-1 p-6">
+      <main className="flex-1 p-6 relative z-10">
         <div className="max-w-7xl mx-auto space-y-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-semibold tracking-tight">All Bookings</h1>
+              <h1 className="text-2xl font-semibold tracking-tight text-foreground">All Bookings</h1>
               <p className="text-muted-foreground">Manage bookings across all events</p>
             </div>
             <Button variant="outline" onClick={exportCSV}>
@@ -142,28 +143,28 @@ export default function AdminBookingsPage() {
 
           <div className="flex flex-wrap gap-4">
             <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-[160px] bg-slate-900/80 border-purple-500/20 text-slate-100 hover:bg-slate-800">
-                <Filter className="size-4 mr-2" />
+              <SelectTrigger className="w-[160px] bg-secondary/50 backdrop-blur-sm border-white/5 hover:border-primary/20 hover:bg-secondary/80 transition-colors">
+                <Filter className="size-4 mr-2 text-primary" />
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
-              <SelectContent className="bg-slate-900/80 border-purple-500/20">
-                <SelectItem value="all" className="text-slate-100">All Statuses</SelectItem>
-                <SelectItem value="confirmed" className="text-slate-100">Confirmed</SelectItem>
-                <SelectItem value="pending" className="text-slate-100">Pending</SelectItem>
-                <SelectItem value="waitlist" className="text-slate-100">Waitlist</SelectItem>
-                <SelectItem value="checked_in" className="text-slate-100">Checked In</SelectItem>   
-                <SelectItem value="cancelled" className="text-slate-100">Cancelled</SelectItem>
+              <SelectContent className="bg-card border-border">
+                <SelectItem value="all">All Statuses</SelectItem>
+                <SelectItem value="confirmed">Confirmed</SelectItem>
+                <SelectItem value="pending">Pending</SelectItem>
+                <SelectItem value="waitlist">Waitlist</SelectItem>
+                <SelectItem value="checked_in">Checked In</SelectItem>   
+                <SelectItem value="cancelled">Cancelled</SelectItem>
               </SelectContent>
             </Select>
 
             <Select value={eventFilter} onValueChange={setEventFilter}>
-              <SelectTrigger className="w-[200px] bg-slate-900/80 border-purple-500/20 text-slate-100 hover:bg-slate-800">
+              <SelectTrigger className="w-[200px] bg-secondary/50 backdrop-blur-sm border-white/5 hover:border-primary/20 hover:bg-secondary/80 transition-colors">
                 <SelectValue placeholder="All Events" />
               </SelectTrigger>
-              <SelectContent className="bg-slate-900/80 border-purple-500/20">
-                <SelectItem value="all" className="text-slate-100">All Events</SelectItem>
+              <SelectContent className="bg-card border-border">
+                <SelectItem value="all">All Events</SelectItem>
                 {events.map((event) => (
-                  <SelectItem key={event.id} value={event.id} className="text-slate-100">
+                  <SelectItem key={event.id} value={event.id}>
                     {event.title}
                   </SelectItem>
                 ))}
@@ -171,7 +172,7 @@ export default function AdminBookingsPage() {
             </Select>
           </div>
 
-          <Card>
+          <Card className="bg-card/60 backdrop-blur-md border-white/5 shadow-2xl">
             <Table>
               <TableHeader>
                 <TableRow>

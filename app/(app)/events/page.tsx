@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react"
 import { AppHeader } from "@/components/app-header"
-import { EventCard } from "@/components/event-card"
+import { EventCard, EventCardSkeleton } from "@/components/event-card"
 import { EventFiltersPanel, type EventFilters } from "@/components/event-filters"
 import { useStore } from "@/lib/store"
 import { isWithinInterval } from "date-fns"
@@ -73,14 +73,15 @@ export default function EventsPage() {
   }, [eventsList, search, filters])
 
   return (
-    <div className="flex flex-col min-h-screen bg-slate-950">
+    <div className="flex flex-col min-h-screen bg-background relative overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/5 via-background to-background pointer-events-none" />
       <AppHeader searchValue={search} onSearchChange={setSearch} />
 
-      <main className="flex-1 p-4 sm:p-6">
+      <main className="flex-1 p-4 sm:p-6 relative z-10">
         <div className="container mx-auto">
           <div className="mb-6">
-            <h1 className="text-2xl font-semibold tracking-tight text-white">Upcoming Events</h1>
-            <p className="text-slate-400">
+            <h1 className="text-2xl font-semibold tracking-tight text-foreground">Upcoming Events</h1>
+            <p className="text-muted-foreground">
               Discover and book events in your area
             </p>
           </div>
@@ -92,14 +93,16 @@ export default function EventsPage() {
           />
 
           {loadingEvents ? (
-            <div className="flex items-center justify-center py-16 text-slate-400">
-              Loading events...
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <EventCardSkeleton key={i} />
+              ))}
             </div>
           ) : filteredEvents.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16 text-center">
-              <div className="rounded-full bg-slate-800 p-4 mb-4">
+              <div className="rounded-full bg-secondary/50 p-4 mb-4 border border-white/5 shadow-md">
                 <svg
-                  className="size-8 text-slate-500"
+                  className="size-8 text-muted-foreground"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -112,8 +115,8 @@ export default function EventsPage() {
                   />
                 </svg>
               </div>
-              <h3 className="font-medium text-lg text-white">No events found</h3>
-              <p className="text-sm text-slate-400 max-w-sm mt-1">
+              <h3 className="font-medium text-lg text-foreground tracking-tight">No events found</h3>
+              <p className="text-sm text-muted-foreground max-w-sm mt-1">
                 {search || filters.bookingType !== "all" || filters.tag !== "all" || filters.dateRange
                   ? "Try adjusting your filters or search terms"
                   : "Check back later for upcoming events"}

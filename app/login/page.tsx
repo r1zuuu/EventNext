@@ -62,11 +62,12 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-950 p-4">
-      <div className="w-full max-w-md space-y-4">
+    <div className="min-h-screen flex items-center justify-center bg-background p-4 relative overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-background to-background pointer-events-none" />
+      <div className="w-full max-w-md space-y-4 relative z-10">
 
-        <div className="rounded-xl border border-slate-700 bg-slate-800/60 p-4">
-          <p className="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-3">
+        <div className="rounded-xl border border-white/5 bg-card/60 backdrop-blur-md p-4 shadow-xl">
+          <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-3">
             Konta demo — kliknij żeby się zalogować
           </p>
           <div className="grid grid-cols-2 gap-2">
@@ -75,19 +76,19 @@ export default function LoginPage() {
                 key={acc.username}
                 type="button"
                 onClick={() => fillDemo(acc.username, acc.password)}
-                className="flex flex-col items-start gap-1 rounded-lg border border-slate-600 bg-slate-900 px-4 py-3 text-left transition hover:border-slate-400 hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-500"
+                className="flex flex-col items-start gap-1 rounded-lg border border-border bg-input/50 backdrop-blur-sm px-4 py-3 text-left transition hover:border-primary/50 hover:bg-secondary/80 focus:outline-none focus:ring-2 focus:ring-primary/50"
               >
-                <div className="flex items-center gap-2 text-slate-200 font-medium">
+                <div className="flex items-center gap-2 text-foreground font-medium">
                   <acc.icon className="size-4" />
                   {acc.label}
                 </div>
-                <span className="text-xs text-slate-500 font-mono">{acc.username} / {acc.password}</span>
-                <span className="text-xs text-slate-400">{acc.description}</span>
+                <span className="text-xs text-muted-foreground font-mono">{acc.username} / {acc.password}</span>
+                <span className="text-xs text-muted-foreground">{acc.description}</span>
               </button>
             ))}
           </div>
           {seedStatus === "seeding" && (
-            <p className="mt-3 flex items-center gap-2 text-xs text-slate-400">
+            <p className="mt-3 flex items-center gap-2 text-xs text-muted-foreground">
               <Loader2 className="size-3 animate-spin" /> Ładowanie danych demo...
             </p>
           )}
@@ -96,48 +97,48 @@ export default function LoginPage() {
           )}
         </div>
 
-        <Card className="bg-slate-800 border-slate-700">
+        <Card className="bg-card/80 border-white/5 backdrop-blur-md shadow-2xl">
           <CardHeader className="text-center">
-            <div className="mx-auto mb-4 flex size-12 items-center justify-center rounded-xl bg-white/10 text-white">
+            <div className="mx-auto mb-4 flex size-12 items-center justify-center rounded-xl bg-primary/10 text-primary border border-primary/20">
               <Calendar className="size-6" />
             </div>
-            <CardTitle className="text-2xl text-white">EventBook</CardTitle>
-            <CardDescription className="text-slate-400">
+            <CardTitle className="text-2xl text-foreground tracking-tight">EventBook</CardTitle>
+            <CardDescription className="text-muted-foreground">
               Zaloguj się, aby przeglądać i rezerwować eventy
             </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-5">
               {error && (
-                <div className="rounded-lg bg-slate-700/50 text-slate-200 text-sm p-3 border border-slate-600">
+                <div className="rounded-lg bg-destructive/10 text-destructive text-sm p-3 border border-destructive/20">
                   {error}
                 </div>
               )}
               <div className="space-y-2">
-                <Label htmlFor="username" className="text-slate-200">Login</Label>
+                <Label htmlFor="username" className="text-foreground">Login</Label>
                 <Input
                   id="username"
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  className="bg-slate-900 border-slate-600 text-slate-100 placeholder:text-slate-500 focus:border-slate-500"
+                  className="bg-input border-border text-foreground placeholder:text-muted-foreground focus:border-primary"
                   required
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="password" className="text-slate-200">Hasło</Label>
+                <Label htmlFor="password" className="text-foreground">Hasło</Label>
                 <Input
                   id="password"
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="bg-slate-900 border-slate-600 text-slate-100 placeholder:text-slate-500 focus:border-slate-500"
+                  className="bg-input border-border text-foreground placeholder:text-muted-foreground focus:border-primary"
                   required
                 />
               </div>
               <Button
                 type="submit"
-                className="w-full bg-slate-700 text-slate-100 hover:bg-slate-600 transition-colors"
+                className="w-full bg-primary/90 text-primary-foreground hover:bg-primary transition-colors hover:shadow-lg hover:shadow-primary/30"
                 disabled={loading}
               >
                 {loading

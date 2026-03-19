@@ -145,3 +145,41 @@ export function EventCard({ event }: EventCardProps) {
     </Card>
   )
 }
+
+export function EventCardSkeleton() {
+  return (
+    <Card className="flex flex-col h-full overflow-hidden bg-card/40 border border-white/5 backdrop-blur-sm shadow-sm">
+      <div className="h-40 bg-secondary/30 animate-pulse" />
+      <CardHeader className="pb-3 pt-4 space-y-3">
+        <div className="flex gap-2">
+          <div className="h-5 w-16 bg-secondary/40 rounded animate-pulse" />
+          <div className="h-5 w-24 bg-secondary/40 rounded animate-pulse" />
+        </div>
+        <div className="h-6 w-3/4 bg-secondary/40 rounded animate-pulse" />
+      </CardHeader>
+      <CardContent className="flex-1 space-y-4 pb-4">
+        <div className="space-y-2">
+          <div className="h-4 w-full bg-secondary/40 rounded animate-pulse" />
+          <div className="h-4 w-5/6 bg-secondary/40 rounded animate-pulse" />
+        </div>
+        <div className="space-y-3 pt-2">
+          <div className="flex items-center gap-2">
+             <div className="h-4 w-4 bg-secondary/40 rounded animate-pulse" />
+             <div className="h-4 w-1/2 bg-secondary/40 rounded animate-pulse" />
+          </div>
+          <div className="flex items-center gap-2">
+             <div className="h-4 w-4 bg-secondary/40 rounded animate-pulse" />
+             <div className="h-4 w-1/3 bg-secondary/40 rounded animate-pulse" />
+          </div>
+          <div className="flex items-center gap-2">
+             <div className="h-4 w-4 bg-secondary/40 rounded animate-pulse" />
+             <div className="h-4 w-2/3 bg-secondary/40 rounded animate-pulse" />
+          </div>
+        </div>
+      </CardContent>
+      <CardFooter className="pt-0 mt-auto">
+        <div className="h-10 w-full bg-secondary/40 rounded animate-pulse" />
+      </CardFooter>
+    </Card>
+  )
+}

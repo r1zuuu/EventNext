@@ -20,9 +20,9 @@ const getBookedCount = (bookings: Awaited<ReturnType<typeof getBookingsForEvent>
 export default async function EventDetailPage({
   params,
 }: {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }) {
-  const { id } = params
+  const { id } = await params
   const event = await getEventById(id)
 
   if (!event) {
@@ -65,21 +65,22 @@ export default async function EventDetailPage({
   const getBookingTypeBadge = () => {
     switch (event.bookingType) {
       case "free":
-        return <Badge className="text-sm bg-purple-600/20 text-purple-300 border-purple-500/30">Free Event</Badge>
+        return <Badge className="text-sm bg-primary/10 text-primary border-primary/20 backdrop-blur-sm">Free Event</Badge>
       case "ticketed":
-        return <Badge className="text-sm bg-purple-600/20 text-purple-300 border-purple-500/30">{event.price} PLN</Badge>
+        return <Badge className="text-sm bg-primary/10 text-primary border-primary/20 backdrop-blur-sm">{event.price} PLN</Badge>
       case "approval":
-        return <Badge className="text-sm bg-purple-600/20 text-purple-300 border-purple-500/30">Approval</Badge>
+        return <Badge className="text-sm bg-primary/10 text-primary border-primary/20 backdrop-blur-sm">Approval</Badge>
     }
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-slate-950">
+    <div className="flex flex-col min-h-screen bg-background relative overflow-hidden">
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-background to-background pointer-events-none" />
       <AppHeader showSearch={false} />
 
-      <main className="flex-1 p-6">
+      <main className="flex-1 p-6 relative z-10">
         <div className="max-w-4xl mx-auto">
-          <Button variant="ghost" asChild className="mb-6 -ml-2 text-slate-300 hover:text-slate-100 hover:bg-slate-800">
+          <Button variant="ghost" asChild className="mb-6 -ml-2 text-muted-foreground hover:text-foreground hover:bg-secondary/50">
             <Link href="/events">
               <ArrowLeft className="size-4 mr-2" />
               Back to Events
@@ -92,55 +93,63 @@ export default async function EventDetailPage({
               <div className="space-y-4">
                 <div className="flex flex-wrap items-center gap-2">
                   {getBookingTypeBadge()}
-                  {isFull && <Badge className="bg-purple-600/20 text-purple-300 border-purple-500/30">Full</Badge>}
-                  {event.status === "cancelled" && <Badge className="bg-purple-600/20 text-purple-300 border-purple-500/30">Cancelled</Badge>}
+                  {isFull && <Badge className="bg-destructive/10 text-destructive border-destructive/20 backdrop-blur-sm">Full</Badge>}
+                  {event.status === "cancelled" && <Badge className="bg-destructive/10 text-destructive border-destructive/20 backdrop-blur-sm">Cancelled</Badge>}
                   {(event.tags ?? []).map((tag) => (
-                    <Badge key={tag} className="bg-purple-600/20 text-purple-300 border-purple-500/30">
+                    <Badge key={tag} className="bg-secondary/50 text-secondary-foreground border-border/50 backdrop-blur-sm">
                       #{tag}
                     </Badge>
                   ))}
                 </div>
 
-                <h1 className="text-3xl font-bold tracking-tight text-balance text-white">{event.title}</h1>
-                <p className="text-lg text-slate-400">{event.shortDescription}</p>
+                <h1 className="text-3xl font-bold tracking-tight text-balance text-foreground">{event.title}</h1>
+                <p className="text-lg text-muted-foreground">{event.shortDescription}</p>
               </div>
 
-              <Separator className="bg-slate-700/50" />
+              <Separator className="bg-border/50" />
 
               {/* Details */}
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
-                  <CalendarDays className="size-5 text-purple-400/60 mt-0.5" />
-                  <div>
-                    <p className="font-medium text-white">{formatDate(event.startDateTime)}</p>
-                    <p className="text-sm text-slate-400">
+                  <div className="p-2 bg-primary/10 rounded-lg shrink-0">
+                    <CalendarDays className="size-5 text-primary" />
+                  </div>
+                  <div className="mt-1">
+                    <p className="font-medium text-foreground">{formatDate(event.startDateTime)}</p>
+                    <p className="text-sm text-muted-foreground">
                       {formatTime(event.startDateTime)} - {formatTime(event.endDateTime)} ({event.timezone})
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <Clock className="size-5 text-purple-400/60 mt-0.5" />
-                  <div>
-                    <p className="font-medium text-white">Duration</p>
-                    <p className="text-sm text-slate-400">{getDuration()}</p>
+                  <div className="p-2 bg-primary/10 rounded-lg shrink-0">
+                    <Clock className="size-5 text-primary" />
+                  </div>
+                  <div className="mt-1">
+                    <p className="font-medium text-foreground">Duration</p>
+                    <p className="text-sm text-muted-foreground">{getDuration()}</p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <MapPin className="size-5 text-purple-400/60 mt-0.5" />
-                  <div>
-                    <p className="font-medium text-white">{event.location}</p>
-                    <p className="text-sm text-slate-400">In-person event</p>
+                  <div className="p-2 bg-primary/10 rounded-lg shrink-0">
+                    <MapPin className="size-5 text-primary" />
+                  </div>
+                  <div className="mt-1">
+                    <p className="font-medium text-foreground">{event.location}</p>
+                    <p className="text-sm text-muted-foreground">In-person event</p>
                   </div>
                 </div>
 
                 {event.onlineUrl && (
                   <div className="flex items-start gap-3">
-                    <Globe className="size-5 text-purple-400/60 mt-0.5" />
-                    <div>
-                      <p className="font-medium text-white">Online Access</p>
-                      <p className="text-sm text-slate-400">
+                    <div className="p-2 bg-primary/10 rounded-lg shrink-0">
+                      <Globe className="size-5 text-primary" />
+                    </div>
+                    <div className="mt-1">
+                      <p className="font-medium text-foreground">Online Access</p>
+                      <p className="text-sm text-muted-foreground">
                         Link will be provided after booking
                       </p>
                     </div>
@@ -148,20 +157,22 @@ export default async function EventDetailPage({
                 )}
 
                 <div className="flex items-start gap-3">
-                  <User className="size-5 text-purple-400/60 mt-0.5" />
-                  <div>
-                    <p className="font-medium text-white">Organized by</p>
-                    <p className="text-sm text-slate-400">{event.organizerName}</p>
+                  <div className="p-2 bg-primary/10 rounded-lg shrink-0">
+                    <User className="size-5 text-primary" />
+                  </div>
+                  <div className="mt-1">
+                    <p className="font-medium text-foreground">Organized by</p>
+                    <p className="text-sm text-muted-foreground">{event.organizerName}</p>
                   </div>
                 </div>
               </div>
 
               {event.longDescription && (
                 <>
-                  <Separator className="bg-slate-700/50" />
+                  <Separator className="bg-border/50" />
                   <div className="space-y-3">
-                    <h2 className="text-xl font-semibold text-white">About this event</h2>
-                    <p className="text-slate-400 whitespace-pre-wrap">{event.longDescription}</p>
+                    <h2 className="text-xl font-semibold text-foreground tracking-tight">About this event</h2>
+                    <p className="text-muted-foreground whitespace-pre-wrap">{event.longDescription}</p>
                   </div>
                 </>
               )}
@@ -169,12 +180,12 @@ export default async function EventDetailPage({
 
             {/* Booking Card */}
             <div className="lg:col-span-1">
-              <Card className="sticky top-20 bg-slate-900/80 border-purple-500/20">
+              <Card className="sticky top-24 bg-card/60 backdrop-blur-md border-white/5 shadow-2xl">
                 <CardHeader>
-                  <CardTitle className="text-xl text-white">
+                  <CardTitle className="text-2xl text-foreground tracking-tight">
                     {event.bookingType === "ticketed" ? `${event.price} PLN` : "Free"}
                   </CardTitle>
-                  <CardDescription className="text-slate-400">
+                  <CardDescription className="text-muted-foreground">
                     {event.bookingType === "approval"
                       ? "This event requires approval from the organizer"
                       : "per person"}
@@ -182,32 +193,32 @@ export default async function EventDetailPage({
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-slate-400 flex items-center gap-2">
-                      <Users className="size-4" />
+                    <span className="text-muted-foreground flex items-center gap-2">
+                      <Users className="size-4 text-primary" />
                       Capacity
                     </span>
-                    <span className="font-medium text-white">
+                    <span className="font-medium text-foreground">
                       {bookedCount} / {event.capacity}
                     </span>
                   </div>
 
-                  <div className="h-2 bg-slate-700/30 rounded-full overflow-hidden">
+                  <div className="h-2 bg-secondary/50 rounded-full overflow-hidden">
                     <div
                       className={`h-full transition-all ${
-                        isFull ? "bg-slate-600" : "bg-purple-500/60"
+                        isFull ? "bg-destructive" : "bg-primary"
                       }`}
                       style={{ width: `${Math.min((bookedCount / event.capacity) * 100, 100)}%` }}
                     />
                   </div>
 
-                  <p className="text-sm text-slate-400">
+                  <p className="text-sm text-muted-foreground w-full text-center">
                     {isFull
                       ? "This event is full. You can join the waitlist."
                       : `${remainingCapacity} spot${remainingCapacity !== 1 ? "s" : ""} remaining`}
                   </p>
 
                   {event.status === "cancelled" ? (
-                    <Button disabled className="w-full bg-slate-700 text-slate-300">
+                    <Button disabled className="w-full bg-secondary text-secondary-foreground">
                       Event Cancelled
                     </Button>
                   ) : (
@@ -215,7 +226,7 @@ export default async function EventDetailPage({
                   )}
 
                   {event.bookingType === "approval" && (
-                    <p className="text-xs text-slate-400 text-center">
+                    <p className="text-xs text-muted-foreground text-center">
                       Your booking will be pending until approved by the organizer.
                     </p>
                   )}

@@ -404,7 +404,7 @@ export function EventForm({ event }: EventFormProps) {
                                 variant="outline"
                                 className={cn(
                                   "w-full justify-start text-left font-normal bg-input border-border text-foreground hover:bg-secondary/50",
-                                  !field.value && "text-slate-400"
+                                  !field.value && "text-muted-foreground"
                                 )}
                               >
                                 <CalendarIcon className="mr-2 size-4" />
@@ -453,7 +453,7 @@ export function EventForm({ event }: EventFormProps) {
                                 variant="outline"
                                 className={cn(
                                   "w-full justify-start text-left font-normal bg-input border-border text-foreground hover:bg-secondary/50",
-                                  !field.value && "text-slate-400"
+                                  !field.value && "text-muted-foreground"
                                 )}
                               >
                                 <CalendarIcon className="mr-2 size-4" />
@@ -498,7 +498,7 @@ export function EventForm({ event }: EventFormProps) {
                       <FormLabel className="text-foreground">Timezone</FormLabel>
                       <Select onValueChange={field.onChange} value={field.value}>
                         <FormControl>
-                          <SelectTrigger className="bg-slate-900 border-slate-600 text-slate-100">
+                          <SelectTrigger className="bg-input border-border text-foreground">
                             <SelectValue />
                           </SelectTrigger>
                         </FormControl>
@@ -600,7 +600,7 @@ export function EventForm({ event }: EventFormProps) {
                       <FormLabel className="text-foreground">Booking Type</FormLabel>
                       <Select onValueChange={field.onChange} value={field.value}>
                         <FormControl>
-                          <SelectTrigger className="bg-slate-900 border-slate-600 text-slate-100">
+                          <SelectTrigger className="bg-input border-border text-foreground">
                             <SelectValue />
                           </SelectTrigger>
                         </FormControl>
@@ -688,7 +688,7 @@ export function EventForm({ event }: EventFormProps) {
                       <FormLabel className="text-foreground">Event Status</FormLabel>
                       <Select onValueChange={field.onChange} value={field.value}>
                         <FormControl>
-                          <SelectTrigger className="bg-slate-900 border-slate-600 text-slate-100">
+                          <SelectTrigger className="bg-input border-border text-foreground">
                             <SelectValue />
                           </SelectTrigger>
                         </FormControl>

@@ -93,18 +93,19 @@ return {
 
   if (role !== "admin") {
     return (
-      <div className="flex flex-col min-h-screen bg-slate-950">
+      <div className="flex flex-col min-h-screen bg-background relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/5 via-background to-background pointer-events-none" />
         <AppHeader showSearch={false} />
-        <main className="flex-1 flex items-center justify-center p-6">
-          <Card className="max-w-md w-full text-center bg-slate-900/80 border-purple-500/20">
+        <main className="flex-1 flex items-center justify-center p-6 relative z-10">
+          <Card className="max-w-md w-full text-center bg-card/60 backdrop-blur-md border-white/5 shadow-2xl">
             <CardHeader>
-              <CardTitle className="text-white">Admin Access Required</CardTitle>
-              <CardDescription className="text-slate-400">
+              <CardTitle className="text-foreground tracking-tight">Admin Access Required</CardTitle>
+              <CardDescription className="text-muted-foreground">
                 Switch to admin mode to access this page
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-slate-400 mb-4">
+              <p className="text-sm text-muted-foreground mb-4">
                 Use the toggle in the sidebar to switch roles
               </p>
             </CardContent>
@@ -115,64 +116,73 @@ return {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-slate-950">
+    <div className="flex flex-col min-h-screen bg-background relative overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/5 via-background to-background pointer-events-none" />
       <AppHeader showSearch={false} />
 
-      <main className="flex-1 p-6">
+      <main className="flex-1 p-6 relative z-10">
         <div className="max-w-7xl mx-auto space-y-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-semibold tracking-tight text-white">Dashboard</h1>
-              <p className="text-slate-400">Overview of your events and bookings</p>
+              <h1 className="text-2xl font-semibold tracking-tight text-foreground">Dashboard</h1>
+              <p className="text-muted-foreground">Overview of your events and bookings</p>
             </div>
-            <Button asChild className="bg-purple-600/80 text-white hover:bg-purple-600 hover:shadow-lg hover:shadow-purple-500/30">
+            <Button asChild className="bg-primary/90 text-primary-foreground hover:bg-primary hover:shadow-lg hover:shadow-primary/30 transition-all">
               <Link href="/admin/events/new">Create Event</Link>
             </Button>
           </div>
 
           {/* KPI Cards */}
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            <Card className="bg-slate-900/80 border-purple-500/20">
+            <Card className="bg-card/60 backdrop-blur-md border-white/5 hover:border-primary/20 transition-colors shadow-lg">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium text-slate-100">Upcoming Events</CardTitle>
-                <Calendar className="size-4 text-purple-400/60" />
+                <CardTitle className="text-sm font-medium text-foreground">Upcoming Events</CardTitle>
+                <div className="p-2 bg-primary/10 rounded-lg">
+                  <Calendar className="size-4 text-primary" />
+                </div>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-white">{stats.upcomingEvents}</div>
-                <p className="text-xs text-slate-400">Published events</p>
+                <div className="text-2xl font-bold text-foreground">{stats.upcomingEvents}</div>
+                <p className="text-xs text-muted-foreground mt-1">Published events</p>
               </CardContent>
             </Card>
 
-            <Card className="bg-slate-900/80 border-purple-500/20">
+            <Card className="bg-card/60 backdrop-blur-md border-white/5 hover:border-primary/20 transition-colors shadow-lg">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium text-slate-100">Bookings Today</CardTitle>
-                <CalendarCheck className="size-4 text-purple-400/60" />
+                <CardTitle className="text-sm font-medium text-foreground">Bookings Today</CardTitle>
+                <div className="p-2 bg-primary/10 rounded-lg">
+                  <CalendarCheck className="size-4 text-primary" />
+                </div>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-white">{stats.todayBookings}</div>
-                <p className="text-xs text-slate-400">New bookings</p>
+                <div className="text-2xl font-bold text-foreground">{stats.todayBookings}</div>
+                <p className="text-xs text-muted-foreground mt-1">New bookings</p>
               </CardContent>
             </Card>
 
-            <Card className="bg-slate-900/80 border-purple-500/20">
+            <Card className="bg-card/60 backdrop-blur-md border-white/5 hover:border-primary/20 transition-colors shadow-lg">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium text-slate-100">Occupancy Rate</CardTitle>
-                <TrendingUp className="size-4 text-purple-400/60" />
+                <CardTitle className="text-sm font-medium text-foreground">Occupancy Rate</CardTitle>
+                <div className="p-2 bg-primary/10 rounded-lg">
+                  <TrendingUp className="size-4 text-primary" />
+                </div>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-white">{stats.occupancyRate}%</div>
-                <p className="text-xs text-slate-400">Across all events</p>
+                <div className="text-2xl font-bold text-foreground">{stats.occupancyRate}%</div>
+                <p className="text-xs text-muted-foreground mt-1">Across all events</p>
               </CardContent>
             </Card>
 
-            <Card className="bg-slate-900/80 border-purple-500/20">
+            <Card className="bg-card/60 backdrop-blur-md border-white/5 hover:border-primary/20 transition-colors shadow-lg">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium text-slate-100">Cancellations</CardTitle>
-                <XCircle className="size-4 text-purple-400/60" />
+                <CardTitle className="text-sm font-medium text-foreground">Cancellations</CardTitle>
+                <div className="p-2 bg-primary/10 rounded-lg">
+                  <XCircle className="size-4 text-primary" />
+                </div>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-white">{stats.cancellations}</div>
-                <p className="text-xs text-slate-400">Total cancelled</p>
+                <div className="text-2xl font-bold text-foreground">{stats.cancellations}</div>
+                <p className="text-xs text-muted-foreground mt-1">Total cancelled</p>
               </CardContent>
             </Card>
           </div>
@@ -185,18 +195,18 @@ return {
 
           {/* Pending Approvals Alert */}
           {stats.pendingApprovals > 0 && (
-            <Card className="border-purple-500/30 bg-slate-900/80">
+            <Card className="border-primary/20 bg-primary/5 backdrop-blur-md shadow-lg">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium flex items-center gap-2 text-slate-200">
-                  <Users className="size-4" />
+                <CardTitle className="text-sm font-medium flex items-center gap-2 text-foreground">
+                  <Users className="size-4 text-primary" />
                   Pending Approvals
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-slate-300">
+                <p className="text-sm text-muted-foreground">
                   You have {stats.pendingApprovals} booking{stats.pendingApprovals > 1 ? "s" : ""} waiting for approval.
                 </p>
-                <Button variant="outline" size="sm" asChild className="mt-2 bg-purple-600/20 border-purple-500/30 text-purple-300 hover:bg-purple-600/30">
+                <Button variant="outline" size="sm" asChild className="mt-3 bg-secondary/50 border-border/50 text-secondary-foreground hover:bg-secondary/80">
                   <Link href="/admin/bookings">Review Bookings</Link>
                 </Button>
               </CardContent>
@@ -205,42 +215,42 @@ return {
 
           {/* Quick Actions */}
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            <Card className="bg-slate-900/80 border-purple-500/20">
+            <Card className="bg-card/60 backdrop-blur-md border-white/5 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5 hover:border-primary/20 transition-all duration-300">
               <CardHeader>
-                <CardTitle className="text-lg text-white">Event Management</CardTitle>
-                <CardDescription className="text-slate-400">Create, edit, and manage your events</CardDescription>
+                <CardTitle className="text-lg text-foreground tracking-tight">Event Management</CardTitle>
+                <CardDescription className="text-muted-foreground">Create, edit, and manage your events</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="flex gap-2">
-                  <Button asChild variant="outline" className="flex-1 bg-purple-600/20 border-purple-500/30 text-purple-300 hover:bg-purple-600/30">
+                  <Button asChild variant="outline" className="flex-1 bg-secondary border-border/50 text-secondary-foreground hover:bg-secondary/80">
                     <Link href="/admin/events">View All</Link>
                   </Button>
-                  <Button asChild className="flex-1 bg-purple-600/80 text-white hover:bg-purple-600 hover:shadow-lg hover:shadow-purple-500/30">
+                  <Button asChild className="flex-1 bg-primary/90 text-primary-foreground hover:bg-primary hover:shadow-lg hover:shadow-primary/30">
                     <Link href="/admin/events/new">Create New</Link>
                   </Button>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-slate-900/80 border-purple-500/20">
+            <Card className="bg-card/60 backdrop-blur-md border-white/5 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5 hover:border-primary/20 transition-all duration-300">
               <CardHeader>
-                <CardTitle className="text-lg text-white">Booking Management</CardTitle>
-                <CardDescription className="text-slate-400">View and manage all bookings</CardDescription>
+                <CardTitle className="text-lg text-foreground tracking-tight">Booking Management</CardTitle>
+                <CardDescription className="text-muted-foreground">View and manage all bookings</CardDescription>
               </CardHeader>
               <CardContent>
-                <Button asChild variant="outline" className="w-full bg-purple-600/20 border-purple-500/30 text-purple-300 hover:bg-purple-600/30">
+                <Button asChild variant="outline" className="w-full bg-secondary border-border/50 text-secondary-foreground hover:bg-secondary/80">
                   <Link href="/admin/bookings">View Bookings</Link>
                 </Button>
               </CardContent>
             </Card>
 
-            <Card className="bg-slate-900/80 border-purple-500/20">
+            <Card className="bg-card/60 backdrop-blur-md border-white/5 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5 hover:border-primary/20 transition-all duration-300">
               <CardHeader>
-                <CardTitle className="text-lg text-white">User Management</CardTitle>
-                <CardDescription className="text-slate-400">Create and manage system users</CardDescription>
+                <CardTitle className="text-lg text-foreground tracking-tight">User Management</CardTitle>
+                <CardDescription className="text-muted-foreground">Create and manage system users</CardDescription>
               </CardHeader>
               <CardContent>
-                <Button asChild variant="outline" className="w-full bg-purple-600/20 border-purple-500/30 text-purple-300 hover:bg-purple-600/30">
+                <Button asChild variant="outline" className="w-full bg-secondary border-border/50 text-secondary-foreground hover:bg-secondary/80">
                   <Link href="/admin/users">Manage Users</Link>
                 </Button>
               </CardContent>

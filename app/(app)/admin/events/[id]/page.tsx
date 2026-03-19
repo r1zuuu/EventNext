@@ -7,9 +7,9 @@ import { AdminEventEditor } from "./event-editor"
 export default async function EditEventPage({
   params,
 }: {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }) {
-  const { id } = params
+  const { id } = await params
   const event = await getEventById(id)
 
   if (!event) {

@@ -7,9 +7,9 @@ import { AdminEventBookings } from "./bookings-client"
 export default async function EventBookingsPage({
   params,
 }: {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }) {
-  const { id } = params
+  const { id } = await params
   const event = await getEventById(id)
 
   if (!event) {
