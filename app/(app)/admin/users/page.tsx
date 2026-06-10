@@ -15,7 +15,7 @@ import {
   AlertDialogDescription,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import { useToast } from "@/components/ui/use-toast"
+import { toast } from "sonner"
 import { AddUserDialog } from "@/components/admin/add-user-dialog"
 import { EditUserDialog } from "@/components/admin/edit-user-dialog"
 
@@ -36,7 +36,6 @@ export default function AdminUsersPage() {
   const [selectedUser, setSelectedUser] = useState<User | null>(null)
   const [userToDelete, setUserToDelete] = useState<User | null>(null)
   const { role } = useStore()
-  const { toast } = useToast()
 
   // Fetch users
   const fetchUsers = async () => {
@@ -48,11 +47,7 @@ export default function AdminUsersPage() {
       setUsers(data)
     } catch (error) {
       console.error("Error fetching users:", error)
-      toast({
-        title: "Error",
-        description: "Failed to load users",
-        variant: "destructive",
-      })
+      toast.error("Failed to load users")
     } finally {
       setLoading(false)
     }
@@ -79,17 +74,10 @@ export default function AdminUsersPage() {
       const newUser = await response.json()
       setUsers([newUser, ...users])
       setShowAddDialog(false)
-      toast({
-        title: "Success",
-        description: "User created successfully",
-      })
+      toast.success("User created successfully")
     } catch (error) {
       console.error("Error creating user:", error)
-      toast({
-        title: "Error",
-        description: error instanceof Error ? error.message : "Failed to create user",
-        variant: "destructive",
-      })
+      toast.error(error instanceof Error ? error.message : "Failed to create user")
     }
   }
 
@@ -113,17 +101,10 @@ export default function AdminUsersPage() {
       setUsers(users.map((u) => (u.id === updatedUser.id ? updatedUser : u)))
       setShowEditDialog(false)
       setSelectedUser(null)
-      toast({
-        title: "Success",
-        description: "User updated successfully",
-      })
+      toast.success("User updated successfully")
     } catch (error) {
       console.error("Error updating user:", error)
-      toast({
-        title: "Error",
-        description: error instanceof Error ? error.message : "Failed to update user",
-        variant: "destructive",
-      })
+      toast.error(error instanceof Error ? error.message : "Failed to update user")
     }
   }
 
@@ -140,17 +121,10 @@ export default function AdminUsersPage() {
 
       setUsers(users.filter((u) => u.id !== userToDelete.id))
       setUserToDelete(null)
-      toast({
-        title: "Success",
-        description: "User deleted successfully",
-      })
+      toast.success("User deleted successfully")
     } catch (error) {
       console.error("Error deleting user:", error)
-      toast({
-        title: "Error",
-        description: "Failed to delete user",
-        variant: "destructive",
-      })
+      toast.error("Failed to delete user")
     }
   }
 
