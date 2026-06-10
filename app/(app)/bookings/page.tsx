@@ -12,6 +12,7 @@ import { useStore } from "@/lib/store"
 import { format, isPast } from "date-fns"
 import { useState } from "react"
 import { toValidDate } from "@/lib/utils"
+import { BookingStatusBadge } from "@/components/badges"
 
 export default function MyBookingsPage() {
   const { bookings, events, userEmail, isAuthenticated } = useStore()
@@ -55,22 +56,6 @@ export default function MyBookingsPage() {
     setTimeout(() => setCopiedId(null), 2000)
   }
 
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case "confirmed":
-        return <Badge variant="default">Confirmed</Badge>
-      case "pending":
-        return <Badge variant="secondary">Pending Approval</Badge>
-      case "waitlist":
-        return <Badge variant="outline">Waitlist</Badge>
-      case "cancelled":
-        return <Badge variant="destructive">Cancelled</Badge>
-      case "checked_in":
-        return <Badge className="bg-blue-600 hover:bg-blue-700 text-white">Checked In</Badge>
-      default:
-        return <Badge variant="secondary">{status}</Badge>
-    }
-  }
 
   const BookingCard = ({ booking }: { booking: (typeof userBookings)[0] }) => {
     if (!booking.event) return null
@@ -81,7 +66,7 @@ export default function MyBookingsPage() {
         <CardHeader className="pb-3">
           <div className="flex items-start justify-between gap-2">
             <div className="space-y-1">
-              {getStatusBadge(booking.status)}
+              <BookingStatusBadge status={booking.status} />
               <CardTitle className="text-lg">{booking.event.title}</CardTitle>
             </div>
           </div>
@@ -125,7 +110,11 @@ export default function MyBookingsPage() {
             <span className="font-medium">{booking.quantity} ticket{booking.quantity > 1 ? "s" : ""}</span>
           </div>
 
-          <Button variant="outline" asChild className="w-full bg-transparent">
+          <Button 
+            variant="outline"
+            asChild
+            className="w-full bg-transparent"
+												>
             <Link href={`/events/${booking.event.id}`}>
               View Event
               <ExternalLink className="size-4 ml-2" />

@@ -25,6 +25,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useStore } from "@/lib/store"
 import { format } from "date-fns"
 import { toast } from "sonner"
+import { BookingStatusBadge } from "@/components/badges"
 
 export default function AdminBookingsPage() {
   const { bookings, events, role, updateBookingStatus } = useStore()
@@ -90,22 +91,6 @@ export default function AdminBookingsPage() {
     toast.success("CSV exported")
   }
 
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case "confirmed":
-        return <Badge variant="default">Confirmed</Badge>
-      case "pending":
-        return <Badge variant="secondary">Pending</Badge>
-      case "waitlist":
-        return <Badge variant="outline">Waitlist</Badge>
-      case "cancelled":
-        return <Badge variant="destructive">Cancelled</Badge>
-      case "checked_in":
-        return <Badge className="bg-blue-600 hover:bg-blue-700 text-white">Checked In</Badge>
-      default:
-        return <Badge variant="secondary">{status}</Badge>
-    }
-  }
 
   if (role !== "admin") {
     return (
@@ -211,7 +196,7 @@ export default function AdminBookingsPage() {
                         </Link>
                       </TableCell>
                       <TableCell>{booking.quantity}</TableCell>
-                      <TableCell>{getStatusBadge(booking.status)}</TableCell>
+                      <TableCell><BookingStatusBadge status={booking.status} /></TableCell>
                       <TableCell className="text-sm text-muted-foreground">
                         {Number.isNaN(new Date(booking.createdAt).getTime())
                           ? "TBD"

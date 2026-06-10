@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { getBookingsForEvent, getEventById } from "@/lib/server-data"
+import { BookingTypeBadge } from "@/components/badges"
 
 const getBookedCount = (bookings: Awaited<ReturnType<typeof getBookingsForEvent>>) => {
   return bookings
@@ -62,16 +63,6 @@ export default async function EventDetailPage({
     return `${diffHours} hr ${diffMinutes} min`
   }
 
-  const getBookingTypeBadge = () => {
-    switch (event.bookingType) {
-      case "free":
-        return <Badge className="text-sm bg-primary/10 text-primary border-primary/20 backdrop-blur-sm">Free Event</Badge>
-      case "ticketed":
-        return <Badge className="text-sm bg-primary/10 text-primary border-primary/20 backdrop-blur-sm">{event.price} PLN</Badge>
-      case "approval":
-        return <Badge className="text-sm bg-primary/10 text-primary border-primary/20 backdrop-blur-sm">Approval</Badge>
-    }
-  }
 
   return (
     <div className="flex flex-col min-h-screen bg-background relative overflow-hidden">
@@ -92,7 +83,7 @@ export default async function EventDetailPage({
               {/* Header */}
               <div className="space-y-4">
                 <div className="flex flex-wrap items-center gap-2">
-                  {getBookingTypeBadge()}
+                  <BookingTypeBadge bookingType={event.bookingType} price={event.price} />
                   {isFull && <Badge className="bg-destructive/10 text-destructive border-destructive/20 backdrop-blur-sm">Full</Badge>}
                   {event.status === "cancelled" && <Badge className="bg-destructive/10 text-destructive border-destructive/20 backdrop-blur-sm">Cancelled</Badge>}
                   {(event.tags ?? []).map((tag) => (

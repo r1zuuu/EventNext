@@ -1,13 +1,5 @@
 import type { Event, Booking } from "./schemas"
-
-function generateBookingCode(): string {
-  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"
-  let code = "EVT-"
-  for (let i = 0; i < 5; i++) {
-    code += chars.charAt(Math.floor(Math.random() * chars.length))
-  }
-  return code
-}
+import { generateBookingCode } from "./utils"
 
 const now = new Date()
 const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000)

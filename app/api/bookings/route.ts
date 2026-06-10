@@ -3,15 +3,7 @@
 import { prisma } from '@/lib/prisma'
 import { initialBookings, initialEvents } from '@/lib/mock-data'
 import { NextRequest, NextResponse } from 'next/server'
-// generowanie kodu rezerwacji format EVT-XXXXX
-function generateBookingCode(): string {
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
-  let code = 'EVT-'
-  for (let i = 0; i < 5; i++) {
-    code += chars.charAt(Math.floor(Math.random() * chars.length))
-  }
-  return code
-}
+import { generateBookingCode } from '@/lib/utils'
 
 export async function GET(request: NextRequest) {
   let eventId: string | null = null

@@ -35,6 +35,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useStore } from "@/lib/store"
 import { format } from "date-fns"
 import { toast } from "sonner"
+import { BookingTypeBadge, EventStatusBadge } from "@/components/badges"
 
 export default function AdminEventsPage() {
   const { events, role, updateEvent, deleteEvent, duplicateEvent, getBookedCount } = useStore()
@@ -78,31 +79,6 @@ export default function AdminEventsPage() {
     }
   }
 
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case "published":
-        return <Badge variant="default">Published</Badge>
-      case "draft":
-        return <Badge variant="secondary">Draft</Badge>
-      case "cancelled":
-        return <Badge variant="destructive">Cancelled</Badge>
-      default:
-        return <Badge variant="outline">{status}</Badge>
-    }
-  }
-
-  const getBookingTypeBadge = (type: string, price?: number) => {
-    switch (type) {
-      case "free":
-        return <Badge variant="outline">Free</Badge>
-      case "ticketed":
-        return <Badge variant="outline">{price} PLN</Badge>
-      case "approval":
-        return <Badge variant="outline">Approval</Badge>
-      default:
-        return null
-    }
-  }
 
   if (role !== "admin") {
     return (
@@ -186,7 +162,7 @@ export default function AdminEventsPage() {
                             )}
                           </div>
                         </TableCell>
-                        <TableCell>{getBookingTypeBadge(event.bookingType, event.price)}</TableCell>
+                        <TableCell><BookingTypeBadge bookingType={event.bookingType} price={event.price} /></TableCell>
                         <TableCell>
                           <div className="text-sm">
                             <p>
@@ -197,7 +173,7 @@ export default function AdminEventsPage() {
                             </p>
                           </div>
                         </TableCell>
-                        <TableCell>{getStatusBadge(event.status)}</TableCell>
+                        <TableCell><EventStatusBadge status={event.status} /></TableCell>
                         <TableCell>
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>

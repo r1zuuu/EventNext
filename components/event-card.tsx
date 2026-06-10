@@ -7,6 +7,7 @@ import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import type { Event } from "@/lib/schemas"
+import { BookingTypeBadge } from "@/components/badges"
 import { useStore } from "@/lib/store"
 import { format } from "date-fns"
 
@@ -36,16 +37,6 @@ export function EventCard({ event }: EventCardProps) {
     return format(parsedDate, "MMM d, yyyy 'at' h:mm a")
   }
 
-    const getBookingTypeBadge = () => {
-      switch (event.bookingType) {
-        case "free":
-          return <Badge className="bg-primary/10 text-primary border-primary/20 hover:bg-primary/20">Free</Badge>
-        case "ticketed":
-          return <Badge className="bg-primary/10 text-primary border-primary/20 hover:bg-primary/20">{event.price} PLN</Badge>
-        case "approval":
-          return <Badge className="bg-primary/10 text-primary border-primary/20 hover:bg-primary/20">Approval</Badge>
-      }
-    }
 
   return (
     <Card className="group flex flex-col h-full overflow-hidden transition-all duration-300 ease-out hover:shadow-xl hover:shadow-primary/5 bg-card/80 border border-primary/10 hover:border-primary/30 hover:-translate-y-1 backdrop-blur-sm">
@@ -61,7 +52,7 @@ export function EventCard({ event }: EventCardProps) {
         <div className="flex items-start justify-between gap-2">
           <div className="space-y-2 flex-1">
             <div className="flex items-center gap-2 flex-wrap">
-              {getBookingTypeBadge()}
+              <BookingTypeBadge bookingType={event.bookingType} price={event.price} />
               {isFull && <Badge className="bg-primary/10 text-primary border-primary/20">Full</Badge>}
               {event.status === "cancelled" && <Badge className="bg-primary/10 text-primary border-primary/20">Cancelled</Badge>}
             </div>

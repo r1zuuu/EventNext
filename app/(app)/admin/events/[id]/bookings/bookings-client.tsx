@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/table"
 import type { Booking, Event } from "@/lib/schemas"
 import { useStore } from "@/lib/store"
+import { BookingStatusBadge } from "@/components/badges"
 
 interface AdminEventBookingsProps {
   event: Event
@@ -142,22 +143,6 @@ export function AdminEventBookings({ event, initialBookings }: AdminEventBooking
     toast.success("Bookings exported")
   }
 
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case "confirmed":
-        return <Badge variant="default">Confirmed</Badge>
-      case "pending":
-        return <Badge variant="secondary">Pending</Badge>
-      case "waitlist":
-        return <Badge variant="outline">Waitlist</Badge>
-      case "cancelled":
-        return <Badge variant="destructive">Cancelled</Badge>
-      case "checked_in":
-        return <Badge className="bg-blue-600 hover:bg-blue-700 text-white">Checked In</Badge>
-      default:
-        return <Badge variant="secondary">{status}</Badge>
-    }
-  }
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -278,7 +263,7 @@ export function AdminEventBookings({ event, initialBookings }: AdminEventBooking
                         </div>
                       </TableCell>
                       <TableCell>{booking.quantity}</TableCell>
-                      <TableCell>{getStatusBadge(booking.status)}</TableCell>
+                      <TableCell><BookingStatusBadge status={booking.status} /></TableCell>
                       <TableCell className="max-w-[200px]">
                         {booking.notes && (
                           <p className="text-sm text-muted-foreground truncate">{booking.notes}</p>
