@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import { ArrowLeft, CalendarDays, Clock, Globe, MapPin, User, Users } from "lucide-react"
-import { format } from "date-fns"
+import { formatEventDate, formatEventTime, getEventDuration } from "@/lib/date-utils"
 
 import { AppHeader } from "@/components/app-header"
 import { BookingDialog } from "@/components/booking-dialog"
@@ -35,33 +35,6 @@ export default async function EventDetailPage({
   const remainingCapacity = event.capacity - bookedCount
   const isFull = remainingCapacity <= 0
 
-  const formatDate = (dateStr: string) => {
-    const date = new Date(dateStr)
-    if (Number.isNaN(date.getTime())) {
-      return "TBD"
-    }
-    return format(date, "EEEE, MMMM d, yyyy")
-  }
-
-  const formatTime = (dateStr: string) => {
-    const date = new Date(dateStr)
-    if (Number.isNaN(date.getTime())) {
-      return "TBD"
-    }
-    return format(date, "h:mm a")
-  }
-
-  const getDuration = () => {
-    const start = new Date(event.startDateTime)
-    const end = new Date(event.endDateTime)
-    const diffMs = end.getTime() - start.getTime()
-    const diffHours = Math.floor(diffMs / (1000 * 60 * 60))
-    const diffMinutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60))
-
-    if (diffHours === 0) return `${diffMinutes} min`
-    if (diffMinutes === 0) return `${diffHours} hr`
-    return `${diffHours} hr ${diffMinutes} min`
-  }
 
 
   return (
@@ -106,9 +79,9 @@ export default async function EventDetailPage({
                     <CalendarDays className="size-5 text-primary" />
                   </div>
                   <div className="mt-1">
-                    <p className="font-medium text-foreground">{formatDate(event.startDateTime)}</p>
+                    <p className="font-medium text-foreground">{formatEventDate(event.startDateTime)}</p>
                     <p className="text-sm text-muted-foreground">
-                      {formatTime(event.startDateTime)} - {formatTime(event.endDateTime)} ({event.timezone})
+                      {formatEventTime(event.startDateTime)} - {formatEventTime(event.endDateTime)} ({event.timezone})
                     </p>
                   </div>
                 </div>
@@ -119,7 +92,7 @@ export default async function EventDetailPage({
                   </div>
                   <div className="mt-1">
                     <p className="font-medium text-foreground">Duration</p>
-                    <p className="text-sm text-muted-foreground">{getDuration()}</p>
+                    <p className="text-sm text-muted-foreground">{getEventDuration(event.startDateTime, event.endDateTime)}</p>
                   </div>
                 </div>
 

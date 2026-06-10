@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button"
 import type { Event } from "@/lib/schemas"
 import { BookingTypeBadge } from "@/components/badges"
 import { useStore } from "@/lib/store"
-import { format } from "date-fns"
+import { formatEventDateTime } from "@/lib/date-utils"
 
 interface EventCardProps {
   event: Event
@@ -27,15 +27,6 @@ export function EventCard({ event }: EventCardProps) {
   const remainingCapacity = event.capacity - bookedCount
   const isFull = remainingCapacity <= 0
 
-  function formatDateTime(date: string): string
-  function formatDateTime(date: Date): string
-  function formatDateTime(date: string | Date) {
-    const parsedDate = typeof date === "string" ? new Date(date) : date
-    if (Number.isNaN(parsedDate.getTime())) {
-      return "TBD"
-    }
-    return format(parsedDate, "MMM d, yyyy 'at' h:mm a")
-  }
 
 
   return (
@@ -69,7 +60,7 @@ export function EventCard({ event }: EventCardProps) {
         <div className="space-y-2 text-sm">
           <div className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
             <CalendarDays className="h-4 w-4 shrink-0 text-primary/60" />
-            <span className="truncate">{formatDateTime(event.startDateTime)}</span>
+            <span className="truncate">{formatEventDateTime(event.startDateTime)}</span>
           </div>
 
           <div className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
