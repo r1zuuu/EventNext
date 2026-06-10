@@ -2,7 +2,7 @@
 
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod"
+import { userSchema, type UserFormData } from "@/lib/schemas"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -15,19 +15,10 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-const addUserSchema = z.object({
-  username: z.string().min(3, "Username must be at least 3 characters"),
-  email: z.string().email("Invalid email format"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-  role: z.enum(["user", "admin"]).default("user"),
-})
-
-type AddUserFormData = z.infer<typeof addUserSchema>
-
 interface AddUserDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
-  onSubmit: (data: AddUserFormData) => Promise<void>
+  onSubmit: (data: UserFormData) => Promise<void>
 }
 
 export function AddUserDialog({ open, onOpenChange, onSubmit }: AddUserDialogProps) {
@@ -38,8 +29,8 @@ export function AddUserDialog({ open, onOpenChange, onSubmit }: AddUserDialogPro
     reset,
     watch,
     setValue,
-  } = useForm<AddUserFormData>({
-    resolver: zodResolver(addUserSchema),
+  } = useForm<UserFormData>({
+    resolver: zodResolver(userSchema),
     defaultValues: {
       username: "",
       email: "",
@@ -57,7 +48,7 @@ export function AddUserDialog({ open, onOpenChange, onSubmit }: AddUserDialogPro
     onOpenChange(newOpen)
   }
 
-  const onFormSubmit = async (data: AddUserFormData) => {
+  const onFormSubmit = async (data: UserFormData) => {
     try {
       await onSubmit(data)
       reset()

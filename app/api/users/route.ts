@@ -2,15 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 import bcrypt from "bcrypt";
-
-const userSchema = z.object({
-  username: z.string().min(3, "Username must be at least 3 characters"),
-  email: z.string().email("Invalid email format"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-  role: z.enum(["user", "admin"]).default("user"),
-});
-
-type UserInput = z.infer<typeof userSchema>;
+import { userSchema } from "@/lib/schemas";
 
 export async function GET(request: NextRequest) {
   try {

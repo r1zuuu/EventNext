@@ -2,15 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 import bcrypt from "bcrypt";
-
-const updateUserSchema = z.object({
-  username: z.string().min(3, "Username must be at least 3 characters").optional(),
-  email: z.string().email("Invalid email format").optional(),
-  password: z.string().min(6, "Password must be at least 6 characters").optional(),
-  role: z.enum(["user", "admin"]).optional(),
-});
-
-type UpdateUserInput = z.infer<typeof updateUserSchema>;
+import { updateUserSchema } from "@/lib/schemas";
 
 export async function GET(
   request: NextRequest,
