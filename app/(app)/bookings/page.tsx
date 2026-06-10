@@ -1,18 +1,16 @@
 "use client"
 
-import { useMemo } from "react"
+import { useMemo, useState } from "react"
 import Link from "next/link"
-import { CalendarDays, MapPin, Copy, Check, ExternalLink } from "lucide-react"
+import { CalendarDays } from "lucide-react"
 import { AppHeader } from "@/components/app-header"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useStore } from "@/lib/store"
-import { format, isPast } from "date-fns"
-import { useState } from "react"
+import { isPast } from "date-fns"
 import { toValidDate } from "@/lib/utils"
-import { BookingStatusBadge } from "@/components/badges"
+import { MyBookingCard } from "@/components/my-booking-card"
 
 export default function MyBookingsPage() {
   const { bookings, events, userEmail, isAuthenticated } = useStore()
@@ -33,96 +31,23 @@ export default function MyBookingsPage() {
       })
   }, [bookings, events, userEmail])
 
-  const upcomingBookings = userBookings.filter(
-    (booking) => {
-      if (!booking.event || booking.status === "cancelled") return false
-      const startDate = toValidDate(booking.event.startDateTime)
-      return startDate ? !isPast(startDate) : false
-    }
-  )
+  const upcomingBookings = userBookings.filter((booking) => {
+    if (!booking.event || booking.status === "cancelled") return false
+    const startDate = toValidDate(booking.event.startDateTime)
+    return startDate ? !isPast(startDate) : false
+  })
 
-  const pastBookings = userBookings.filter(
-    (booking) => {
-      if (!booking.event) return false
-      if (booking.status === "cancelled") return true
-      const startDate = toValidDate(booking.event.startDateTime)
-      return startDate ? isPast(startDate) : false
-    }
-  )
+  const pastBookings = userBookings.filter((booking) => {
+    if (!booking.event) return false
+    if (booking.status === "cancelled") return true
+    const startDate = toValidDate(booking.event.startDateTime)
+    return startDate ? isPast(startDate) : false
+  })
 
   const copyBookingCode = (code: string, id: string) => {
     navigator.clipboard.writeText(code)
     setCopiedId(id)
     setTimeout(() => setCopiedId(null), 2000)
-  }
-
-
-  const BookingCard = ({ booking }: { booking: (typeof userBookings)[0] }) => {
-    if (!booking.event) return null
-    const eventDate = toValidDate(booking.event.startDateTime)
-
-    return (
-      <Card>
-        <CardHeader className="pb-3">
-          <div className="flex items-start justify-between gap-2">
-            <div className="space-y-1">
-              <BookingStatusBadge status={booking.status} />
-              <CardTitle className="text-lg">{booking.event.title}</CardTitle>
-            </div>
-          </div>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-2 text-sm">
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <CalendarDays className="size-4" />
-              <span>
-                {eventDate
-                  ? format(eventDate, "EEEE, MMMM d, yyyy 'at' h:mm a")
-                  : "Date unavailable"}
-              </span>
-            </div>
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <MapPin className="size-4" />
-              <span>{booking.event.location}</span>
-            </div>
-          </div>
-
-          <div className="flex items-center justify-between rounded-lg bg-muted p-3">
-            <div>
-              <p className="text-xs text-muted-foreground">Booking Code</p>
-              <p className="font-mono font-semibold">{booking.bookingCode}</p>
-            </div>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => copyBookingCode(booking.bookingCode, booking.id)}
-            >
-              {copiedId === booking.id ? (
-                <Check className="size-4" />
-              ) : (
-                <Copy className="size-4" />
-              )}
-            </Button>
-          </div>
-
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-muted-foreground">Quantity</span>
-            <span className="font-medium">{booking.quantity} ticket{booking.quantity > 1 ? "s" : ""}</span>
-          </div>
-
-          <Button 
-            variant="outline"
-            asChild
-            className="w-full bg-transparent"
-												>
-            <Link href={`/events/${booking.event.id}`}>
-              View Event
-              <ExternalLink className="size-4 ml-2" />
-            </Link>
-          </Button>
-        </CardContent>
-      </Card>
-    )
   }
 
   if (!isAuthenticated) {
@@ -161,12 +86,8 @@ export default function MyBookingsPage() {
 
           <Tabs defaultValue="upcoming" className="space-y-6">
             <TabsList>
-              <TabsTrigger value="upcoming">
-                Upcoming ({upcomingBookings.length})
-              </TabsTrigger>
-              <TabsTrigger value="past">
-                Past ({pastBookings.length})
-              </TabsTrigger>
+              <TabsTrigger value="upcoming">Upcoming ({upcomingBookings.length})</TabsTrigger>
+              <TabsTrigger value="past">Past ({pastBookings.length})</TabsTrigger>
             </TabsList>
 
             <TabsContent value="upcoming">
@@ -186,7 +107,12 @@ export default function MyBookingsPage() {
               ) : (
                 <div className="grid gap-4 md:grid-cols-2">
                   {upcomingBookings.map((booking) => (
-                    <BookingCard key={booking.id} booking={booking} />
+                    <MyBookingCard
+                      key={booking.id}
+                      booking={booking}
+                      copiedId={copiedId}
+                      onCopy={copyBookingCode}
+                    />
                   ))}
                 </div>
               )}
@@ -206,7 +132,12 @@ export default function MyBookingsPage() {
               ) : (
                 <div className="grid gap-4 md:grid-cols-2">
                   {pastBookings.map((booking) => (
-                    <BookingCard key={booking.id} booking={booking} />
+                    <MyBookingCard
+                      key={booking.id}
+                      booking={booking}
+                      copiedId={copiedId}
+                      onCopy={copyBookingCode}
+                    />
                   ))}
                 </div>
               )}
