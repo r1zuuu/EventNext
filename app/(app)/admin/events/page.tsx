@@ -33,9 +33,9 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { useStore } from "@/lib/store"
-import { format } from "date-fns"
 import { toast } from "sonner"
 import { BookingTypeBadge, EventStatusBadge } from "@/components/badges"
+import { formatEventDate, formatEventTime } from "@/lib/date-utils"
 
 export default function AdminEventsPage() {
   const { events, role, updateEvent, deleteEvent, duplicateEvent, getBookedCount } = useStore()
@@ -147,19 +147,8 @@ export default function AdminEventsPage() {
                         </TableCell>
                         <TableCell>
                           <div className="text-sm">
-                            {Number.isNaN(new Date(event.startDateTime).getTime()) ? (
-                              <>
-                                <p>TBD</p>
-                                <p className="text-muted-foreground">TBD</p>
-                              </>
-                            ) : (
-                              <>
-                                <p>{format(new Date(event.startDateTime), "MMM d, yyyy")}</p>
-                                <p className="text-muted-foreground">
-                                  {format(new Date(event.startDateTime), "h:mm a")}
-                                </p>
-                              </>
-                            )}
+                            <p>{formatEventDate(event.startDateTime)}</p>
+                            <p className="text-muted-foreground">{formatEventTime(event.startDateTime)}</p>
                           </div>
                         </TableCell>
                         <TableCell><BookingTypeBadge bookingType={event.bookingType} price={event.price} /></TableCell>

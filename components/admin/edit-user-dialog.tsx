@@ -2,7 +2,8 @@
 
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod"
+import { editUserSchema, type EditUserFormData } from "@/lib/schemas"
+import type { User } from "@/lib/types"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -14,15 +15,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import type { User } from "@/app/(app)/admin/users/page"
-
-const editUserSchema = z.object({
-  username: z.string().min(3, "Username must be at least 3 characters"),
-  email: z.string().email("Invalid email format"),
-  role: z.enum(["user", "admin"]),
-})
-
-type EditUserFormData = z.infer<typeof editUserSchema>
 
 interface EditUserDialogProps {
   open: boolean
@@ -52,11 +44,7 @@ export function EditUserDialog({ open, onOpenChange, user, onSubmit }: EditUserD
 
   const handleOpenChange = (newOpen: boolean) => {
     if (!newOpen) {
-      reset({
-        username: user.username,
-        email: user.email,
-        role: user.role,
-      })
+      reset({ username: user.username, email: user.email, role: user.role })
     }
     onOpenChange(newOpen)
   }
@@ -74,9 +62,7 @@ export function EditUserDialog({ open, onOpenChange, user, onSubmit }: EditUserD
       <DialogContent className="sm:max-w-106.25">
         <DialogHeader>
           <DialogTitle>Edit User</DialogTitle>
-          <DialogDescription>
-            Update user information and role
-          </DialogDescription>
+          <DialogDescription>Update user information and role</DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-4">
           <div className="space-y-2">
@@ -110,7 +96,11 @@ export function EditUserDialog({ open, onOpenChange, user, onSubmit }: EditUserD
 
           <div className="space-y-2">
             <Label htmlFor="role">Role</Label>
-            <Select value={roleValue} onValueChange={(value) => setValue("role", value as "user" | "admin")} disabled={isSubmitting}>
+            <Select
+              value={roleValue}
+              onValueChange={(value) => setValue("role", value as "user" | "admin")}
+              disabled={isSubmitting}
+            >
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>

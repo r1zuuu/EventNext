@@ -142,7 +142,6 @@ export async function DELETE(
       );
     }
 
-    // Prevent deleting the last admin
     if (user.role === "admin") {
       const adminCount = await prisma.user.count({
         where: { role: "admin" },

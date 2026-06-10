@@ -91,11 +91,14 @@ export const userSchema = z.object({
   role: z.enum(["user", "admin"]).default("user"),
 })
 
+export const editUserSchema = userSchema.omit({ password: true })
+
 export const updateUserSchema = userSchema.partial().omit({ password: true }).extend({
   password: z.string().min(6, "Password must be at least 6 characters").optional(),
 })
 
 export type UserFormData = z.infer<typeof userSchema>
+export type EditUserFormData = z.infer<typeof editUserSchema>
 export type UpdateUserFormData = z.infer<typeof updateUserSchema>
 
 export const sessionSlotSchema = z.object({
