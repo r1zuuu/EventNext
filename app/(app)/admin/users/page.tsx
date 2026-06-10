@@ -9,7 +9,8 @@ import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogTitle } from "@/components/ui/alert-dialog"
 import { useStore } from "@/lib/store"
-import { useUsers, type User } from "@/hooks/use-users"
+import { useUsers } from "@/hooks/use-users"
+import type { User } from "@/lib/types"
 import { AddUserDialog } from "@/components/admin/add-user-dialog"
 import { EditUserDialog } from "@/components/admin/edit-user-dialog"
 
@@ -147,12 +148,10 @@ export default function AdminUsersPage() {
                           <TableCell className="text-right">
                             <div className="flex justify-end gap-2">
                               <Button variant="ghost" size="sm" onClick={() => { setSelectedUser(user); setShowEditDialog(true) }} className="gap-2">
-                                <Edit className="h-4 w-4" />
-                                Edit
+                                <Edit className="h-4 w-4" />Edit
                               </Button>
                               <Button variant="ghost" size="sm" onClick={() => setUserToDelete(user)} className="text-red-600 hover:text-red-700 hover:bg-red-50 gap-2">
-                                <Trash2 className="h-4 w-4" />
-                                Delete
+                                <Trash2 className="h-4 w-4" />Delete
                               </Button>
                             </div>
                           </TableCell>

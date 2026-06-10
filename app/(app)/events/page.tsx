@@ -26,16 +26,14 @@ export default function EventsPage() {
 
   const availableTags = useMemo(() => {
     const tags = new Set<string>()
-    eventsList.forEach((event) => (event.tags ?? []).forEach((tag) => tags.add(tag))) //event.tags is string[] | null but forEach is only on string[]
+    eventsList.forEach((event) => (event.tags ?? []).forEach((tag) => tags.add(tag)))
     return Array.from(tags).sort()
   }, [eventsList])
 
-  const filteredEvents = useMemo(() => { //use memo pomaga uniknąć ponownego filtrowania przy każdym renderze, filtrujemy tylko gdy eventsList, search lub filters się zmienią
+  const filteredEvents = useMemo(() => {
     return eventsList.filter((event) => {
-      // Only show published events
       if (event.status !== "published") return false
 
-      // Search filter
       if (search) {
         const searchLower = search.toLowerCase()
         const matchesSearch =
@@ -46,17 +44,14 @@ export default function EventsPage() {
         if (!matchesSearch) return false
       }
 
-      // Booking type filter
       if (filters.bookingType !== "all" && event.bookingType !== filters.bookingType) {
         return false
       }
 
-      // Tag filter
       if (filters.tag !== "all" && !(event.tags ?? []).includes(filters.tag)) {
         return false
       }
 
-      // Date range filter
       if (filters.dateRange?.from) {
         const eventDate = toValidDate(event.startDateTime)
         if (!eventDate) return false

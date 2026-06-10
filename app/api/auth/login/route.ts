@@ -8,7 +8,6 @@ export async function POST(request: NextRequest) {
   try {
     const { username, password } = await request.json()
 
-    // Walidacja
     if (!username || !password) {
       return NextResponse.json(
         { error: 'Username and password are required' },
@@ -16,7 +15,6 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Szukamy użytkownika w bazie
     const user = await prisma.user.findUnique({
       where: { username },
       select: {
@@ -35,7 +33,6 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Sprawdzamy hasło
     const passwordMatch = await bcrypt.compare(password, user.password)
 
     if (!passwordMatch) {
@@ -45,7 +42,6 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Zwracamy dane użytkownika (bez hasła!)
     return NextResponse.json({
       id: user.id,
       username: user.username,

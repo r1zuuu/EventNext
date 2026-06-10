@@ -3,7 +3,6 @@ import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 import bcrypt from "bcrypt";
 
-// Validation schema for creating/updating users
 const userSchema = z.object({
   username: z.string().min(3, "Username must be at least 3 characters"),
   email: z.string().email("Invalid email format"),
@@ -13,7 +12,6 @@ const userSchema = z.object({
 
 type UserInput = z.infer<typeof userSchema>;
 
-// GET - Fetch all users
 export async function GET(request: NextRequest) {
   try {
     const users = await prisma.user.findMany({
@@ -40,15 +38,12 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// POST - Create a new user
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    // Validate input
     const validatedData = userSchema.parse(body);
 
-    // Check if user already exists
     const existingUser = await prisma.user.findUnique({
       where: { username: validatedData.username },
     });
@@ -60,7 +55,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check if email already exists
     const existingEmail = await prisma.user.findUnique({
       where: { email: validatedData.email },
     });
@@ -72,10 +66,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Hash password
     const hashedPassword = await bcrypt.hash(validatedData.password, 10);
-
-    // Create user
     const user = await prisma.user.create({
       data: {
         username: validatedData.username,

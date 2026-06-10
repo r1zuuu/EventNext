@@ -1,15 +1,9 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import type { User } from "@/lib/types"
 
-export interface User {
-  id: string
-  username: string
-  email: string
-  role: "user" | "admin"
-  createdAt: string
-  updatedAt: string
-}
+export type { User }
 
 export function useUsers() {
   const [users, setUsers] = useState<User[]>([])
@@ -45,7 +39,7 @@ export function useUsers() {
     }
     const newUser = await response.json()
     setUsers((prev) => [newUser, ...prev])
-    return newUser
+    return newUser as User
   }
 
   const updateUser = async (id: string, userData: { username: string; email: string; role: "user" | "admin" }) => {
@@ -60,7 +54,7 @@ export function useUsers() {
     }
     const updatedUser = await response.json()
     setUsers((prev) => prev.map((u) => (u.id === updatedUser.id ? updatedUser : u)))
-    return updatedUser
+    return updatedUser as User
   }
 
   const deleteUser = async (id: string) => {

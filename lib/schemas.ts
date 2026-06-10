@@ -78,7 +78,6 @@ export const bookingFormSchema = z.object({
   notes: z.string().optional(),
 }).refine(
   (data) => {
-    // Email regex validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     return emailRegex.test(data.attendeeEmail)
   },

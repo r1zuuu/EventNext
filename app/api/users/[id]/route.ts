@@ -3,7 +3,6 @@ import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 import bcrypt from "bcrypt";
 
-// Validation schema for updating users
 const updateUserSchema = z.object({
   username: z.string().min(3, "Username must be at least 3 characters").optional(),
   email: z.string().email("Invalid email format").optional(),
@@ -13,7 +12,6 @@ const updateUserSchema = z.object({
 
 type UpdateUserInput = z.infer<typeof updateUserSchema>;
 
-// GET - Fetch a single user by ID
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -49,7 +47,6 @@ export async function GET(
   }
 }
 
-// PATCH - Update a user
 export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -58,10 +55,8 @@ export async function PATCH(
     const { id } = await params
     const body = await request.json();
 
-    // Validate input
     const validatedData = updateUserSchema.parse(body);
 
-    // Check if user exists
     const existingUser = await prisma.user.findUnique({
       where: { id },
     });
@@ -73,7 +68,6 @@ export async function PATCH(
       );
     }
 
-    // Check if new username already exists (if changing username)
     if (validatedData.username && validatedData.username !== existingUser.username) {
       const duplicateUsername = await prisma.user.findUnique({
         where: { username: validatedData.username },
@@ -87,7 +81,6 @@ export async function PATCH(
       }
     }
 
-    // Check if new email already exists (if changing email)
     if (validatedData.email && validatedData.email !== existingUser.email) {
       const duplicateEmail = await prisma.user.findUnique({
         where: { email: validatedData.email },
@@ -101,18 +94,15 @@ export async function PATCH(
       }
     }
 
-    // Prepare update data
     const updateData: any = {};
     if (validatedData.username) updateData.username = validatedData.username;
     if (validatedData.email) updateData.email = validatedData.email;
     if (validatedData.role) updateData.role = validatedData.role;
 
-    // Hash password if provided
     if (validatedData.password) {
       updateData.password = await bcrypt.hash(validatedData.password, 10);
     }
 
-    // Update user
     const updatedUser = await prisma.user.update({
       where: { id },
       data: updateData,
@@ -143,14 +133,12 @@ export async function PATCH(
   }
 }
 
-// DELETE - Delete a user
 export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { id } = await params
-    // Check if user exists
     const user = await prisma.user.findUnique({
       where: { id },
     });
@@ -176,7 +164,6 @@ export async function DELETE(
       }
     }
 
-    // Delete user
     await prisma.user.delete({
       where: { id },
     });
