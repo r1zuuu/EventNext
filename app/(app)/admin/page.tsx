@@ -45,18 +45,18 @@ function clamp(n: number, min = 0, max = 100) {
 }
 
 function monthLabel(date: Date) {
-  return date.toLocaleString("en-US", { month: "short" }) // "Jan", "Feb"...
+  return date.toLocaleString("en-US", { month: "short" }) 
 }
 
 function buildMockOccupancySeries(currentRate: number, months = 6) {
   const now = new Date()
 
-  // Zrobimy wcześniejsze miesiące trochę niżej, a do teraz dojdziemy do currentRate
-  const start = clamp(currentRate - 18) // deterministyczny start
+
+  const start = clamp(currentRate - 18)
 
   const data = Array.from({ length: months }, (_, i) => {
     const d = new Date(now.getFullYear(), now.getMonth() - (months - 1 - i), 1)
-    const t = months === 1 ? 1 : i / (months - 1) // 0..1
+    const t = months === 1 ? 1 : i / (months - 1) 
     const base = start + (currentRate - start) * t
 
     const wobble = (i % 2 === 0 ? 2 : -2)
@@ -65,13 +65,12 @@ function buildMockOccupancySeries(currentRate: number, months = 6) {
     return { month: monthLabel(d), occupancyRate: value }
   })
 
-  // ostatni punkt MUSI być realny:
   data[data.length - 1] = { month: monthLabel(now), occupancyRate: clamp(currentRate) }
 
   return data
 }
 
-// --- użycie ---
+
 const occupancyRate =
   totalCapacity > 0 ? Math.round((totalBooked / totalCapacity) * 100) : 0
 
